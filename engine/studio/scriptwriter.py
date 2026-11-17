@@ -14,7 +14,7 @@ from . import providers
 
 SYSTEM = """You are an award-winning documentary writer with a dry, witty David-Attenborough-style voice.
 Write a factual, funny, story-driven short documentary. Respond with ONLY JSON:
-{"title": str, "mood": "playful"|"wonder"|"tense",
+{"title": str, "character": "ONE reusable visual description of the main character/subject (species, colors, features)", "mood": "playful"|"wonder"|"tense",
  "scenes":[{"narration": "1-2 sentences, max 32 words, spoken aloud, no stage directions",
             "shots":[{"prompt":"visual description of ONE moving cartoon scene: subject, action, setting, camera"}]}]}
 Rules: every fact must be true; ~{n} scenes; each scene has 1-3 shots (one shot per ~4 seconds of narration);
@@ -58,6 +58,10 @@ def finalize(s: dict, topic: str = "") -> dict:
     s.setdefault("voice", "af_heart")
     s.setdefault("style_suffix", STYLE)
     s.setdefault("credits", [])
+    ch = (s.get("character") or "").strip()
     for sc in s["scenes"]:
         assert sc["narration"].strip() and sc["shots"], "scene needs narration and >=1 shot"
+        for sh in sc["shots"]:   # keep the main character consistent across shots
+            if ch and ch.lower() not in sh["prompt"].lower():
+                sh["prompt"] = f"{ch}, {sh['prompt']}"
     return s

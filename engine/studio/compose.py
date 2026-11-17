@@ -63,15 +63,37 @@ def _ts(t: float) -> str:
     return f"{int(h)}:{int(m):02d}:{s:05.2f}"
 
 
+_WEAK = {"a", "an", "the", "of", "is", "are", "was", "and", "or", "to", "in", "on", "at", "for", "with", "its",
+         "it", "that", "this", "but", "so", "as", "by", "from", "their", "his", "her", "our", "your", "my", "than"}
+
+
 def chunk_words(text: str, n: int = 4) -> list[str]:
-    words = text.split()
-    out, cur = [], []
-    for w in words:
-        cur.append(w)
-        if len(cur) >= n or re.search(r"[.!?;:]$", w) or (len(cur) >= 2 and w.endswith(",")):
-            out.append(" ".join(cur)); cur = []
-    if cur:
-        out.append(" ".join(cur))
+    """Chunk each sentence separately (see _chunk_sentence)."""
+    out = []
+    for sent in re.split(r"(?<=[.!?])\s+", text.strip()):
+        out += _chunk_sentence(sent, n)
+    return out
+
+
+def _chunk_sentence(text: str, n: int = 4) -> list[str]:
+    """Split narration into subtitle chunks of <= n words, breaking at punctuation and never
+    stranding a function word ("its fur is a / tiny ecosystem") at the end of a chunk."""
+    words, out, i = text.split(), [], 0
+    while i < len(words):
+        j = i
+        while j < len(words) and j - i < n:
+            j += 1
+            if re.search(r"[.!?;:]$", words[j - 1]) or (j - i >= 2 and words[j - 1].endswith(",")):
+                break
+        # back off over trailing function words unless the chunk ended on punctuation
+        if j < len(words) and not re.search(r"[.!?;:,]$", words[j - 1]):
+            k = j
+            while k - i > 1 and words[k - 1].lower().strip(",.") in _WEAK:
+                k -= 1
+            j = k
+        if len(words) - j == 1 and j - i < n + 1:   # never leave a single orphan word
+            j += 1
+        out.append(" ".join(words[i:j])); i = j
     return out
 
 

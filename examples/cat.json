@@ -1,0 +1,88 @@
+{
+  "title": "Why Cats Knock Things Over",
+  "topic": "cats knocking objects off tables",
+  "mood": "playful",
+  "voice": "am_puck",
+  "scenes": [
+    {
+      "narration": "Every cat owner knows the moment. A cup sits peacefully on the edge of a table. And a small furry scientist is watching it.",
+      "shots": [
+        {
+          "prompt": "a cute chubby orange tabby cat with big green eyes and a mischievous grin, sitting on a wooden table staring at a cup of coffee at the table edge, cozy kitchen, close up"
+        },
+        {
+          "prompt": "close up of a cute chubby orange tabby cat with big green eyes and a mischievous grin eyes slowly narrowing, comedic suspense"
+        }
+      ]
+    },
+    {
+      "narration": "Why do they do it? Scientists say cats are natural hunters, and a paw tap is how a cat tests whether something is alive, edible, or just annoying.",
+      "shots": [
+        {
+          "prompt": "a cute chubby orange tabby cat with big green eyes and a mischievous grin, gently tapping a toy mouse with one paw, curious face, cozy living room"
+        },
+        {
+          "prompt": "a cute chubby orange tabby cat with big green eyes and a mischievous grin, poking a cup with one paw, curious, comedic"
+        }
+      ]
+    },
+    {
+      "narration": "Objects that move are interesting to a cat. Objects that fall with a crash are even better, because that makes a sound, and sound is entertainment.",
+      "shots": [
+        {
+          "prompt": "a glass cup falling off a table in slow motion with sparkling water droplets, a cute chubby orange tabby cat with big green eyes and a mischievous grin watching amazed in the background"
+        },
+        {
+          "prompt": "a cute chubby orange tabby cat with big green eyes and a mischievous grin, ears perked up with wide shocked delighted eyes, comedic"
+        }
+      ]
+    },
+    {
+      "narration": "There is another reason. When a cat knocks something over, the human reacts immediately. Cats quickly learn that a falling cup means instant attention.",
+      "shots": [
+        {
+          "prompt": "a surprised cartoon person in pajamas rushing into a kitchen, a cute chubby orange tabby cat with big green eyes and a mischievous grin sitting innocently on a counter"
+        },
+        {
+          "prompt": "a cute chubby orange tabby cat with big green eyes and a mischievous grin, looking at the camera innocently, tiny halo above its head, comedic"
+        }
+      ]
+    },
+    {
+      "narration": "Cats also love a good routine. Many keep testing the very same spot, at the very same time, until the experiment has been confirmed.",
+      "shots": [
+        {
+          "prompt": "a cute chubby orange tabby cat with big green eyes and a mischievous grin, wearing tiny scientist goggles and a white lab coat, taking notes next to a glass of water, funny"
+        },
+        {
+          "prompt": "a cute chubby orange tabby cat with big green eyes and a mischievous grin, pushing a pencil off a desk with a satisfied smile, cozy home office"
+        }
+      ]
+    },
+    {
+      "narration": "And did you know a cat's paws are packed with sensitive nerves? Every tap tells it about the weight, the texture, and the wobble of the world.",
+      "shots": [
+        {
+          "prompt": "extreme close up of a cute orange cat paw gently touching a shiny object, soft light, detailed fur"
+        },
+        {
+          "prompt": "a cute chubby orange tabby cat with big green eyes and a mischievous grin, carefully pressing a paw on a wobbly jelly dessert, fascinated"
+        }
+      ]
+    },
+    {
+      "narration": "So the next time you catch your cat in the act, remember: it is not misbehaving. It is gathering data, and you are the data.",
+      "shots": [
+        {
+          "prompt": "a cute chubby orange tabby cat with big green eyes and a mischievous grin, sitting proudly next to a pile of fallen objects, looking smug, living room"
+        },
+        {
+          "prompt": "a cute chubby orange tabby cat with big green eyes and a mischievous grin looking up at a tired smiling cartoon owner with a coffee cup, warm light, cozy"
+        }
+      ]
+    }
+  ],
+  "credits": [
+    "Author-written; claims hedged (cat play/hunting behaviour, attention-seeking, paw sensitivity)"
+  ]
+}

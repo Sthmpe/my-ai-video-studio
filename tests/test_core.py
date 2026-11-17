@@ -54,3 +54,9 @@ def test_script_finalize_requires_shots():
 def test_example_script_valid():
     s = json.loads((Path(__file__).resolve().parents[1] / "examples/sloth.json").read_text())
     scriptwriter.finalize(s); assert len(s["scenes"]) >= 10
+
+
+def test_subtitles_do_not_strand_function_words_or_orphans():
+    c = compose.chunk_words("Deep in the rainforests of Central and South America lives an animal that has turned doing nothing into a fine art.", 4)
+    assert all(len(x.split()) >= 2 for x in c)
+    assert all(x.split()[-1].lower() not in {"a", "the", "of", "and", "an"} for x in c[:-1])

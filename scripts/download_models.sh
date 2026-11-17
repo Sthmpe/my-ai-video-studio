@@ -18,4 +18,9 @@ p=pathlib.Path("$d/sd15/model_index.json"); m=json.loads(p.read_text())
 m.update(feature_extractor=[None,None], safety_checker=[None,None], requires_safety_checker=False)
 p.write_text(json.dumps(m,indent=1))
 PY
-echo "models ready in $d"
+echo "base models ready in $d"
+
+# Optional keyless script-writer LLM (Qwen2.5-3B-Instruct, Apache-2.0, ~6 GB): WITH_LLM=1 scripts/download_models.sh
+if [ "${WITH_LLM:-0}" = "1" ]; then
+  for f in config.json generation_config.json model.safetensors.index.json model-00001-of-00002.safetensors model-00002-of-00002.safetensors tokenizer.json tokenizer_config.json vocab.json merges.txt; do g Qwen/Qwen2.5-3B-Instruct qwen "$f"; done
+fi

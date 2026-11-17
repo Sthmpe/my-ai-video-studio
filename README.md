@@ -5,7 +5,7 @@
 **Type a topic → get a narrated, subtitled, AI‑generated cartoon documentary.**
 Every scene is produced by a text‑to‑video model running on free, open‑source weights — **no stock footage, no paid video APIs, no GPU required.**
 
-[Live site](https://my-ai-video-studio-rho.vercel.app) · [Demo video](outputs/sloth-documentary-1080x1920.mp4) · [Architecture](docs/ARCHITECTURE.md) · [Models](docs/MODELS.md) · [Deployment](docs/DEPLOYMENT.md)
+[Live site](https://my-ai-video-studio-rho.vercel.app) · [Sloth film](outputs/sloth-documentary-1080x1920.mp4) · [Cat cartoon](outputs/cat-knocks-things-over-1080x1920.mp4) · [Architecture](docs/ARCHITECTURE.md) · [Models](docs/MODELS.md) · [Deployment](docs/DEPLOYMENT.md)
 
 <img src="web/demo/sloth.jpg" width="240" alt="Frame from the generated documentary">
 
@@ -14,7 +14,7 @@ Every scene is produced by a text‑to‑video model running on free, open‑sou
 ## What it does
 `topic → research → script → storyboard → AI video shots → neural narration → original music → edit → validated 1080×1920 MP4`
 
-The first production, **"The Sloth: Master of Nothing"**, is a 2 min 06 s funny nature documentary: 14 scenes, **30 AI‑generated shots**, Kokoro narration, procedurally composed score, cross‑dissolve transitions, burned‑in synced subtitles. It lives in [`outputs/`](outputs/) (validation report and storyboard alongside).
+The first production, **"The Sloth: Master of Nothing"**, is a 2 min 06 s funny nature documentary: 14 scenes, **30 AI‑generated shots**, Kokoro narration, procedurally composed score, cross‑dissolve transitions, burned‑in synced subtitles. A second, shorter cartoon — **"Why Cats Knock Things Over"** (1 min 08 s, 17 shots) — shows the same engine on a funnier, TikTok‑style topic. Both live in [`outputs/`](outputs/) with validation reports and storyboards.
 
 | | |
 |---|---|
