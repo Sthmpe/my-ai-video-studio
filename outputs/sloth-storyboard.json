@@ -1,0 +1,182 @@
+[
+  {
+    "scene": 0,
+    "prompt": "wide shot of a lush rainforest canopy at golden sunrise, drifting mist, cinematic, no animals",
+    "slot": 4.925,
+    "id": 0
+  },
+  {
+    "scene": 0,
+    "prompt": "a cute chubby sloth with fluffy brown fur, cream colored face, dark eye patches, long curved claws, hanging upside down from a branch, slowly opening one sleepy eye, close up",
+    "slot": 4.925,
+    "id": 1
+  },
+  {
+    "scene": 1,
+    "prompt": "two cute chubby sloth with fluffy brown fur, cream colored face, dark eye patches, long curved claws sitting side by side on a mossy branch, one shrugging",
+    "slot": 4.187499999999999,
+    "id": 2
+  },
+  {
+    "scene": 1,
+    "prompt": "a cute chubby sloth with fluffy brown fur, cream colored face, dark eye patches, long curved claws, lazily stretching one arm in the sunlight",
+    "slot": 4.187499999999999,
+    "id": 3
+  },
+  {
+    "scene": 2,
+    "prompt": "a cute chubby sloth with fluffy brown fur, cream colored face, dark eye patches, long curved claws, chewing a green leaf extremely slowly, funny relaxed face, close up",
+    "slot": 4.612500000000001,
+    "id": 4
+  },
+  {
+    "scene": 2,
+    "prompt": "a cute chubby sloth with fluffy brown fur, cream colored face, dark eye patches, long curved claws, lying on a branch looking relaxed and sleepy, soft light",
+    "slot": 4.612500000000001,
+    "id": 5
+  },
+  {
+    "scene": 3,
+    "prompt": "a cute chubby sloth with fluffy brown fur, cream colored face, dark eye patches, long curved claws, curled up asleep in the fork of a tree, tiny bubbles, peaceful",
+    "slot": 4.112499999999999,
+    "id": 6
+  },
+  {
+    "scene": 3,
+    "prompt": "a cute chubby sloth with fluffy brown fur, cream colored face, dark eye patches, long curved claws, reaching slowly for a leaf with one claw, green jungle background",
+    "slot": 4.112499999999999,
+    "id": 7
+  },
+  {
+    "scene": 4,
+    "prompt": "a cute chubby sloth with fluffy brown fur, cream colored face, dark eye patches, long curved claws, sitting at a tiny wooden table with an empty plate looking hungry and patient, comedic",
+    "slot": 4.350000000000001,
+    "id": 8
+  },
+  {
+    "scene": 4,
+    "prompt": "a cute chubby sloth with fluffy brown fur, cream colored face, dark eye patches, long curved claws, looking at a big wall clock with a bored expression, comedic",
+    "slot": 4.350000000000001,
+    "id": 9
+  },
+  {
+    "scene": 5,
+    "prompt": "extreme close up of fluffy brown sloth fur with green algae tint, tiny glints of light",
+    "slot": 4.199999999999999,
+    "id": 10
+  },
+  {
+    "scene": 5,
+    "prompt": "a cute chubby sloth with fluffy brown fur, cream colored face, dark eye patches, long curved claws with a green tint, blending into green leaves, hide and seek",
+    "slot": 4.199999999999999,
+    "id": 11
+  },
+  {
+    "scene": 6,
+    "prompt": "tiny moths fluttering around a cute chubby sloth with fluffy brown fur, cream colored face, dark eye patches, long curved claws, jungle light",
+    "slot": 3.3625000000000007,
+    "id": 12
+  },
+  {
+    "scene": 6,
+    "prompt": "a cute chubby sloth with fluffy brown fur, cream colored face, dark eye patches, long curved claws wearing a tiny bellhop hat, funny, jungle hotel lobby made of leaves",
+    "slot": 3.3625000000000007,
+    "id": 13
+  },
+  {
+    "scene": 7,
+    "prompt": "a cute chubby sloth with fluffy brown fur, cream colored face, dark eye patches, long curved claws, hanging upside down in a tropical rainstorm, rain droplets sliding off its fur",
+    "slot": 4.4375,
+    "id": 14
+  },
+  {
+    "scene": 7,
+    "prompt": "a cute chubby sloth with fluffy brown fur, cream colored face, dark eye patches, long curved claws, shaking raindrops from its fur, close up, sparkling water",
+    "slot": 4.4375,
+    "id": 15
+  },
+  {
+    "scene": 8,
+    "prompt": "a cute chubby sloth with fluffy brown fur, cream colored face, dark eye patches, long curved claws, slowly turning its head far around to look behind, surprised funny expression",
+    "slot": 4.950000000000003,
+    "id": 16
+  },
+  {
+    "scene": 8,
+    "prompt": "a cute chubby sloth with fluffy brown fur, cream colored face, dark eye patches, long curved claws, glancing left and right suspiciously, comedic, tree branch",
+    "slot": 4.950000000000003,
+    "id": 17
+  },
+  {
+    "scene": 9,
+    "prompt": "giant harpy eagle gliding over the rainforest canopy, a cute chubby sloth with fluffy brown fur, cream colored face, dark eye patches, long curved claws frozen still on a branch below",
+    "slot": 3.3416666666666686,
+    "id": 18
+  },
+  {
+    "scene": 9,
+    "prompt": "a jaguar prowling past a tree while a cute chubby sloth with fluffy brown fur, cream colored face, dark eye patches, long curved claws hides motionless among leaves, tense but funny",
+    "slot": 3.3416666666666686,
+    "id": 19
+  },
+  {
+    "scene": 9,
+    "prompt": "giant harpy eagle gliding over the rainforest canopy, a cute chubby sloth with fluffy brown fur, cream colored face, dark eye patches, long curved claws frozen still on a branch below",
+    "slot": 3.3416666666666686,
+    "id": 20
+  },
+  {
+    "scene": 10,
+    "prompt": "a cute chubby sloth with fluffy brown fur, cream colored face, dark eye patches, long curved claws, slowly climbing down a tall tree trunk, determined face",
+    "slot": 4.012499999999996,
+    "id": 21
+  },
+  {
+    "scene": 10,
+    "prompt": "a cute chubby sloth with fluffy brown fur, cream colored face, dark eye patches, long curved claws, tiptoeing on the jungle floor nervously looking around, comedic",
+    "slot": 4.012499999999996,
+    "id": 22
+  },
+  {
+    "scene": 11,
+    "prompt": "small moths fluttering around a cute chubby sloth with fluffy brown fur, cream colored face, dark eye patches, long curved claws on the forest floor, magical light rays",
+    "slot": 4.475000000000001,
+    "id": 23
+  },
+  {
+    "scene": 11,
+    "prompt": "a cute chubby sloth with fluffy brown fur, cream colored face, dark eye patches, long curved claws, climbing slowly back up a tree, proud happy face",
+    "slot": 4.475000000000001,
+    "id": 24
+  },
+  {
+    "scene": 12,
+    "prompt": "a cute chubby sloth with fluffy brown fur, cream colored face, dark eye patches, long curved claws, swimming across a calm jungle river, paddling its arms, happy",
+    "slot": 4.5625,
+    "id": 25
+  },
+  {
+    "scene": 12,
+    "prompt": "a cute chubby sloth with fluffy brown fur, cream colored face, dark eye patches, long curved claws, swimming underwater among bubbles and fish, peaceful, sunbeams",
+    "slot": 4.5625,
+    "id": 26
+  },
+  {
+    "scene": 13,
+    "prompt": "a cute chubby sloth with fluffy brown fur, cream colored face, dark eye patches, long curved claws, smiling and waving gently at sunset, golden light, warm",
+    "slot": 3.8999999999999964,
+    "id": 27
+  },
+  {
+    "scene": 13,
+    "prompt": "wide shot of the rainforest at twilight with glowing fireflies, peaceful, cinematic",
+    "slot": 3.8999999999999964,
+    "id": 28
+  },
+  {
+    "scene": 13,
+    "prompt": "a cute chubby sloth with fluffy brown fur, cream colored face, dark eye patches, long curved claws, smiling and waving gently at sunset, golden light, warm",
+    "slot": 3.8999999999999964,
+    "id": 29
+  }
+]

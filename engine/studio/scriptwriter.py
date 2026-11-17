@@ -3,7 +3,7 @@
 Order of authors:
   1. A pre-written script.json (e.g. authored by Claude Code in the interactive session).
   2. Any configured free LLM API (providers.LLMS, rotated with cooldowns).
-  3. Local open-weights LLM (Qwen2.5 via transformers) so the system works fully offline of paid/keyed APIs.
+  3. Local open-weights LLM (Qwen2.5 via transformers, llm_local.py) so topic-only jobs work with no keys.
 
 Script schema (see docs/ARCHITECTURE.md):
   {title, topic, mood, voice, scenes:[{narration, shots:[{prompt}]}], style_suffix, credits}
@@ -34,8 +34,20 @@ def write_with_llm(topic: str, research_text: str, target_seconds: int) -> dict:
     msgs = [{"role": "system", "content": SYSTEM.replace("{n}", str(n))},
             {"role": "user", "content": f"Topic: {topic}\nTarget length: {target_seconds}s of narration.\n"
                                         f"Source material (facts you may use):\n{research_text[:5000]}"}]
-    txt, who = providers.chat(msgs, json_mode=True)
-    s = _extract_json(txt)
+    try:
+        txt, who = providers.chat(msgs, json_mode=True)
+        s = _extract_json(txt)
+    except Exception as e:  # noqa: BLE001 - no key / rate-limited / bad JSON -> local model
+        providers.LOG.append(f"llm apis unavailable ({str(e)[:80]}); using local model")
+        from . import llm_local
+        who, s = "local:" + llm_local.MODEL, None
+        for _ in range(3):
+            try:
+                s = _extract_json(llm_local.chat(msgs)); finalize(dict(s)); break
+            except Exception:  # noqa: BLE001
+                s = None
+        if s is None:
+            raise RuntimeError("local LLM could not produce a valid script after 3 tries")
     s["author"] = who
     return s
 

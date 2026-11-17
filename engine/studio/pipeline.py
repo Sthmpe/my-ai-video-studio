@@ -131,7 +131,7 @@ class Pipeline:
         for sh in shots:
             self.cb("edit", sh["id"], len(shots), f"rendering shot {sh['id']+1}/{len(shots)}")
             last = sh["id"] == len(shots) - 1
-            length = sh["slot"] + (0 if last else compose.XF)
+            length = round((sh["slot"] + (0 if last else compose.XF)) * compose.FPS) / compose.FPS
             out = self.dir / "work" / f"r_{sh['id']:03d}.mp4"
             compose.render_shot(self.dir / "clips" / f"shot_{sh['id']:03d}.mp4", out, length, W, H)
             rendered.append(out); lengths.append(length)

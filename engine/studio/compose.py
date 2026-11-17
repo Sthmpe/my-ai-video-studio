@@ -25,11 +25,17 @@ def render_shot(raw: Path, out: Path, length: float, width: int = W, height: int
     else:
         pre = "[0:v]"
     stretch = length / src_len
-    vf = (f"{pre}setpts=PTS*{stretch:.4f},minterpolate=fps={FPS}:mi_mode=mci:mc_mode=aobmc:vsbmc=1,"
-          f"scale={width}:{height}:flags=lanczos,unsharp=5:5:0.6,eq=saturation=1.12:contrast=1.04,"
-          f"format=yuv420p[v]")
-    run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(raw), "-filter_complex", vf, "-map", "[v]",
-         "-t", f"{length:.3f}", "-r", str(FPS), "-c:v", "libx264", "-preset", "veryfast", "-crf", "18", str(out)])
+    # pass 1: boomerang (optional) + slow-mo + motion interpolation at native (small) resolution
+    mid = out.with_suffix(".mid.mp4")
+    vf1 = f"{pre}setpts=PTS*{stretch:.4f},minterpolate=fps={FPS}:mi_mode=mci:mc_mode=aobmc:vsbmc=1[v]"
+    run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(raw), "-filter_complex", vf1, "-map", "[v]",
+         "-r", str(FPS), "-c:v", "libx264", "-preset", "ultrafast", "-crf", "10", str(mid)])
+    # pass 2: pad to the exact slot length (interpolation drops the tail), upscale, grade
+    vf2 = (f"tpad=stop_mode=clone:stop_duration=3,scale={width}:{height}:flags=lanczos,unsharp=5:5:0.6,"
+           f"eq=saturation=1.12:contrast=1.04,format=yuv420p")
+    run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(mid), "-vf", vf2, "-frames:v", str(round(length * FPS)), "-r", str(FPS),
+         "-c:v", "libx264", "-preset", "veryfast", "-crf", "18", str(out)])
+    mid.unlink(missing_ok=True)
 
 
 def join_with_transitions(clips: list[Path], lengths: list[float], out: Path, seed: int = 3):

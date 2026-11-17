@@ -1,0 +1,11 @@
+[Unit]
+Description=My AI Video Studio (API + worker supervisor)
+After=network-online.target
+[Service]
+WorkingDirectory=/opt/my-ai-video-studio/engine
+EnvironmentFile=/etc/studio.env
+ExecStart=/opt/studio/venv/bin/python -m studio.supervisor
+Restart=always
+RestartSec=5
+[Install]
+WantedBy=multi-user.target

@@ -5,10 +5,21 @@ run-name: "studio ${{ inputs.job_id }}"
 on:
   workflow_dispatch:
     inputs:
-      job_id:      { description: "Unique job id", required: true }
-      topic:       { description: "Documentary topic (needs an LLM key secret OR script_json)", required: false, default: "" }
-      script_json: { description: "Pre-written script JSON (see examples/sloth.json)", required: false, default: "" }
-      orientation: { description: "vertical | landscape", required: false, default: "vertical" }
+      job_id:
+        description: "Unique job id"
+        required: true
+      topic:
+        description: "Documentary topic (needs an LLM key secret OR script_json)"
+        required: false
+        default: ""
+      script_json:
+        description: "Pre-written script JSON (see examples/sloth.json)"
+        required: false
+        default: ""
+      orientation:
+        description: "vertical | landscape"
+        required: false
+        default: "vertical"
 permissions:
   contents: write
 jobs:
@@ -27,7 +38,9 @@ jobs:
         with: { python-version: "3.12" }
       - run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg fonts-inter
       - uses: actions/cache@v4
-        with: { path: .models, key: models-v1-${{ hashFiles('scripts/download_models.sh') }} }
+        with:
+          path: .models
+          key: models-v1-${{ hashFiles('scripts/download_models.sh') }}
       - run: |
           pip install -q torch --index-url https://download.pytorch.org/whl/cpu
           pip install -q -r engine/requirements.txt
@@ -44,7 +57,8 @@ jobs:
           python -m studio generate "${args[@]}"
       - name: Publish release
         if: always()
-        env: { GH_TOKEN: "${{ github.token }}" }
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           d=".data/jobs/${{ inputs.job_id }}"
           if [ -f "$d/output.mp4" ]; then

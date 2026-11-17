@@ -1,0 +1,20 @@
+{
+  "ok": true,
+  "checks": {
+    "has_video": true,
+    "has_audio": true,
+    "resolution_ok": true,
+    "duration_matches": true,
+    "audio_audible": true,
+    "codec_h264": true
+  },
+  "duration": 126.05,
+  "size": "1080x1920",
+  "mean_volume_db": -16.3,
+  "title": "The Sloth: Master of Nothing",
+  "shots": 30,
+  "wall_seconds": 334.5,
+  "log": [
+    "14 scenes, 30 AI shots, narration 126.1s"
+  ]
+}

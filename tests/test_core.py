@@ -13,11 +13,11 @@ def test_chunking_and_punctuation():
 def test_clip_validator_rejects_black_and_static_accepts_motion():
     black = [np.zeros((64, 64, 3), np.uint8)] * 16
     assert not validate.clip_report(black)["ok"]
-    rng = np.random.default_rng(0)
-    base = rng.integers(0, 255, (64, 64, 3)).astype(np.uint8)
+    x = np.linspace(0, 6 * np.pi, 64)
+    base = np.tile((127 + 100 * np.sin(x))[None, :, None], (64, 1, 3)).astype(np.uint8)
     static = [base] * 16
     assert not validate.clip_report(static)["ok"]
-    moving = [np.roll(base, i * 2, axis=1) for i in range(16)]
+    moving = [np.roll(base, i, axis=1) for i in range(16)]
     assert validate.clip_report(moving)["ok"]
 
 
