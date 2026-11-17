@@ -18,7 +18,7 @@ exports.submit = async ({ topic, script, orientation }) => {
   }
   const id = `web-${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`;
   const r = await gh(`/repos/${GH}/actions/workflows/generate.yml/dispatches`, { method: 'POST',
-    body: JSON.stringify({ ref: process.env.GH_REF || 'main', inputs: { job_id: id, topic: topic || '',
+    body: JSON.stringify({ ref: process.env.GH_REF || (await (await gh(`/repos/${GH}`)).json()).default_branch, inputs: { job_id: id, topic: topic || '',
       script_json: script ? JSON.stringify(script) : '', orientation: orientation || 'vertical' } }) });
   if (r.status !== 204) throw new Error(`github dispatch ${r.status}: ${(await r.text()).slice(0, 200)}`);
   return id;
