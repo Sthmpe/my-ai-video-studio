@@ -46,6 +46,7 @@ jobs:
           pip install -q -r engine/requirements.txt
           scripts/download_models.sh
       - name: Generate
+        timeout-minutes: 300
         env:
           TOPIC: ${{ inputs.topic }}
           SCRIPT_JSON: ${{ inputs.script_json }}
@@ -54,7 +55,7 @@ jobs:
           args=(--job "${{ inputs.job_id }}" --orientation "${{ inputs.orientation }}")
           if [ -n "$SCRIPT_JSON" ]; then printf '%s' "$SCRIPT_JSON" > /tmp/script.json; args+=(--script /tmp/script.json); fi
           [ -n "$TOPIC" ] && args+=(--topic "$TOPIC")
-          python -m studio generate "${args[@]}"
+          python -u -m studio generate "${args[@]}"
       - name: Publish release
         if: always()
         env:

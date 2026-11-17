@@ -18,3 +18,6 @@
 
 ## Performance (4 vCPU, no GPU)
 ~42 s per 16-frame 288×512 shot · 30 shots ≈ 22 min · edit/render ≈ 5 min · narration (Kokoro) ≈ 1.3× real time. A 2-minute film ≈ 30 min end-to-end.
+
+## bf16 vs float32 (learned the hard way)
+The first GitHub Actions smoke job sat at `0/4` denoising steps for 21 minutes: hosted runners have no native bf16, so PyTorch emulates it. `videogen.device_and_dtype()` now enables bf16 only when `avx512_bf16`/`amx_bf16` is present and uses float32 otherwise. (This sandbox's Xeon has native bf16, hence ~6 s/step here.)

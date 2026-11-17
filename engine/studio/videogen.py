@@ -19,7 +19,14 @@ NEGATIVE = ("blurry, low quality, deformed, extra limbs, extra eyes, text, water
 def device_and_dtype():
     if torch.cuda.is_available():
         return "cuda", torch.float16
-    return "cpu", torch.bfloat16
+    # bf16 is only fast with native support (AVX512-BF16 / AMX). Elsewhere (e.g. GitHub-hosted runners)
+    # it is emulated and ~100x slower, so use float32 there. Measured: see docs/OPERATIONS.md.
+    try:
+        flags = open("/proc/cpuinfo").read()
+    except OSError:
+        flags = ""
+    native_bf16 = "avx512_bf16" in flags or "amx_bf16" in flags
+    return "cpu", torch.bfloat16 if native_bf16 else torch.float32
 
 
 def load_pipe():
