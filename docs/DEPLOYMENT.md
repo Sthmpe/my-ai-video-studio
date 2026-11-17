@@ -10,6 +10,10 @@
 
 So the honest architecture is: **Vercel = control plane, GitHub Actions = elastic worker, Release assets = storage.** The always-on API/worker pair is shipped for anyone with a VM (Oracle Always-Free ARM, a home server, Fly/Railway free tiers) and is the right choice once a GPU is available.
 
+## Verified from outside the sandbox
+`generate.yml` was dispatched via the GitHub API (job `gha-smoke-2`, run 44186663971): a fresh GitHub-hosted runner installed the stack, downloaded the weights, **generated 2 AI shots + narration + music, rendered and validated the video in 6 min 1 s**, and published it as a Release. Downloaded back over plain HTTPS from the sandbox: https://github.com/Sthmpe/my-ai-video-studio/releases/tag/video-gha-smoke-2 (1920×1080 h264+aac, `report.json` `"ok": true`). The first attempt (`gha-smoke-1`) was cancelled after 48 min because bf16 is emulated on those CPUs — fixed (see OPERATIONS.md).
+Not yet tested end-to-end: the Vercel → GitHub dispatch hop, because it needs a `GITHUB_TOKEN` secret that only the repo owner can create (step 2 below).
+
 ## Path A — GitHub Actions worker (works today, no server)
 1. Make sure `.github/workflows/generate.yml` is on the default branch.
 2. Create a fine-grained PAT for this repo: *Actions: read & write*, *Contents: read*. Add it to Vercel as `GITHUB_TOKEN`.
