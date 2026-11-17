@@ -15,7 +15,7 @@ Published free-tier limits change often — treat numbers below as orientation a
 | Google Gemini | `GEMINI_API_KEY` | per-model RPM/RPD caps (AI Studio) | OpenAI-compat endpoint used |
 | OpenRouter `:free` models | `OPENROUTER_API_KEY` | ~20 req/min, daily cap on `:free` models | many open models |
 | Mistral (La Plateforme, free tier) | `MISTRAL_API_KEY` | strict RPM, monthly token cap | |
-| **Local Qwen2.5-3B** | none | unlimited | automatic fallback, ~5–8 min per script on CPU |
+| **Local Qwen2.5-3B** | none | unlimited | automatic fallback; **tested**: topic → valid 9-scene script in 126 s on 4 vCPU, no keys (fact quality is only as good as a 3B model — review before publishing) |
 | **Claude Code session** | none | — | the interactive agent writes `script.json` itself |
 
 ## Research
