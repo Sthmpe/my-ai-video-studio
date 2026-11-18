@@ -11,12 +11,12 @@
  },
  "btst-ep1": {
   "clips": 20,
-  "motion": 15.81,
-  "contrast": 69.0
+  "motion": 15.87,
+  "contrast": 69.1
  },
  "btst-ep2": {
   "clips": 8,
-  "motion": 16.04,
+  "motion": 15.65,
   "contrast": 63.8
  }
 }

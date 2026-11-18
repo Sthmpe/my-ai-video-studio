@@ -7,15 +7,15 @@ Legend: ✅ done & verified · 🧪 works, limited testing · ⛔ blocked (owner
 |---|---|---|---|---|---|---|
 | Sloth (v1) | ToonYou t2v | 288×512 | 3.59 | 46.8 | ~45 | n/a |
 | Cats (v1) | ToonYou t2v | 288×512 | 1.98 | 46.8 | ~45 | n/a |
-| **Boy Who Stole Time Ep 1** | Counterfeit keyframe → i2v + camera LoRA + IP-Adapter-Face | **384×672** | **15.81** | **69.0** | 110 (+45 keyframe) | Kai 0.851 / Stranger 0.849 |
-| **Ep 2 teaser** (continuation) | same, refs imported | 384×672 | 16.04 | 63.8 | 122 | Kai 0.850 / Stranger 0.856 / Seren 0.873 |
-¹ mean abs gray frame diff at 8 fps (higher = more movement; visually confirmed as real motion, not noise). ² CLIP ViT-H cosine similarity of shots to their own character reference (other characters ≈ 0.72; v1-style baseline A = 0.61).
+| **Boy Who Stole Time Ep 1** | Counterfeit keyframe → i2v + camera LoRA + IP-Adapter-Face | **384×672** | **15.87** | **69.1** | 111 (+45 keyframe) | Kai 0.836 / Stranger 0.800 |
+| **Ep 2 teaser** (continuation) | same, refs imported | 384×672 | 15.65 | 63.8 | ~120 | Kai 0.811 / Stranger 0.834 / Seren 0.835 |
+¹ mean abs gray frame diff at 8 fps (higher = more movement; visually confirmed as real motion, not noise). ² CLIP ViT-H cosine similarity of shots to their own character reference (best *other* character ≈ 0.71–0.74; v1-style baseline A = 0.61). Numbers are after the 512×512 squash fix (re-animated at true 384×672; the squashed version scored 0.85).
 
 ## Demonstrations
 | Demo | Status | Evidence |
 |---|---|---|
 | A — "The Boy Who Stole Time — Ep 1" (38 s, 9:16, original anime, time-stop power, dialogue, SFX, music, subtitles, cliffhanger) | ✅ | `outputs/boy-who-stole-time-ep1-en-1080x1920.mp4`, bundle `outputs/bundles/boy-who-stole-time-ep1.studio.zip`, report `outputs/reports/btst-ep1-GENERATION_REPORT.md` |
-| B — Ep 2 teaser from Ep 1's bundle | ✅ | `continuity_report.json`: refs byte-identical, voices/mode/aspect inherited; identity 0.850 vs 0.851 |
+| B — Ep 2 teaser from Ep 1's bundle | ✅ | `continuity_report.json`: refs byte-identical, voices/mode/aspect inherited; Kai identity 0.811 (Ep 2) vs 0.836 (Ep 1) |
 | C — documentary regression | ✅ | job `regression-doc`: valid 14 s video, speech error 0.0, now also gets report + bundle |
 | D — English + Japanese | ✅ voices/subtitles · 🧪 dub timing | JA dub `outputs/boy-who-stole-time-ep1-ja-1080x1920.mp4`; Whisper: 7/8 lines intelligible; the line compressed to 1.35× is garbled |
 
@@ -41,6 +41,11 @@ Legend: ✅ done & verified · 🧪 works, limited testing · ⛔ blocked (owner
 | GitHub Actions worker with modes + continuation | ✅ anime path · 🧪 continuation | v2 anime job verified live: release `claude-video-claude-gha-anime-1` (MP4 + .studio.zip + reports). fp32 runner: 50 min for 6 s / 2 shots (~10× slower than bf16 sandbox) — fine for teasers, too slow for 60 s+ episodes; continuation on Actions untested |
 | Agent namespacing | ✅ | `claude-generate.yml`, `claude-video-*`, `claude-studio <id>` |
 | GPU tier (Wan/LTX/CogVideoX) | ⏳ | researched only (no GPU) |
+
+## Bugs found & fixed this iteration
+* i2v clips were generated at 512×512 and stretched (v2v pipeline missing width/height) — fixed, guarded, both episodes re-animated.
+* `from_pipe` fp32 cast (3.7× slowdown), VAE force_upcast, heap retention (OOM) — see QUALITY_EXPERIMENTS.
+* SFX masked a dialogue line — SFX now ducked under voice.
 
 ## Known quality limits (see each GENERATION_REPORT)
 Upscaled ×2.86 (not native 1080p) · 2 s clips interpolated to 24 fps · hands/accessories warp in fast motion · one energy-blast shot renders a mecha-like figure · JA time-fitting above ~1.25× hurts intelligibility.

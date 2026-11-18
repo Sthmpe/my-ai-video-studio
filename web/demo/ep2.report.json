@@ -1,7 +1,7 @@
 {
   "title": "The Boy Who Stole Time — Ep. 2 (Teaser)",
   "mode": "anime_action",
-  "created": "2026-11-18T12:22:49Z",
+  "created": "2026-11-18T14:22:23Z",
   "models": {
     "video_motion": {
       "id": "ByteDance/AnimateDiff-Lightning",
@@ -87,7 +87,7 @@
       "keyframe": 18,
       "i2v": "3 (6-step Lightning schedule x strength 0.65)"
     },
-    "seconds_per_shot_mean": 121.0,
+    "seconds_per_shot_mean": 109.4,
     "hardware": {
       "device": "cpu",
       "dtype": "bfloat16",
@@ -98,9 +98,9 @@
       "characters": 78.3,
       "voice": 4.0,
       "keyframes": 298.1,
-      "clips": 972.7,
-      "edit": 86.1,
-      "total": 1442.5
+      "clips": 881.0,
+      "edit": 74.7,
+      "total": 956.2
     }
   },
   "quality": {
@@ -156,28 +156,28 @@
     "identity_report": {
       "btst-ep1/kai": {
         "shots": 7,
-        "sim_own": 0.851,
-        "sim_best_other": 0.713
+        "sim_own": 0.836,
+        "sim_best_other": 0.729
       },
       "btst-ep1/stranger": {
         "shots": 4,
-        "sim_own": 0.849,
-        "sim_best_other": 0.724
+        "sim_own": 0.8,
+        "sim_best_other": 0.732
       },
       "btst-ep2/kai": {
         "shots": 4,
-        "sim_own": 0.85,
-        "sim_best_other": 0.721
+        "sim_own": 0.811,
+        "sim_best_other": 0.73
       },
       "btst-ep2/stranger": {
         "shots": 2,
-        "sim_own": 0.856,
-        "sim_best_other": 0.72
+        "sim_own": 0.834,
+        "sim_best_other": 0.735
       },
       "btst-ep2/seren": {
         "shots": 2,
-        "sim_own": 0.873,
-        "sim_best_other": 0.744
+        "sim_own": 0.835,
+        "sim_best_other": 0.709
       }
     },
     "continuity_report": {

@@ -1,6 +1,6 @@
 # Generation report — The Boy Who Stole Time — Ep. 2 (Teaser)
 
-Mode: **anime_action** · created 2026-11-18T12:22:49Z
+Mode: **anime_action** · created 2026-11-18T14:22:23Z
 
 ## Models used
 * **video_motion**: id=ByteDance/AnimateDiff-Lightning, variant=4-step diffusers, licence=Apache-2.0
@@ -27,13 +27,13 @@ Mode: **anime_action** · created 2026-11-18T12:22:49Z
 ## Technical specifications
 * Native 384x672 → export 1080x1920 (upscale ×2.86, not native detail)
 * 8 shots · 16 frames @ 8 fps → 24 fps · steps {'t2v': 4, 'keyframe': 18, 'i2v': '3 (6-step Lightning schedule x strength 0.65)'}
-* Mean 121.0 s per shot on {'device': 'cpu', 'dtype': 'bfloat16', 'cpus': 4, 'gpu': None}
-* Stage timings (s): {'characters': 78.3, 'voice': 4.0, 'keyframes': 298.1, 'clips': 972.7, 'edit': 86.1, 'total': 1442.5}
+* Mean 109.4 s per shot on {'device': 'cpu', 'dtype': 'bfloat16', 'cpus': 4, 'gpu': None}
+* Stage timings (s): {'characters': 78.3, 'voice': 4.0, 'keyframes': 298.1, 'clips': 881.0, 'edit': 74.7, 'total': 956.2}
 
 ## Quality checks
 * Final validation: {'has_video': True, 'has_audio': True, 'resolution_ok': True, 'duration_matches': True, 'audio_audible': True, 'codec_h264': True}
 * Clip-gate retries: 0
-* Character identity (CLIP ViT-H similarity of shots to their reference): {'btst-ep1/kai': {'shots': 7, 'sim_own': 0.851, 'sim_best_other': 0.713}, 'btst-ep1/stranger': {'shots': 4, 'sim_own': 0.849, 'sim_best_other': 0.724}, 'btst-ep2/kai': {'shots': 4, 'sim_own': 0.85, 'sim_best_other': 0.721}, 'btst-ep2/stranger': {'shots': 2, 'sim_own': 0.856, 'sim_best_other': 0.72}, 'btst-ep2/seren': {'shots': 2, 'sim_own': 0.873, 'sim_best_other': 0.744}}
+* Character identity (CLIP ViT-H similarity of shots to their reference): {'btst-ep1/kai': {'shots': 7, 'sim_own': 0.836, 'sim_best_other': 0.729}, 'btst-ep1/stranger': {'shots': 4, 'sim_own': 0.8, 'sim_best_other': 0.732}, 'btst-ep2/kai': {'shots': 4, 'sim_own': 0.811, 'sim_best_other': 0.73}, 'btst-ep2/stranger': {'shots': 2, 'sim_own': 0.834, 'sim_best_other': 0.735}, 'btst-ep2/seren': {'shots': 2, 'sim_own': 0.835, 'sim_best_other': 0.709}}
 * Continuity: episode 2 inherits ['kai', 'stranger'] — reference checks {'kai/ref_0.png': {'identical_to_previous': True}, 'stranger/ref_0.png': {'identical_to_previous': True}}
 * Note: error rate compares Whisper text to the script; number formatting (e.g. 'seven forty-two' vs '7:42') and kana/kanji variants inflate it
 * Speech (en) error 0.0: expected “Previously: Kai stopped time, and something stopped him back” heard “Previously, Kai stopped time and something stopped him back.”

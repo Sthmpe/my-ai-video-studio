@@ -70,3 +70,11 @@ def test_mode_router_explains_choice():
     sel = modes.select("anime_action", "1:1")
     assert sel["export"] == (1080, 1080) and sel["method"] == "i2v" and len(sel["reasons"]) >= 3
     assert modes.select("documentary")["method"] == "t2v"
+
+
+def test_size_guard():
+    import numpy as np
+    from studio import videogen
+    videogen._check_size([np.zeros((672, 384, 3), np.uint8)], 384, 672)
+    with pytest.raises(RuntimeError):
+        videogen._check_size([np.zeros((512, 512, 3), np.uint8)], 384, 672)

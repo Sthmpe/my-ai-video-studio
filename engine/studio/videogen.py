@@ -224,6 +224,12 @@ if __name__ == "__main__":
     save_frames_mp4(fr, Path("/tmp/bench.mp4"))
 
 
+def _check_size(frames, width: int, height: int):
+    """Guard: a clip must come out at the requested native size (never silently resized)."""
+    if frames[0].shape[:2] != (height, width):
+        raise RuntimeError(f"generated {frames[0].shape[1]}x{frames[0].shape[0]}, expected {width}x{height}")
+
+
 def _seed_motion(img, frames: int, camera: str | None, amount: float = 0.10):
     """Build an init video from one keyframe with a programmatic camera move, which the motion model then
     re-animates (adds secondary motion: hair, cloth, particles, parallax)."""
@@ -256,8 +262,12 @@ def animate_keyframe(image, prompt: str, seed: int, frames: int = 16, strength: 
         _state.update(v2v=v2v, v2v_key=_state["key"])
     g = torch.Generator("cpu").manual_seed(seed)
     init = _seed_motion(image, frames, camera)
+    w, h = image.size
     out = v2v(video=init, prompt=prompt, negative_prompt=negative + ", " + BASES[base]["extra_negative"],
+              width=w, height=h,  # without these the pipeline squashes to its 512x512 default (bug found 2026-11-18)
               strength=strength, num_inference_steps=steps, guidance_scale=1.0,
               generator=g, output_type="np", decode_chunk_size=2)  # chunked VAE: 16 frames at once OOMs 15 GB
     arr = (out.frames[0] * 255).clip(0, 255).astype(np.uint8)
-    return [f for f in arr]
+    frames = [f for f in arr]
+    _check_size(frames, w, h)
+    return frames

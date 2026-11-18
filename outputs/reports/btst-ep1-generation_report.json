@@ -1,7 +1,7 @@
 {
   "title": "The Boy Who Stole Time — Ep. 1",
   "mode": "anime_action",
-  "created": "2026-11-18T12:22:29Z",
+  "created": "2026-11-18T14:05:20Z",
   "models": {
     "video_motion": {
       "id": "ByteDance/AnimateDiff-Lightning",
@@ -89,7 +89,7 @@
       "keyframe": 18,
       "i2v": "3 (6-step Lightning schedule x strength 0.65)"
     },
-    "seconds_per_shot_mean": 110.7,
+    "seconds_per_shot_mean": 110.2,
     "hardware": {
       "device": "cpu",
       "dtype": "bfloat16",
@@ -98,10 +98,10 @@
     },
     "timings_s": {
       "characters": 0.0,
-      "keyframes": 101.0,
-      "clips": 2088.2,
-      "edit": 171.2,
-      "total": 2361.3
+      "keyframes": 0.0,
+      "clips": 2221.0,
+      "edit": 173.2,
+      "total": 2394.9
     }
   },
   "quality": {

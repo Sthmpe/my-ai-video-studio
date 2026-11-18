@@ -1,6 +1,6 @@
 # Generation report — The Boy Who Stole Time — Ep. 1
 
-Mode: **anime_action** · created 2026-11-18T12:22:29Z
+Mode: **anime_action** · created 2026-11-18T14:05:20Z
 
 ## Models used
 * **video_motion**: id=ByteDance/AnimateDiff-Lightning, variant=4-step diffusers, licence=Apache-2.0
@@ -27,8 +27,8 @@ Mode: **anime_action** · created 2026-11-18T12:22:29Z
 ## Technical specifications
 * Native 384x672 → export 1080x1920 (upscale ×2.86, not native detail)
 * 20 shots · 16 frames @ 8 fps → 24 fps · steps {'t2v': 4, 'keyframe': 18, 'i2v': '3 (6-step Lightning schedule x strength 0.65)'}
-* Mean 110.7 s per shot on {'device': 'cpu', 'dtype': 'bfloat16', 'cpus': 4, 'gpu': None}
-* Stage timings (s): {'characters': 0.0, 'keyframes': 101.0, 'clips': 2088.2, 'edit': 171.2, 'total': 2361.3}
+* Mean 110.2 s per shot on {'device': 'cpu', 'dtype': 'bfloat16', 'cpus': 4, 'gpu': None}
+* Stage timings (s): {'characters': 0.0, 'keyframes': 0.0, 'clips': 2221.0, 'edit': 173.2, 'total': 2394.9}
 
 ## Quality checks
 * Final validation: {'has_video': True, 'has_audio': True, 'resolution_ok': True, 'duration_matches': True, 'audio_audible': True, 'codec_h264': True}

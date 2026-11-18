@@ -53,3 +53,14 @@ Lesson: motion numbers alone mislead (B's motion is partly smear). 4-step t2v on
 | Scene text was lost when the long character descriptor came first | CLIP truncates prompts at 77 tokens | prompt order is now *scene → identity → style* |
 | Anime checkpoint invents people in empty shots (watch close-up became a girl) | keyframes 15/17/18 | character-less shots get `no humans, scenery/object focus` unless the prompt mentions people |
 | Remaining: the "violet energy blast" shot still renders a mecha-like figure | keyframe 15 | needs a pose/ControlNet or a stronger negative — logged for next iteration |
+
+## Experiment 4 — Real-ESRGAN ×2 vs Lanczos (sharpness of the upscale)
+![esr](media/exp4_esrgan.png) (left: Lanczos 384×672→1080×1890 · right: Real-ESRGAN ×2 then Lanczos; 400 px crop)
+* Gain: cleaner edges, less blocking on signage and line-art; moderate, not transformative.
+* Cost: ~4 s/frame uncontended (10.4 s measured while another job ran) → +1–2.5 min per 16-frame shot (≈ doubles render time).
+* Decision: **opt-in** (`"enhance": true` in the script); off by default; reports label it as enhancement, not native resolution.
+
+## Bug found by experiment 4: i2v clips were 512×512
+The v2v pipeline was not given `width/height`, so 384×672 keyframes were squashed to 512×512 and stretched back in the edit
+(distorted proportions; reports claimed 384×672). Fixed (`animate_keyframe` passes the keyframe size) and guarded
+(`_check_size` raises on any mismatch; unit test). Episode 1 and the Episode 2 teaser were re-animated at true 384×672.

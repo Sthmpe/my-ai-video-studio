@@ -14,7 +14,7 @@ Every scene is produced by a text‑to‑video model running on free, open‑sou
 ## Latest: *The Boy Who Stole Time*
 * **Episode 1** (38 s, 9:16): [EN](outputs/boy-who-stole-time-ep1-en-1080x1920.mp4) · [日本語](outputs/boy-who-stole-time-ep1-ja-1080x1920.mp4) · [project .studio.zip](outputs/bundles/boy-who-stole-time-ep1.studio.zip) · [generation report](outputs/reports/btst-ep1-GENERATION_REPORT.md)
 * **Episode 2 teaser** — generated *from Episode 1's project file*, same characters/voices/style + a new villain: [video](outputs/boy-who-stole-time-ep2-teaser-1080x1920.mp4) · [project](outputs/bundles/boy-who-stole-time-ep2-teaser.studio.zip) · [report](outputs/reports/btst-ep2-GENERATION_REPORT.md)
-* v2 engine vs v1: **4.4× more motion, +47% contrast, native 384×672 (was 288×512), measurable character identity across episodes** — see [PROGRESS](docs/PROGRESS.md) and [QUALITY_EXPERIMENTS](docs/QUALITY_EXPERIMENTS.md).
+* v2 engine vs v1: **4.4× more motion, +48% contrast, native 384×672 (was 288×512), character identity 0.80–0.84 vs 0.61 baseline, held across episodes** — see [PROGRESS](docs/PROGRESS.md) and [QUALITY_EXPERIMENTS](docs/QUALITY_EXPERIMENTS.md).
 * Tools & model downloads: [docs/TOOLS_AND_MODELS.md](docs/TOOLS_AND_MODELS.md)
 
 ## What it does

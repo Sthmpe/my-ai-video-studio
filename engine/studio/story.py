@@ -229,7 +229,10 @@ class StoryPipeline:
             last = sh["id"] == len(shots) - 1
             length = round((sh["slot"] + (0 if last else xf)) * fps) / fps
             o = self.dir / "work" / f"r_{sh['id']:03d}.mp4"
-            compose.render_shot(self.dir / "clips" / f"shot_{sh['id']:03d}.mp4", o, length, W, H)
+            src = self.dir / "clips" / f"shot_{sh['id']:03d}.mp4"
+            if self.s.get("enhance"):   # opt-in Real-ESRGAN x2 before upscale (enhancement, not native detail)
+                src = self._enhanced(src)
+            compose.render_shot(src, o, length, W, H)
             rendered.append(o); lengths.append(length); starts.append(acc); acc += length - (0 if last else xf)
         joined = self.dir / "work" / "joined.mp4"
         compose.join_with_transitions(rendered, lengths, joined, seed=int(self.s.get("seed", 3)), xf=xf,
@@ -267,6 +270,16 @@ class StoryPipeline:
         compose.final_render(joined, mix, ass, out)
         self.timings["edit"] = round(time.time() - t0, 1)
         return out
+
+    def _enhanced(self, clip: Path) -> Path:
+        hd = self.dir / "clips_hd" / clip.name
+        if not hd.exists():
+            import imageio.v3 as iio
+            from . import upscale
+            hd.parent.mkdir(exist_ok=True)
+            frames = [f for f in iio.imread(clip)]
+            videogen.save_frames_mp4(upscale.upscale_frames(frames), hd)
+        return hd
 
     def stage_extras(self):
         soc = self.s.get("social")
