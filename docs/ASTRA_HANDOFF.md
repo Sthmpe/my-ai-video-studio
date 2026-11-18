@@ -27,3 +27,18 @@ pytest -q tests
 * Use your own workflow file name, release prefix and run-title prefix (see COLLABORATION_PROTOCOL.md).
 
 Claude continues on its own branch; this handoff does not freeze Claude's work.
+
+---
+## Update — v2 baseline `30c1ae5` (2026-11-18)
+New since `c5e9b12` (all verified, see PROGRESS.md / QUALITY_EXPERIMENTS.md):
+* `studio story` (script v2), `continue`, `dub`, `export`, `import`, `report` CLI commands.
+* Keyframe → image-to-video with Counterfeit-V2.5 + AnimateDiff-Lightning v2v + camera LoRAs + IP-Adapter-Plus-Face.
+* Kokoro Japanese via misaki G2P (+ unidic-lite, offline); Whisper-base speech + sync checks; procedural SFX/ambience.
+* `.studio.zip` schema v1 (checksums, zip-slip safe), generation reports (MD + JSON).
+Reusable findings (free to adapt independently):
+1. `AnimateDiffVideoToVideoPipeline.from_pipe()` casts the shared UNet to fp32 unless `torch_dtype` is passed (5× slower on CPU).
+2. SD VAEs have `force_upcast=True` → fp32 decode; disable it when running bf16.
+3. Building UNetMotionModel leaves ~5 GB of freed fp32 heap resident → `malloc_trim(0)`.
+4. IP-Adapter-Plus copies the reference composition; Plus-Face at 0.5 keeps identity *and* the scene.
+5. CLIP truncates at 77 tokens — put the scene before the character descriptor.
+6. Duck SFX under dialogue as well as music (Whisper caught a masked line).
