@@ -59,6 +59,17 @@ def join_with_transitions(clips: list[Path], lengths: list[float], out: Path, se
          "-c:v", "libx264", "-preset", "veryfast", "-crf", "18", "-pix_fmt", "yuv420p", str(out)])
 
 
+def join_storyboard_cuts(clips: list[Path], out: Path):
+    """Join uniform rendered shots in the same working directory without adding overlap."""
+    manifest = out.with_suffix(".ffconcat")
+    manifest.write_text("ffconcat version 1.0\n" + "".join(f"file {clip.name}\n" for clip in clips))
+    try:
+        run(["ffmpeg", "-y", "-loglevel", "error", "-f", "concat", "-i", str(manifest),
+             "-c", "copy", str(out)])
+    finally:
+        manifest.unlink()
+
+
 def _ts(t: float) -> str:
     h, rem = divmod(t, 3600); m, s = divmod(rem, 60)
     return f"{int(h)}:{int(m):02d}:{s:05.2f}"

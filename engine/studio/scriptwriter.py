@@ -82,7 +82,21 @@ about {n} scenes for {secs} seconds; 1-2 shots per scene; sound effects only whe
 
 def write_story(idea: str, mode: str = "anime_action", seconds: int = 45, language: str = "en") -> dict:
     n = max(4, seconds // 5)
-    msgs = [{"role": "system", "content": STORY_SYSTEM.replace("{n}", str(n)).replace("{secs}", str(seconds))},
+    system = STORY_SYSTEM.replace("{n}", str(n)).replace("{secs}", str(seconds))
+    max_tokens = 1800
+    if mode == "anime_edit":
+        if not 1 <= seconds <= 180:
+            raise ValueError("Anime edit duration must be between 1 and 180 seconds")
+        shots = (seconds * 2 + 2) // 3
+        system = system.split("Rules:")[0] + (
+            f"Create a music-driven edit with exactly {shots} distinct shots across the scenes. "
+            "All scenes must have an empty lines array. Start with a strong visual hook. "
+            "Alternate wide action, dramatic close-ups, transformation details and impact reactions. "
+            "Build to a visual climax. Write concise, concrete shot prompts. "
+            "Use sound effects only when motivated by the on-screen action."
+        )
+        max_tokens = max(max_tokens, shots * 95)
+    msgs = [{"role": "system", "content": system},
             {"role": "user", "content": f"Idea: {idea}\nStyle/mode: {mode}"}]
     try:
         txt, who = providers.chat(msgs, json_mode=True); s = _extract_json(txt)
@@ -92,13 +106,15 @@ def write_story(idea: str, mode: str = "anime_action", seconds: int = 45, langua
         who, s = "local:" + llm_local.MODEL, None
         for _ in range(3):
             try:
-                s = _extract_json(llm_local.chat(msgs, max_new_tokens=1800))
+                s = _extract_json(llm_local.chat(msgs, max_new_tokens=max_tokens))
                 assert s["scenes"] and all(sc.get("shots") for sc in s["scenes"]); break
             except Exception:  # noqa: BLE001
                 s = None
         if s is None:
             raise RuntimeError("could not write a valid story script")
     s.update(author=who, mode=mode, language=language, subtitle_language=language)
+    if mode == "anime_edit":
+        s["target_seconds"] = seconds
     s.setdefault("characters", []); s.setdefault("narrator", {"voice": {"en": "bf_emma", "ja": "jf_alpha"}})
     for c in s["characters"]:
         c.setdefault("voice", {}).setdefault("ja", "jm_kumo"); c.setdefault("seed", abs(hash(c["id"])) % 10000)

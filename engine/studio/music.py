@@ -13,6 +13,7 @@ MOODS = {  # bpm, root midi, scale
     "playful": (112, 60, [0, 2, 4, 7, 9]),
     "wonder": (84, 57, [0, 2, 4, 7, 9]),
     "tense": (100, 55, [0, 3, 5, 7, 10]),
+    "anime_edit": (120, 50, [0, 3, 5, 7, 10]),
 }
 
 
@@ -53,6 +54,13 @@ def compose(seconds: float, out: Path, mood: str = "playful", seed: int = 7) -> 
         base = root - 12 + scale[deg % len(scale)]
         for b in range(4):  # bass: root / fifth
             put(_pluck(_hz(base + (7 if b % 2 else 0)), beat * 0.9, 0.35), t + b * beat)
+            if mood == "anime_edit":
+                drum_t = np.arange(int(SR * 0.22)) / SR
+                kick = np.sin(2 * np.pi * (48 * drum_t + 3 * (1 - np.exp(-32 * drum_t))))
+                put(0.7 * kick * np.exp(-22 * drum_t), t + b * beat)
+                if b % 2:
+                    snare = rng.standard_normal(len(drum_t)) * np.exp(-36 * drum_t)
+                    put(0.23 * snare, t + b * beat)
         put(_pad(_hz(root + scale[deg % len(scale)]), beat * 4.2), t)
         put(_pad(_hz(root + scale[(deg + 2) % len(scale)]), beat * 4.2, 0.08), t)
         for e in range(8):  # eighth-note melody with rests

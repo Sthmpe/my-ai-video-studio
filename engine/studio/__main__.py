@@ -17,7 +17,8 @@ def main():
     st = sub.add_parser("story", help="story/anime pipeline (script v2)")
     st.add_argument("--script"); st.add_argument("--job", required=True)
     st.add_argument("--idea", default=""); st.add_argument("--mode", default="anime_action")
-    st.add_argument("--seconds", type=int, default=45); st.add_argument("--aspect", default="9:16")
+    st.add_argument("--seconds", type=int, help="target runtime (defaults to 60 for generated anime edits)")
+    st.add_argument("--aspect", default="9:16")
     st.add_argument("--language", default="en")
     st.add_argument("--quality", default="balanced", choices=["fast", "balanced"])
     ex = sub.add_parser("export", help="write <job>/<title>.studio.zip"); ex.add_argument("--job", required=True)
@@ -51,8 +52,11 @@ def main():
             scr = json.loads(Path(a.script).read_text())
         else:
             from .scriptwriter import write_story
-            scr = write_story(a.idea, a.mode, a.seconds, a.language)
+            seconds = a.seconds if a.seconds is not None else (60 if a.mode == "anime_edit" else 45)
+            scr = write_story(a.idea, a.mode, seconds, a.language)
         scr.setdefault("aspect", a.aspect); scr.setdefault("mode", a.mode)
+        if scr["mode"] == "anime_edit" and a.seconds is not None:
+            scr["target_seconds"] = a.seconds
         r = StoryPipeline(JOBS / a.job, scr, cb, a.quality).run()
         print(json.dumps(r, indent=2)); sys.exit(0 if r["final"]["ok"] else 2)
     if a.cmd == "export":

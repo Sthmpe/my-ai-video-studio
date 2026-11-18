@@ -1,0 +1,411 @@
+{
+  "title": "Vale and the Storm Engine",
+  "mode": "anime_edit",
+  "aspect": "9:16",
+  "target_seconds": 60,
+  "seed": 8712,
+  "author": "Astra",
+  "language": "en",
+  "characters": [
+    {
+      "id": "vale",
+      "name": "Vale",
+      "prompt": "adult woman with cropped silver hair, amber eyes, navy raincoat, copper baton",
+      "seed": 9181
+    }
+  ],
+  "scenes": [
+    {
+      "lines": [],
+      "shots": [
+        {
+          "prompt": "Extreme close-up of a pale cyan lightning reflection racing across the warrior's iris",
+          "characters": [
+            "vale"
+          ],
+          "camera": "zoom-in",
+          "sfx": [
+            "electricity"
+          ]
+        },
+        {
+          "prompt": "Wide shot of the warrior sprinting toward the edge of a rain-soaked tower roof",
+          "characters": [
+            "vale"
+          ],
+          "camera": "pan-right",
+          "sfx": []
+        },
+        {
+          "prompt": "Low tracking shot of a boot striking a puddle that flares with blue sparks",
+          "characters": [],
+          "camera": "zoom-out",
+          "sfx": [
+            "impact"
+          ]
+        },
+        {
+          "prompt": "Side profile as the warrior launches over the alley and reaches for a suspended cable",
+          "characters": [
+            "vale"
+          ],
+          "camera": "tilt-up",
+          "sfx": []
+        },
+        {
+          "prompt": "Overhead view of the cable whipping through the rain as the warrior swings around a tower",
+          "characters": [
+            "vale"
+          ],
+          "camera": "pan-left",
+          "sfx": [
+            "whoosh"
+          ]
+        }
+      ]
+    },
+    {
+      "lines": [],
+      "shots": [
+        {
+          "prompt": "Wide silhouette of a floating storm engine dropping spiked drones between the buildings",
+          "characters": [],
+          "camera": "zoom-in",
+          "sfx": []
+        },
+        {
+          "prompt": "Close-up of the warrior catching a falling copper baton one-handed",
+          "characters": [
+            "vale"
+          ],
+          "camera": "pan-right",
+          "sfx": [
+            "whoosh"
+          ]
+        },
+        {
+          "prompt": "Ground-level shot of a drone carving a bright trench through the roof toward the warrior",
+          "characters": [
+            "vale"
+          ],
+          "camera": "zoom-out",
+          "sfx": []
+        },
+        {
+          "prompt": "The warrior slides under a swinging turbine blade, coat trailing across wet tiles",
+          "characters": [
+            "vale"
+          ],
+          "camera": "tilt-up",
+          "sfx": [
+            "whoosh"
+          ]
+        },
+        {
+          "prompt": "The warrior pivots from the slide and deflects the drone with the copper baton",
+          "characters": [
+            "vale"
+          ],
+          "camera": "pan-left",
+          "sfx": [
+            "impact"
+          ]
+        }
+      ]
+    },
+    {
+      "lines": [],
+      "shots": [
+        {
+          "prompt": "Wide shot of the warrior tumbling through a service hatch into a flooded substation",
+          "characters": [
+            "vale"
+          ],
+          "camera": "zoom-in",
+          "sfx": []
+        },
+        {
+          "prompt": "Close-up of the warrior plunging the baton into a sparking breaker cabinet",
+          "characters": [
+            "vale"
+          ],
+          "camera": "pan-right",
+          "sfx": [
+            "impact"
+          ]
+        },
+        {
+          "prompt": "Cyan sparks gather into geometric scales along the warrior's forearm",
+          "characters": [
+            "vale"
+          ],
+          "camera": "zoom-out",
+          "sfx": [
+            "electricity"
+          ]
+        },
+        {
+          "prompt": "Medium shot as the warrior snaps a glowing half-mask into place",
+          "characters": [
+            "vale"
+          ],
+          "camera": "tilt-up",
+          "sfx": []
+        },
+        {
+          "prompt": "Full-body silhouette as forked lightning draws a mantle around the warrior's shoulders",
+          "characters": [
+            "vale"
+          ],
+          "camera": "pan-left",
+          "sfx": [
+            "electricity"
+          ]
+        }
+      ]
+    },
+    {
+      "lines": [],
+      "shots": [
+        {
+          "prompt": "Tracking shot of the transformed warrior racing along the wall of a maintenance tunnel",
+          "characters": [
+            "vale"
+          ],
+          "camera": "zoom-in",
+          "sfx": [
+            "whoosh"
+          ]
+        },
+        {
+          "prompt": "A charging drone disintegrates into glowing copper fragments against a raised electric shield",
+          "characters": [],
+          "camera": "pan-right",
+          "sfx": [
+            "impact"
+          ]
+        },
+        {
+          "prompt": "Low angle as the warrior vaults the drone fragments and runs down a tilting beam",
+          "characters": [
+            "vale"
+          ],
+          "camera": "zoom-out",
+          "sfx": []
+        },
+        {
+          "prompt": "Close-up of the warrior's hand throwing a narrow lightning tether toward an overhead rail",
+          "characters": [
+            "vale"
+          ],
+          "camera": "tilt-up",
+          "sfx": []
+        },
+        {
+          "prompt": "Reverse wide shot of the warrior being pulled upward through the rain by the tether",
+          "characters": [
+            "vale"
+          ],
+          "camera": "pan-left",
+          "sfx": [
+            "whoosh"
+          ]
+        }
+      ]
+    },
+    {
+      "lines": [],
+      "shots": [
+        {
+          "prompt": "Wide shot of the storm engine unfolding antennae over a flooded intersection with no humans",
+          "characters": [],
+          "camera": "zoom-in",
+          "sfx": []
+        },
+        {
+          "prompt": "From beneath the storm engine, the warrior arcs upward past spinning antennae",
+          "characters": [
+            "vale"
+          ],
+          "camera": "pan-right",
+          "sfx": []
+        },
+        {
+          "prompt": "Close-up of the warrior sweeping the baton to carve a blue ring through the rain",
+          "characters": [
+            "vale"
+          ],
+          "camera": "zoom-out",
+          "sfx": [
+            "electricity"
+          ]
+        },
+        {
+          "prompt": "Overhead shot of the expanding ring breaking the drone formation into two spirals",
+          "characters": [],
+          "camera": "tilt-up",
+          "sfx": [
+            "impact"
+          ]
+        },
+        {
+          "prompt": "Medium shot of the warrior dodging a split-second counterstrike from the engine",
+          "characters": [
+            "vale"
+          ],
+          "camera": "pan-left",
+          "sfx": []
+        }
+      ]
+    },
+    {
+      "lines": [],
+      "shots": [
+        {
+          "prompt": "Aerial shot of the warrior falling backward between two towers as street lights flicker",
+          "characters": [
+            "vale"
+          ],
+          "camera": "zoom-in",
+          "sfx": [
+            "whoosh"
+          ]
+        },
+        {
+          "prompt": "The warrior twists midair and hooks a boot onto the outside of an elevator cable",
+          "characters": [
+            "vale"
+          ],
+          "camera": "pan-right",
+          "sfx": []
+        },
+        {
+          "prompt": "Tight shot of the warrior's gloves bracing against the cable as bright sparks burst upward",
+          "characters": [
+            "vale"
+          ],
+          "camera": "zoom-out",
+          "sfx": []
+        },
+        {
+          "prompt": "Close shot of the warrior winding a lightning strand around the copper baton",
+          "characters": [
+            "vale"
+          ],
+          "camera": "tilt-up",
+          "sfx": [
+            "riser"
+          ]
+        },
+        {
+          "prompt": "Wide shot as the warrior catapults from the cable onto the engine's spinning chassis",
+          "characters": [
+            "vale"
+          ],
+          "camera": "pan-left",
+          "sfx": [
+            "impact"
+          ]
+        }
+      ]
+    },
+    {
+      "lines": [],
+      "shots": [
+        {
+          "prompt": "Low angle tracking the warrior sprinting along the rotating chassis toward the exposed core",
+          "characters": [
+            "vale"
+          ],
+          "camera": "zoom-in",
+          "sfx": []
+        },
+        {
+          "prompt": "The warrior plants the baton and vaults over a panel exploding from the core",
+          "characters": [
+            "vale"
+          ],
+          "camera": "pan-right",
+          "sfx": [
+            "impact"
+          ]
+        },
+        {
+          "prompt": "Extreme close-up as the warrior twists the exposed core's two contacts together",
+          "characters": [
+            "vale"
+          ],
+          "camera": "zoom-out",
+          "sfx": []
+        },
+        {
+          "prompt": "Wide shot of a branching blue flash splitting the storm engine's canopy",
+          "characters": [],
+          "camera": "tilt-up",
+          "sfx": [
+            "electricity"
+          ]
+        },
+        {
+          "prompt": "The warrior drops through the expanding copper fragments as the chassis falls behind",
+          "characters": [
+            "vale"
+          ],
+          "camera": "pan-left",
+          "sfx": [
+            "whoosh"
+          ]
+        }
+      ]
+    },
+    {
+      "lines": [],
+      "shots": [
+        {
+          "prompt": "The warrior tethers to a rooftop aerial and swings away from a collapsing bridge",
+          "characters": [
+            "vale"
+          ],
+          "camera": "zoom-in",
+          "sfx": [
+            "whoosh"
+          ]
+        },
+        {
+          "prompt": "Low wide shot of the warrior sliding to a stop across blue-reflecting rooftop tiles",
+          "characters": [
+            "vale"
+          ],
+          "camera": "pan-right",
+          "sfx": [
+            "impact"
+          ]
+        },
+        {
+          "prompt": "Close-up of the warrior folding the scorched half-mask into the coat collar",
+          "characters": [
+            "vale"
+          ],
+          "camera": "zoom-out",
+          "sfx": []
+        },
+        {
+          "prompt": "The warrior looks over a street as warm windows relight one by one after the storm",
+          "characters": [
+            "vale"
+          ],
+          "camera": "tilt-up",
+          "sfx": []
+        },
+        {
+          "prompt": "The warrior steps past a puddle, leaving the last tiny blue spark in its reflection",
+          "characters": [
+            "vale"
+          ],
+          "camera": "pan-left",
+          "sfx": []
+        }
+      ]
+    }
+  ]
+}

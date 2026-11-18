@@ -15,6 +15,7 @@ def build(job_dir: Path, script: dict, sel: dict, shots: list[dict], clip_report
     tl = json.loads(tlf.read_text()) if tlf.exists() else {}
     voices = sorted({l["voice"] for sc in tl.get("scenes", []) for l in sc.get("lines", []) if l.get("voice")}) \
         or [script.get("voice", "af_heart")]
+    music_bpm = tl.get("music_bpm")
     # timings persist across resumed runs (a cached stage reports ~0 s on resume)
     tf = job_dir / "timings.json"
     prev = json.loads(tf.read_text()) if tf.exists() else {}
@@ -37,12 +38,13 @@ def build(job_dir: Path, script: dict, sel: dict, shots: list[dict], clip_report
             "character_conditioning": ({"id": "h94/IP-Adapter ip-adapter-plus-face_sd15 (scale 0.5, keyframes)", "licence": "Apache-2.0"}
                                        if sel.get("ip_adapter") else None),
             "camera_motion": {"id": "guoyww/animatediff-motion-lora-*", "used": sorted({s.get("camera") for s in shots if s.get("camera")})},
-            "voice": {"id": "Kokoro-82M v1.0 (ONNX int8)", "voices": voices, "languages": langs, "licence": "Apache-2.0"},
+            "voice": ({"id": "None (instrumental edit)"} if music_bpm else
+                      {"id": "Kokoro-82M v1.0 (ONNX int8)", "voices": voices, "languages": langs, "licence": "Apache-2.0"}),
             "script": {"author": script.get("author", "unknown")},
             "music": {"id": "studio.music procedural synth", "licence": "original"},
             "sfx": {"id": "studio.sfx procedural synth", "licence": "original"},
             "interpolation": {"id": "FFmpeg minterpolate (MCI)", "note": "8 fps -> 24 fps"},
-            "speech_check": {"id": "openai/whisper-base", "licence": "MIT"},
+            "speech_check": None if music_bpm else {"id": "openai/whisper-base", "licence": "MIT"},
         },
         "selection_reasons": sel["reasons"],
         "generation_method": {m: sum(1 for s in shots if s.get("method", sel["method"]) == m) for m in methods},
@@ -84,6 +86,10 @@ def build(job_dir: Path, script: dict, sel: dict, shots: list[dict], clip_report
             "note": "bf16 vs fp32 and CPU vs GPU produce slightly different pixels for identical seeds.",
         },
     }
+    if music_bpm:
+        rep["models"]["music"]["bpm"] = music_bpm
+        rep["specs"]["edit"] = "hard cuts on the generated music beat grid"
+        rep["specs"]["target_seconds"] = script["target_seconds"]
     (job_dir / "generation_report.json").write_text(json.dumps(rep, indent=2, ensure_ascii=False))
     (job_dir / "GENERATION_REPORT.md").write_text(to_markdown(rep))
     return rep

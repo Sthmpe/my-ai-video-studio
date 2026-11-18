@@ -39,6 +39,7 @@ class StoryPipeline:
         self.sub_lang = script.get("subtitle_language", self.lang)
         self.timings: dict = {}
         self.log: list[str] = []
+        self.beat_edit = self.sel["mode"] == "anime_edit" and "target_seconds" in script
 
     def note(self, m):
         self.log.append(m); print(m, flush=True)
@@ -81,6 +82,36 @@ class StoryPipeline:
         if f.exists():
             return json.loads(f.read_text())
         t0 = time.time()
+        if self.beat_edit:
+            requested = float(self.s["target_seconds"])
+            beat = 60 / music.MOODS["anime_edit"][0]
+            if not beat <= requested <= 180:
+                raise ValueError("Anime edit duration must be between 0.5 and 180 seconds")
+            total = round(requested * compose.FPS) / compose.FPS
+            scenes = self.s["scenes"]
+            prompts = [shot["prompt"].strip().casefold() for sc in scenes for shot in sc["shots"]]
+            shot_count = len(prompts)
+            beats = math.ceil(total / beat)
+            max_beats = math.floor(self.sel["max_shot"] / beat)
+            if not math.ceil(beats / max_beats) <= shot_count <= beats or len(set(prompts) - {""}) != shot_count:
+                raise ValueError(f"Anime edit needs {math.ceil(beats / max_beats)}–{beats} distinct shot prompts")
+            if any(sc.get("lines") or not sc["shots"] for sc in scenes):
+                raise ValueError("Music-driven anime edits require dialogue-free scenes with at least one shot")
+            boundaries = [round(i * beats / shot_count) * beat for i in range(shot_count)]
+            boundaries.append(total)
+            timeline = []
+            cursor = 0
+            for i, sc in enumerate(scenes):
+                end = cursor + len(sc["shots"])
+                timeline.append({"scene": i, "start": boundaries[cursor], "end": boundaries[end],
+                                 "lines": [], "cuts": boundaries[cursor:end + 1]})
+                cursor = end
+            sf.write(str(self.dir / "audio" / "narration.wav"), np.zeros(round(total * tts.SR)), tts.SR)
+            tl = {"scenes": timeline, "total": total, "music_bpm": music.MOODS["anime_edit"][0],
+                  "language": self.lang, "subtitle_language": self.sub_lang}
+            _w(f, tl)
+            self.timings["voice"] = round(time.time() - t0, 1)
+            return tl
         sr = tts.SR
         pieces = [np.zeros(int(LEAD * sr), np.float32)]
         t, scenes, speech = LEAD, [], []
@@ -140,10 +171,12 @@ class StoryPipeline:
                 span += tl["scenes"][0]["start"]
             if i == len(self.s["scenes"]) - 1:
                 span = tl["total"] - tl["scenes"][i]["start"]
-            k = max(len(sc["shots"]), math.ceil(span / self.sel["max_shot"]))
+            cuts = tl["scenes"][i].get("cuts")
+            k = len(sc["shots"]) if cuts else max(len(sc["shots"]), math.ceil(span / self.sel["max_shot"]))
             for j in range(k):
                 sh = dict(sc["shots"][j % len(sc["shots"])])
-                sh.update(scene=i, slot=span / k, method=sh.get("method", self.sel["method"]),
+                slot = cuts[j + 1] - cuts[j] if cuts else span / k
+                sh.update(scene=i, slot=slot, method=sh.get("method", self.sel["method"]),
                           camera=sh.get("camera", self.sel["camera"]))
                 if j >= len(sc["shots"]):      # extra coverage of the same beat: vary camera, drop one-shot sfx
                     sh["camera"] = ["zoom-out", "pan-left", "pan-right", "tilt-up"][j % 4]; sh["sfx"] = []
@@ -222,7 +255,8 @@ class StoryPipeline:
         t0 = time.time()
         W, H = self.sel["export"]
         fps = compose.FPS
-        xf = 0.25 if self.sel["max_shot"] < 3 else 0.5
+        beat_edit = "music_bpm" in tl
+        xf = 0 if beat_edit else (0.25 if self.sel["max_shot"] < 3 else 0.5)
         rendered, lengths, starts, acc = [], [], [], 0.0
         for sh in shots:
             self.cb("edit", sh["id"], len(shots), f"rendering shot {sh['id']+1}")
@@ -235,8 +269,11 @@ class StoryPipeline:
             compose.render_shot(src, o, length, W, H)
             rendered.append(o); lengths.append(length); starts.append(acc); acc += length - (0 if last else xf)
         joined = self.dir / "work" / "joined.mp4"
-        compose.join_with_transitions(rendered, lengths, joined, seed=int(self.s.get("seed", 3)), xf=xf,
-                                      transitions=["fade", "fadeblack", "smoothleft", "zoomin", "dissolve"])
+        if beat_edit:
+            compose.join_storyboard_cuts(rendered, joined)
+        else:
+            compose.join_with_transitions(rendered, lengths, joined, seed=int(self.s.get("seed", 3)), xf=xf,
+                                          transitions=["fade", "fadeblack", "smoothleft", "zoomin", "dissolve"])
         # subtitles from measured line timing
         cues = []
         for sc in tl["scenes"]:
@@ -254,7 +291,8 @@ class StoryPipeline:
         for sh, st in zip(shots, starts):
             for tag in sh.get("sfx", []):
                 name, off = (tag["name"], tag.get("at", 0.0)) if isinstance(tag, dict) else (tag, 0.0)
-                events.append({"t": st + off + (0.05 if name != "riser" else -0.4), "name": name})
+                lead = -0.4 if name == "riser" else (0 if beat_edit else 0.05)
+                events.append({"t": st + off + lead, "name": name})
         amb = []
         for i, sc in enumerate(self.s["scenes"]):
             a = sc.get("ambience", self.sel["ambience"])
@@ -262,10 +300,12 @@ class StoryPipeline:
                 amb.append({"start": tl["scenes"][i]["start"], "end": tl["scenes"][i]["end"], "name": a})
         fx = sfx.render_track(events, amb, tl["total"], self.dir / "audio" / "sfx.wav", seed=int(self.s.get("seed", 11)))
         _w(self.dir / "sfx_events.json", {"events": events, "ambience": amb})
-        mus = music.compose(tl["total"] + 1, self.dir / "audio" / "music.wav", self.s.get("music_mood", self.sel["music"]),
-                            int(self.s.get("seed", 7)))
+        mood = "anime_edit" if beat_edit else self.s.get("music_mood", self.sel["music"])
+        mus = music.compose(tl["total"] + (0 if beat_edit else 1), self.dir / "audio" / "music.wav",
+                            mood, int(self.s.get("seed", 7)))
         mix = self.dir / "audio" / "mix.wav"
-        compose.mix_audio(self.dir / "audio" / "narration.wav", mus, mix, tl["total"], sfx=fx, music_gain=0.5)
+        compose.mix_audio(self.dir / "audio" / "narration.wav", mus, mix, tl["total"], sfx=fx,
+                          music_gain=0.8 if beat_edit else 0.5)
         out = self.dir / "output.mp4"
         compose.final_render(joined, mix, ass, out)
         self.timings["edit"] = round(time.time() - t0, 1)
@@ -298,9 +338,15 @@ class StoryPipeline:
     # ---------------------------------------------------------------- run
     def run(self) -> dict:
         t0 = time.time()
-        _w(self.dir / "script.json", self.s)
+        saved_script = self.dir / "script.json"
+        if self.beat_edit and (self.dir / "timeline.json").exists():
+            if not saved_script.exists() or json.loads(saved_script.read_text()) != self.s:
+                raise ValueError("Use a new job ID when changing an anime edit with an existing timeline")
+        _w(saved_script, self.s)
         if self.s.get("series"):
             _w(self.dir / "series.json", self.s["series"])
+        if self.beat_edit:
+            self.stage_voice({})
         chars = self.stage_characters()
         tl = self.stage_voice(chars)
         speech = self.stage_speech_check(tl)
@@ -313,7 +359,8 @@ class StoryPipeline:
         out = self.stage_edit(tl, shots)
         self.stage_extras()
         final = validate.final_report(str(out), tl["total"])
-        final["speech_intelligible_ratio"] = round(sum(1 for x in speech if x["intelligible"]) / max(1, len(speech)), 2)
+        final["speech_intelligible_ratio"] = (None if self.beat_edit else
+                                             round(sum(1 for x in speech if x["intelligible"]) / max(1, len(speech)), 2))
         self.timings["total"] = round(time.time() - t0, 1)
         _w(self.dir / "report.json", final)
         report.build(self.dir, self.s, self.sel, shots, reps, final, speech, self.timings)
