@@ -163,7 +163,7 @@
      "camera": "tilt-up"
     },
     {
-     "prompt": "a white pigeon frozen in mid flight above a neon street, raindrops suspended",
+     "prompt": "a white pigeon frozen in mid flight above a neon street, raindrops suspended, no humans, object focus",
      "camera": "zoom-in"
     }
    ]
@@ -253,7 +253,7 @@
    "ambience": null,
    "shots": [
     {
-     "prompt": "extreme close up of a silver pocket watch cracking, clock hands spinning wildly, blue sparks",
+     "prompt": "extreme close up of a silver pocket watch cracking, clock hands spinning wildly, blue sparks, no humans, object focus",
      "camera": "rolling-clockwise",
      "sfx": [
       "whoosh",
@@ -284,5 +284,6 @@
    "What if stopping time made you a target?"
   ],
   "rights_note": "Original characters and story."
- }
+ },
+ "author": "Claude Code (interactive session), original story"
 }

@@ -24,6 +24,13 @@ LAYOUT = [
     ("work/subs.ass", "subtitles/subs.ass", "subtitles"),
     ("work/subs.srt", "subtitles/subs.srt", "subtitles"),
     ("output.mp4", "final/output.mp4", "final_video"),
+    ("work/subs_ja.ass", "subtitles/subs_ja.ass", "subtitles_ja"),   # JA master is rebuilt with `studio dub`
+    ("dub_ja_report.json", "reports/dub_ja_report.json", "dub_quality"),
+    ("continuity_report.json", "reports/continuity_report.json", "continuity"),
+    ("identity_report.json", "reports/identity_report.json", "identity_quality"),
+    ("sync_report.json", "reports/sync_report.json", "sync_quality"),
+    ("social.json", "story/social.json", "social"),
+    ("sfx_events.json", "story/sfx_events.json", "sfx_timeline"),
 ]
 DIRS = [("clips", "clips", "clip"), ("keyframes", "keyframes", "keyframe"), ("audio", "audio", "audio"),
         ("characters", "characters", "character")]

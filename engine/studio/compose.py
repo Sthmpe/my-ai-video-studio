@@ -136,8 +136,10 @@ Format: Layer,Start,End,Style,Name,MarginL,MarginR,MarginV,Effect,Text
 def mix_audio(narr: Path, music: Path, out: Path, total: float, sfx: Path | None = None, music_gain: float = 0.55):
     """Duck music under voice (sidechain), add the SFX/ambience layer, normalise loudness to -16 LUFS."""
     if sfx:
-        fc = (f"[1:a]volume={music_gain}[m];[0:a]asplit[n1][n2];[m][n1]sidechaincompress=threshold=0.03:ratio=8:"
-              "attack=15:release=400[ducked];[2:a]volume=1.0[fx];[ducked][n2][fx]amix=inputs=3:duration=first:normalize=0,"
+        # SFX are ducked under dialogue too (measured: a whoosh masked "Who are you?" in Ep1 v1)
+        fc = (f"[1:a]volume={music_gain}[m];[0:a]asplit=3[n1][n2][n3];[m][n1]sidechaincompress=threshold=0.03:ratio=8:"
+              "attack=15:release=400[ducked];[2:a]volume=1.0[fx0];[fx0][n3]sidechaincompress=threshold=0.02:ratio=5:"
+              "attack=5:release=250[fx];[ducked][n2][fx]amix=inputs=3:duration=first:normalize=0,"
               f"loudnorm=I=-16:TP=-1.5:LRA=11,apad,atrim=0:{total:.2f}[a]")
         inputs = ["-i", str(narr), "-i", str(music), "-i", str(sfx)]
     else:
@@ -151,7 +153,8 @@ def mix_audio(narr: Path, music: Path, out: Path, total: float, sfx: Path | None
 def final_render(video: Path, audio: Path, ass: Path, out: Path):
     vf = f"subtitles={ass}:fontsdir={FONTS},vignette=PI/6"
     run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(video), "-i", str(audio), "-vf", vf,
-         "-c:v", "libx264", "-preset", "medium", "-crf", "19", "-pix_fmt", "yuv420p", "-c:a", "aac",
+         "-c:v", "libx264", "-preset", "medium", "-crf", "21", "-maxrate", "10M", "-bufsize", "20M",
+         "-pix_fmt", "yuv420p", "-c:a", "aac",
          "-b:a", "192k", "-shortest", "-movflags", "+faststart", str(out)])
 
 

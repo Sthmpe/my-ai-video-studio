@@ -1,0 +1,271 @@
+{
+  "title": "The Boy Who Stole Time — Ep. 2 (Teaser)",
+  "mode": "anime_action",
+  "created": "2026-11-18T12:22:49Z",
+  "models": {
+    "video_motion": {
+      "id": "ByteDance/AnimateDiff-Lightning",
+      "variant": "4-step diffusers",
+      "licence": "Apache-2.0"
+    },
+    "image_base": {
+      "id": "gsdf/Counterfeit-V2.5 (fp16)",
+      "style": "2D anime",
+      "licence": "CreativeML OpenRAIL-M"
+    },
+    "vae": {
+      "id": "stabilityai/sd-vae-ft-mse"
+    },
+    "character_conditioning": {
+      "id": "h94/IP-Adapter ip-adapter-plus-face_sd15 (scale 0.5, keyframes)",
+      "licence": "Apache-2.0"
+    },
+    "camera_motion": {
+      "id": "guoyww/animatediff-motion-lora-*",
+      "used": [
+        "pan-left",
+        "tilt-up",
+        "zoom-in"
+      ]
+    },
+    "voice": {
+      "id": "Kokoro-82M v1.0 (ONNX int8)",
+      "voices": [
+        "af_bella",
+        "am_puck",
+        "bf_emma",
+        "bm_george"
+      ],
+      "languages": [
+        "en"
+      ],
+      "licence": "Apache-2.0"
+    },
+    "script": {
+      "author": "Claude Code (interactive session), original story"
+    },
+    "music": {
+      "id": "studio.music procedural synth",
+      "licence": "original"
+    },
+    "sfx": {
+      "id": "studio.sfx procedural synth",
+      "licence": "original"
+    },
+    "interpolation": {
+      "id": "FFmpeg minterpolate (MCI)",
+      "note": "8 fps -> 24 fps"
+    },
+    "speech_check": {
+      "id": "openai/whisper-base",
+      "licence": "MIT"
+    }
+  },
+  "selection_reasons": [
+    "mode 'anime_action' prefers counterfeit (2D anime)",
+    "image-to-video: a full-quality keyframe (18-step DPM++) is animated by AnimateDiff-Lightning video-to-video; measured sharper/more on-prompt than 4-step text-to-video (QUALITY_EXPERIMENTS.md)",
+    "native 384x672 chosen for cpu/bfloat16 with 4 cores",
+    "GPU-tier models (Wan, LTX, CogVideoX) skipped: no CUDA device"
+  ],
+  "generation_method": {
+    "i2v": 8
+  },
+  "method_explained": {
+    "t2v": "text-to-video: AnimateDiff-Lightning, 4 denoising steps, 16 frames",
+    "i2v": "image-to-video: 18-step keyframe (optionally IP-Adapter-conditioned on the character reference) animated by AnimateDiff-Lightning video-to-video; camera move seeded programmatically, re-animated by the model"
+  },
+  "specs": {
+    "native_resolution": "384x672",
+    "export_resolution": "1080x1920",
+    "upscale_factor": 2.86,
+    "native_fps": 8,
+    "export_fps": 24,
+    "frames_per_clip": 16,
+    "shots": 8,
+    "inference_steps": {
+      "t2v": 4,
+      "keyframe": 18,
+      "i2v": "3 (6-step Lightning schedule x strength 0.65)"
+    },
+    "seconds_per_shot_mean": 121.0,
+    "hardware": {
+      "device": "cpu",
+      "dtype": "bfloat16",
+      "cpus": 4,
+      "gpu": null
+    },
+    "timings_s": {
+      "characters": 78.3,
+      "voice": 4.0,
+      "keyframes": 298.1,
+      "clips": 972.7,
+      "edit": 86.1,
+      "total": 1442.5
+    }
+  },
+  "quality": {
+    "final_validation": {
+      "ok": true,
+      "checks": {
+        "has_video": true,
+        "has_audio": true,
+        "resolution_ok": true,
+        "duration_matches": true,
+        "audio_audible": true,
+        "codec_h264": true
+      },
+      "duration": 16.25,
+      "size": "1080x1920",
+      "mean_volume_db": -16.5,
+      "speech_intelligible_ratio": 1.0
+    },
+    "speech_intelligibility": [
+      {
+        "expected": "Previously: Kai stopped time, and something stopped him back.",
+        "heard": "Previously, Kai stopped time and something stopped him back.",
+        "error_rate": 0.0,
+        "intelligible": true,
+        "lang": "en",
+        "voice": "bf_emma"
+      },
+      {
+        "expected": "You ran. They always run.",
+        "heard": "You ran, they always run.",
+        "error_rate": 0.0,
+        "intelligible": true,
+        "lang": "en",
+        "voice": "bm_george"
+      },
+      {
+        "expected": "Then let me rewind his escape.",
+        "heard": "Then let me rewind his escape.",
+        "error_rate": 0.0,
+        "intelligible": true,
+        "lang": "en",
+        "voice": "af_bella"
+      },
+      {
+        "expected": "Not this time.",
+        "heard": "Not this time.",
+        "error_rate": 0.0,
+        "intelligible": true,
+        "lang": "en",
+        "voice": "am_puck"
+      }
+    ],
+    "identity_report": {
+      "btst-ep1/kai": {
+        "shots": 7,
+        "sim_own": 0.851,
+        "sim_best_other": 0.713
+      },
+      "btst-ep1/stranger": {
+        "shots": 4,
+        "sim_own": 0.849,
+        "sim_best_other": 0.724
+      },
+      "btst-ep2/kai": {
+        "shots": 4,
+        "sim_own": 0.85,
+        "sim_best_other": 0.721
+      },
+      "btst-ep2/stranger": {
+        "shots": 2,
+        "sim_own": 0.856,
+        "sim_best_other": 0.72
+      },
+      "btst-ep2/seren": {
+        "shots": 2,
+        "sim_own": 0.873,
+        "sim_best_other": 0.744
+      }
+    },
+    "continuity_report": {
+      "previous_title": "The Boy Who Stole Time — Ep. 1",
+      "episode": 2,
+      "inherited_characters": [
+        "kai",
+        "stranger"
+      ],
+      "reference_checks": {
+        "kai/ref_0.png": {
+          "identical_to_previous": true
+        },
+        "stranger/ref_0.png": {
+          "identical_to_previous": true
+        }
+      },
+      "inherited_settings": {
+        "mode": "anime_action",
+        "aspect": "9:16",
+        "narrator": {
+          "voice": {
+            "en": "bf_emma",
+            "ja": "jf_alpha"
+          }
+        }
+      }
+    },
+    "speech_metric_note": "error rate compares Whisper text to the script; number formatting (e.g. 'seven forty-two' vs '7:42') and kana/kanji variants inflate it",
+    "clip_gate_retries": 0
+  },
+  "limitations": [
+    "Generated at 384x672 and upscaled 2.9x (Lanczos+unsharp) — export resolution is NOT native detail.",
+    "2-second clips (16 frames @ 8 fps) are motion-interpolated to 24 fps; fast action can smear.",
+    "4-step distilled motion model on CPU: fine details (hands, small accessories) can warp between frames.",
+    "Character identity is guided by a reference image (IP-Adapter/keyframes), not locked; faces can drift in action shots.",
+    "No GPU: higher-fidelity open models (Wan, LTX-Video, CogVideoX) were not run."
+  ],
+  "alternatives_considered": [
+    {
+      "model": "Wan 2.1/2.2 T2V/I2V (1.3B–14B)",
+      "licence": "Apache-2.0",
+      "why_not": "needs a CUDA GPU (8–24 GB+) and a ~22 GB UMT5-XXL text encoder; impractical on 4 vCPU/15 GB RAM",
+      "needs": "GPU runner (e.g. 24 GB) — plug into model_router via diffusers WanPipeline"
+    },
+    {
+      "model": "LTX-Video 2B/13B",
+      "licence": "LTXV Open Weights",
+      "why_not": "T5-XXL encoder + GPU memory; minutes per clip only on GPU",
+      "needs": "GPU with 12 GB+"
+    },
+    {
+      "model": "CogVideoX-2B/5B",
+      "licence": "Apache-2.0 / CogVideoX",
+      "why_not": "12–24 GB VRAM; very slow on CPU",
+      "needs": "GPU"
+    },
+    {
+      "model": "HunyuanVideo / Mochi-1",
+      "licence": "custom / Apache-2.0",
+      "why_not": "40 GB+ VRAM",
+      "needs": "datacenter GPU"
+    },
+    {
+      "model": "AnimateDiff SparseCtrl / AnimateLCM",
+      "licence": "Apache-2.0",
+      "why_not": "not yet benchmarked here; candidate for next CPU iteration",
+      "needs": "~1–2 GB extra weights"
+    }
+  ],
+  "cost": {
+    "usd": 0.0,
+    "paid_services": [],
+    "free_tier_apis": [],
+    "compute": "local CPU (this machine)"
+  },
+  "recommendations": [
+    "Run on a GPU runner and switch the router to Wan 2.x I2V for native 480p/720p motion.",
+    "Increase native resolution to 512x896 when time allows; add RIFE interpolation instead of minterpolate.",
+    "Use pose/ControlNet keyframes for complex action; train a small character LoRA for stronger identity."
+  ],
+  "reproducibility": {
+    "seeds_and_prompts": "story/storyboard.json (per shot: prompt, seed, camera, method)",
+    "settings": {
+      "guidance": 1.0,
+      "scheduler": "Euler trailing (Lightning)",
+      "keyframe_sampler": "DPM++ Karras"
+    },
+    "note": "bf16 vs fp32 and CPU vs GPU produce slightly different pixels for identical seeds."
+  }
+}

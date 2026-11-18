@@ -1,0 +1,26 @@
+{
+  "previous_title": "The Boy Who Stole Time — Ep. 1",
+  "episode": 2,
+  "inherited_characters": [
+    "kai",
+    "stranger"
+  ],
+  "reference_checks": {
+    "kai/ref_0.png": {
+      "identical_to_previous": true
+    },
+    "stranger/ref_0.png": {
+      "identical_to_previous": true
+    }
+  },
+  "inherited_settings": {
+    "mode": "anime_action",
+    "aspect": "9:16",
+    "narrator": {
+      "voice": {
+        "en": "bf_emma",
+        "ja": "jf_alpha"
+      }
+    }
+  }
+}

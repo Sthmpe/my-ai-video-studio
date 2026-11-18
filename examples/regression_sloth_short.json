@@ -1,0 +1,24 @@
+{
+ "title": "Regression: Sloth Short",
+ "topic": "sloths",
+ "mood": "playful",
+ "voice": "bf_emma",
+ "scenes": [
+  {
+   "narration": "Sloths can hold their breath far longer than you might expect, and they are surprisingly good swimmers.",
+   "shots": [
+    {
+     "prompt": "a cute chubby sloth with fluffy brown fur, cream colored face, dark eye patches, long curved claws, swimming across a calm jungle river, paddling its arms, happy"
+    }
+   ]
+  },
+  {
+   "narration": "Out of the water, though, they are happiest doing absolutely nothing at all.",
+   "shots": [
+    {
+     "prompt": "a cute chubby sloth with fluffy brown fur, cream colored face, dark eye patches, long curved claws, curled up asleep in the fork of a tree, peaceful"
+    }
+   ]
+  }
+ ]
+}

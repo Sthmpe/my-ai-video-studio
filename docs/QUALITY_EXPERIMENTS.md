@@ -43,3 +43,13 @@ Lesson: motion numbers alone mislead (B's motion is partly smear). 4-step t2v on
 * RIFE vs minterpolate for 8→24 fps; Real-ESRGAN ×2 on keyframes before animation (cost/benefit).
 * IP-Adapter on keyframes at 0.35–0.5 (identity without copying background) — measured in the Episode-1 build.
 * SparseCtrl / AnimateLCM as alternative motion models.
+
+## Experiment 3 — character identity without losing the scene (Episode 1 build)
+![ip](media/exp3_ip_face.png) (left→right: shot 3 with IP-Adapter-Plus 0.4 · Plus-Face 0.5 · Plus-Face 0.7 · shot 6 Plus 0.4 · Face 0.5 · Face 0.7)
+
+| Finding | Evidence | Change |
+|---|---|---|
+| IP-Adapter-**Plus** copies the reference *composition*: most Kai shots became the same character-sheet pose on a grey background | first Ep1 keyframe sheet (11 of 20 shots) | switched keyframes to **IP-Adapter-Plus-Face** (face/identity only) at scale 0.5 → varied action poses, identity kept |
+| Scene text was lost when the long character descriptor came first | CLIP truncates prompts at 77 tokens | prompt order is now *scene → identity → style* |
+| Anime checkpoint invents people in empty shots (watch close-up became a girl) | keyframes 15/17/18 | character-less shots get `no humans, scenery/object focus` unless the prompt mentions people |
+| Remaining: the "violet energy blast" shot still renders a mecha-like figure | keyframe 15 | needs a pose/ControlNet or a stronger negative — logged for next iteration |

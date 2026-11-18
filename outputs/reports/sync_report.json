@@ -1,0 +1,56 @@
+{
+ "transcript": "At 7.42 on a rainy Tuesday, Kairata broke the universe. Just once, I wish everything would stop. No way the rain is just floating. Every clock, every heartbeat, every person, frozen. You shouldn't be able to do that. Where are you, why can't you move? Because I hunt people who steal time and you just rang the bell. Kai had stolen time, now time wanted it back.",
+ "lines": [
+  {
+   "line": "At seven forty-two on a rainy Tuesday, Kai Arata broke the u",
+   "planned_start": 0.6,
+   "heard_start": null,
+   "offset_s": null
+  },
+  {
+   "line": "Just once... I wish everything would stop.",
+   "planned_start": 6.125,
+   "heard_start": 6.18,
+   "offset_s": 0.05
+  },
+  {
+   "line": "No way... the rain is just... floating.",
+   "planned_start": 12.025,
+   "heard_start": 12.4,
+   "offset_s": 0.38
+  },
+  {
+   "line": "Every clock. Every heartbeat. Every person. Frozen.",
+   "planned_start": 15.375,
+   "heard_start": 15.56,
+   "offset_s": 0.19
+  },
+  {
+   "line": "You shouldn't be able to do that.",
+   "planned_start": 19.925,
+   "heard_start": 20.02,
+   "offset_s": 0.09
+  },
+  {
+   "line": "Who are you? Why can you move?",
+   "planned_start": 22.95,
+   "heard_start": 23.32,
+   "offset_s": 0.37
+  },
+  {
+   "line": "Because I hunt people who steal time. And you just rang the ",
+   "planned_start": 25.55,
+   "heard_start": 25.52,
+   "offset_s": -0.03
+  },
+  {
+   "line": "Kai had stolen time. Now, time wanted it back.",
+   "planned_start": 30.8,
+   "heard_start": 31.02,
+   "offset_s": 0.22
+  }
+ ],
+ "median_abs_offset_s": 0.19,
+ "within_0_5s": 7,
+ "total_lines": 8
+}

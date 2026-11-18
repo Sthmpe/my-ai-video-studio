@@ -42,6 +42,7 @@ BASES = {
 CAMERA = ["zoom-in", "zoom-out", "pan-left", "pan-right", "tilt-up", "tilt-down", "rolling-clockwise"]
 LIGHTNING = "lightning/animatediff_lightning_4step_diffusers.safetensors"
 IP_WEIGHT = "ip-adapter-plus_sd15.safetensors"
+IP_WEIGHTS = {"plus": "ip-adapter-plus_sd15.safetensors", "face": "ip-adapter-plus-face_sd15.safetensors"}
 
 
 def device_and_dtype():
@@ -123,12 +124,14 @@ def unload():
     gc.collect()
 
 
-def load_image_pipe(base: str = "counterfeit", ip: bool = False):
+def load_image_pipe(base: str = "counterfeit", ip: bool = False, variant: str = "face"):
     """Still-image pipeline (keyframes / character sheets). Mutually exclusive with the video pipeline in RAM."""
     from diffusers import StableDiffusionPipeline, DPMSolverMultistepScheduler, AutoencoderKL
     ip = ip and has_ip_adapter()
     with _lock:
-        key = ("image", base, ip)
+        if not (MODELS / "ip-adapter/models" / IP_WEIGHTS.get(variant, IP_WEIGHT)).exists():
+            variant = "plus"
+        key = ("image", base, ip, variant if ip else None)
         if _state["key"] == key:
             return _state["pipe"]
         _state.update(key=None, pipe=None, base=None, loras=set(), v2v=None, v2v_key=None); _trim()
@@ -141,7 +144,7 @@ def load_image_pipe(base: str = "counterfeit", ip: bool = False):
             safety_checker=None, feature_extractor=None, requires_safety_checker=False, **kw)
         sd.scheduler = DPMSolverMultistepScheduler.from_config(sd.scheduler.config, use_karras_sigmas=True)
         if ip:
-            sd.load_ip_adapter(str(MODELS / "ip-adapter"), subfolder="models", weight_name=IP_WEIGHT,
+            sd.load_ip_adapter(str(MODELS / "ip-adapter"), subfolder="models", weight_name=IP_WEIGHTS[variant],
                                image_encoder_folder="image_encoder", torch_dtype=dt)
             sd.image_encoder.to(dt)
         sd.to(dev)
@@ -186,12 +189,12 @@ def generate_clip(prompt: str, seed: int, width: int, height: int, frames: int =
 
 def generate_keyframe(prompt: str, seed: int, width: int = 512, height: int = 768, steps: int = 22,
                       base: str = "counterfeit", negative: str = NEGATIVE, guidance: float = 7.0,
-                      ip_image=None, ip_scale: float = 0.45):
+                      ip_image=None, ip_scale: float = 0.45, ip_variant: str = "face"):
     """Still image (character sheet / shot keyframe). With ip_image, IP-Adapter-Plus keeps the character identity."""
     # If an IP-Adapter pipeline is already resident, reuse it at scale 0 for shots without a character
     # instead of reloading (~20 s per switch).
-    keep_ip = _state["key"] == ("image", base, True)
-    pipe = load_image_pipe(base, ip=ip_image is not None or keep_ip)
+    keep_ip = _state["key"] == ("image", base, True, ip_variant)
+    pipe = load_image_pipe(base, ip=ip_image is not None or keep_ip, variant=ip_variant)
     kw = {}
     if _state["ip"]:
         from PIL import Image as _I
@@ -205,7 +208,8 @@ def generate_keyframe(prompt: str, seed: int, width: int = 512, height: int = 76
 
 def save_frames_mp4(frames: list[np.ndarray], path: Path, fps: int = 8):
     import imageio
-    with imageio.get_writer(str(path), fps=fps, codec="libx264", quality=9, macro_block_size=1) as w:
+    with imageio.get_writer(str(path), fps=fps, codec="libx264", macro_block_size=1,
+                            output_params=["-crf", "18", "-preset", "slow", "-pix_fmt", "yuv420p"]) as w:  # visually lossless, ~4x smaller than quality=9
         for f in frames:
             w.append_data(f)
 

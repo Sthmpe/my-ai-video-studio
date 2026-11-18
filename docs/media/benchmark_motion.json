@@ -1,0 +1,22 @@
+{
+ "sloth-v1": {
+  "clips": 30,
+  "motion": 3.59,
+  "contrast": 46.8
+ },
+ "cat-v1": {
+  "clips": 17,
+  "motion": 1.98,
+  "contrast": 46.8
+ },
+ "btst-ep1": {
+  "clips": 20,
+  "motion": 15.81,
+  "contrast": 69.0
+ },
+ "btst-ep2": {
+  "clips": 8,
+  "motion": 16.04,
+  "contrast": 63.8
+ }
+}

@@ -1,0 +1,93 @@
+{
+  "lang": "ja",
+  "output": "/home/user/my-ai-video-studio/data/jobs/btst-ep1/output_ja.mp4",
+  "final": {
+    "ok": true,
+    "checks": {
+      "has_video": true,
+      "has_audio": true,
+      "resolution_ok": true,
+      "duration_matches": true,
+      "audio_audible": true,
+      "codec_h264": true
+    },
+    "duration": 37.95,
+    "size": "1080x1920",
+    "mean_volume_db": -16.3
+  },
+  "speech": [
+    {
+      "expected": "雨の火曜日、午前七時四十二分。アラタ・カイは、世界を壊した。",
+      "heard": "雨の火曜日午前7時42分 新たかいは世界を壊した",
+      "error_rate": 0.385,
+      "intelligible": false,
+      "lang": "ja",
+      "voice": "jf_alpha",
+      "speed": 1.12
+    },
+    {
+      "expected": "一度でいい…全部、止まってくれ。",
+      "heard": "一度でいい、全部止まってくれ。",
+      "error_rate": 0.0,
+      "intelligible": true,
+      "lang": "ja",
+      "voice": "jm_kumo",
+      "speed": 1.0
+    },
+    {
+      "expected": "うそだろ…雨が…浮いてる。",
+      "heard": "嘘だろう雨が浮いてる。",
+      "error_rate": 0.3,
+      "intelligible": true,
+      "lang": "ja",
+      "voice": "jm_kumo",
+      "speed": 1.0
+    },
+    {
+      "expected": "すべての時計も、鼓動も、人も。止まっていた。",
+      "heard": "全ての時へも、子供も人も止まっていた",
+      "error_rate": 0.278,
+      "intelligible": true,
+      "lang": "ja",
+      "voice": "jf_alpha",
+      "speed": 1.0
+    },
+    {
+      "expected": "…それは、お前にできるはずのないことだ。",
+      "heard": "それはお前にできるはずのないことだ",
+      "error_rate": 0.0,
+      "intelligible": true,
+      "lang": "ja",
+      "voice": "jm_kumo",
+      "speed": 1.33
+    },
+    {
+      "expected": "誰だ…？なんで動けるんだ？",
+      "heard": "誰だなんで動けるんだ",
+      "error_rate": 0.0,
+      "intelligible": true,
+      "lang": "ja",
+      "voice": "jm_kumo",
+      "speed": 1.05
+    },
+    {
+      "expected": "時間を盗む者を狩るのが、私の役目だからだ。そしてお前は、鐘を鳴らした。",
+      "heard": "日間を塗る素物をお借りのが、私の役身だからだ。そしてお前は金を鳴らした。",
+      "error_rate": 0.323,
+      "intelligible": true,
+      "lang": "ja",
+      "voice": "jm_kumo",
+      "speed": 1.35
+    },
+    {
+      "expected": "カイは時間を盗んだ。そして今、時間がそれを取り返しに来る。",
+      "heard": "会話時間を抜すんだ、そして今時間がそれを取り返しに来る。",
+      "error_rate": 0.192,
+      "intelligible": true,
+      "lang": "ja",
+      "voice": "jf_alpha",
+      "speed": 1.0
+    }
+  ],
+  "intelligible_ratio": 0.88
+}

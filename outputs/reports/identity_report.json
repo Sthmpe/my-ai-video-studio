@@ -1,0 +1,27 @@
+{
+ "btst-ep1/kai": {
+  "shots": 7,
+  "sim_own": 0.851,
+  "sim_best_other": 0.713
+ },
+ "btst-ep1/stranger": {
+  "shots": 4,
+  "sim_own": 0.849,
+  "sim_best_other": 0.724
+ },
+ "btst-ep2/kai": {
+  "shots": 4,
+  "sim_own": 0.85,
+  "sim_best_other": 0.721
+ },
+ "btst-ep2/stranger": {
+  "shots": 2,
+  "sim_own": 0.856,
+  "sim_best_other": 0.72
+ },
+ "btst-ep2/seren": {
+  "shots": 2,
+  "sim_own": 0.873,
+  "sim_best_other": 0.744
+ }
+}

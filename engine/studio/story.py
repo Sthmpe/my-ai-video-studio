@@ -64,7 +64,7 @@ class StoryPipeline:
             ep = (self.s.get("series") or {}).get("episode")
             if ep and ep not in rec["episodes"]:
                 rec["episodes"].append(ep)
-            rec["generation"] = {"model": self.sel["base"], "seed": c.get("seed", 777), "ip_adapter_scale": 0.4}
+            rec["generation"] = {"model": self.sel["base"], "seed": c.get("seed", 777), "ip_adapter_scale": 0.5, "ip_adapter_variant": "plus-face"}
             _w(self.dir / "characters" / f"{cid}.json", rec)
         self.timings["characters"] = round(time.time() - t0, 1)
         return chars
@@ -153,7 +153,13 @@ class StoryPipeline:
             sh["id"] = n
             sh["seed"] = base_seed + n * 31
             desc = ", ".join(chars[c]["prompt"] for c in sh.get("characters", []) if c in chars)
-            sh["full_prompt"] = ", ".join(x for x in (desc, sh["prompt"], self.sel["style"]) if x)
+            # anime checkpoints insert people into empty scenes; keep character-less shots character-less
+            import re as _re
+            if not sh.get("characters") and not _re.search(r"people|person|crowd|man\b|woman|boy|girl|pedestrian|humans",
+                                                           sh["prompt"]):
+                sh["prompt"] += ", no humans, scenery"
+            # CLIP truncates at 77 tokens: scene first (what must happen), then identity, then style tags.
+            sh["full_prompt"] = ", ".join(x for x in (sh["prompt"], desc, self.sel["style"]) if x)
         _w(f, shots)
         return shots
 
@@ -173,7 +179,7 @@ class StoryPipeline:
                 rp = self.dir / "characters" / sh["characters"][0] / "ref_0.png"
                 ref = Image.open(rp).convert("RGB") if rp.exists() else None
             img = videogen.generate_keyframe(sh["full_prompt"], sh["seed"], w, h, steps=18, base=self.sel["base"],
-                                             ip_image=ref, ip_scale=float(sh.get("ip_scale", 0.4)))
+                                             ip_image=ref, ip_scale=float(sh.get("ip_scale", 0.5)), ip_variant="face")
             img.save(kf)
         self.timings["keyframes"] = round(time.time() - t0, 1)
 
@@ -266,6 +272,15 @@ class StoryPipeline:
         soc = self.s.get("social")
         if soc:
             _w(self.dir / "social.json", soc)
+
+    def rebuild_report(self) -> dict:
+        """Regenerate GENERATION_REPORT + bundle from a finished job (after extra checks like sync/dub)."""
+        shots = json.loads((self.dir / "storyboard.json").read_text())
+        reps = json.loads((self.dir / "clip_reports.json").read_text())
+        speech = json.loads((self.dir / "speech_report.json").read_text())
+        final = json.loads((self.dir / "report.json").read_text())
+        rep = report.build(self.dir, self.s, self.sel, shots, reps, final, speech, {})
+        return {"report": rep["title"], "bundle": str(bundle.export_bundle(self.dir))}
 
     # ---------------------------------------------------------------- run
     def run(self) -> dict:

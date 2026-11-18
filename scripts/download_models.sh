@@ -31,6 +31,7 @@ if [ "${QUALITY_PACK:-1}" = "1" ]; then
   g stabilityai/sd-vae-ft-mse vae-ft-mse config.json
   g stabilityai/sd-vae-ft-mse vae-ft-mse diffusion_pytorch_model.safetensors     # sharper decoder (MIT)
   g h94/IP-Adapter ip-adapter models/ip-adapter-plus_sd15.safetensors            # character reference conditioning (Apache-2.0)
+  g h94/IP-Adapter ip-adapter models/ip-adapter-plus-face_sd15.safetensors       # face-only identity (keeps scene composition)
   g h94/IP-Adapter ip-adapter models/image_encoder/config.json
   g h94/IP-Adapter ip-adapter models/image_encoder/model.safetensors
   for m in zoom-in zoom-out pan-left pan-right tilt-up tilt-down rolling-clockwise; do

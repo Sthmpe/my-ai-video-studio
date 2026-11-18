@@ -14,6 +14,16 @@ So the honest architecture is: **Vercel = control plane, GitHub Actions = elasti
 `generate.yml` (now renamed `claude-generate.yml`) was dispatched via the GitHub API (job `gha-smoke-2`, run 44186663971): a fresh GitHub-hosted runner installed the stack, downloaded the weights, **generated 2 AI shots + narration + music, rendered and validated the video in 6 min 1 s**, and published it as a Release. Downloaded back over plain HTTPS from the sandbox: https://github.com/Sthmpe/my-ai-video-studio/releases/tag/video-gha-smoke-2 (1920×1080 h264+aac, `report.json` `"ok": true`). The first attempt (`gha-smoke-1`) was cancelled after 48 min because bf16 is emulated on those CPUs — fixed (see OPERATIONS.md).
 Not yet tested end-to-end: the Vercel → GitHub dispatch hop, because it needs a `GITHUB_TOKEN` secret that only the repo owner can create (step 2 below).
 
+## Owner action required to enable website → worker (the only blocked hop)
+Vercel project **my-ai-video-studio** → Settings → Environment Variables (Production):
+| Key | Value | Why only you can do it |
+|---|---|---|
+| `GITHUB_TOKEN` | fine-grained PAT, repo `Sthmpe/my-ai-video-studio`, permissions **Actions: Read and write**, **Contents: Read** | a token tied to your GitHub account; agents must not mint or hold your credentials |
+| `SUBMIT_PASSCODE` | any long random string | the owner gate for compute |
+| `GH_REF` *(optional)* | `ccr-931534f5-lqm602` | branch whose `claude-generate.yml` should run (defaults to the repo's default branch) |
+Redeploy, then open the site → Generate → enter the passcode. `/api/health` must show `"backend":"github","submitEnabled":true`.
+What happens next: `POST /api/jobs` → `workflow_dispatch` of `claude-generate.yml` (inputs: job_id, topic, script_json, mode, aspect, seconds, language, continue_from) → release `claude-video-<id>` with `output.mp4`, `*.studio.zip`, `GENERATION_REPORT.md`, `generation_report.json`, `script.json`, `social.json` → the site shows video + Download Video / Project / Metadata + report summary.
+
 ## Path A — GitHub Actions worker (works today, no server)
 1. Make sure `.github/workflows/claude-generate.yml` is on the default branch.
 2. Create a fine-grained PAT for this repo: *Actions: read & write*, *Contents: read*. Add it to Vercel as `GITHUB_TOKEN`.

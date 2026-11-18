@@ -21,3 +21,16 @@
 
 ## bf16 vs float32 (learned the hard way)
 The first GitHub Actions smoke job sat at `0/4` denoising steps for 21 minutes: hosted runners have no native bf16, so PyTorch emulates it. `videogen.device_and_dtype()` now enables bf16 only when `avx512_bf16`/`amx_bf16` is present and uses float32 otherwise. (This sandbox's Xeon has native bf16, hence ~6 s/step here.)
+
+## Story / anime jobs (v2)
+| Task | Command |
+|---|---|
+| Story from a script | `python -m studio story --script ../examples/boy_who_stole_time_ep1.json --job ep1` |
+| Story from an idea | `python -m studio story --idea "..." --mode superhuman --seconds 30 --aspect 9:16 --job x` |
+| Export / import bundle | `python -m studio export --job ep1` · `python -m studio import --bundle x.studio.zip --job y` |
+| Next episode | `python -m studio continue --bundle ep1.studio.zip --script ep2.json --job ep2` (or `--idea "..."`) |
+| Japanese dub | `python -m studio dub --job ep1 --lang ja` → `output_ja.mp4`, `dub_ja_report.json` |
+| Re-roll one shot | delete `keyframes/shot_NNN.png` and/or `clips/shot_NNN.mp4`, re-run the same command |
+| Re-edit only | delete `output.mp4`, re-run (keyframes/clips/voice are cached) |
+
+Memory: peak ≈ 10 GB for 384×672 image-to-video. Do not run two generation jobs at once on a 15 GB machine.

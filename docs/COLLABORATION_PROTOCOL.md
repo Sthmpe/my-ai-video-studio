@@ -21,3 +21,5 @@ Rules (from the owner)
 7. Secrets are never committed; each agent's Vercel env is configured separately by the owner.
 
 Collision checks: release tags, run titles and artifact names are prefixed; workflow files have different paths, so `workflow_dispatch` by file name never triggers the other agent's pipeline. Both workflows use the default `GITHUB_TOKEN`, scoped to the run.
+
+Note: the release tag `video-gha-smoke-2` predates namespacing and belongs to Claude (smoke test). All newer Claude tags use `claude-video-*`.

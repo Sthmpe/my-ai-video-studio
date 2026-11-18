@@ -28,7 +28,12 @@ def main():
     co.add_argument("--idea", default="")
     du = sub.add_parser("dub", help="re-voice a finished story job in another language (reuses all visuals)")
     du.add_argument("--job", required=True); du.add_argument("--lang", default="ja")
+    rp = sub.add_parser("report", help="rebuild GENERATION_REPORT + bundle for a finished story job")
+    rp.add_argument("--job", required=True)
     a = ap.parse_args()
+    if a.cmd == "report":
+        from .story import StoryPipeline
+        print(StoryPipeline(JOBS / a.job, json.loads((JOBS / a.job / "script.json").read_text())).rebuild_report()); return
     cb = lambda st_, i, n, m: print(f"[{st_} {i}/{n}] {m}", flush=True)  # noqa: E731
     if a.cmd == "story":
         from .story import StoryPipeline

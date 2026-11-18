@@ -2,14 +2,20 @@
 
 # ▶ My AI Video Studio
 
-**Type a topic → get a narrated, subtitled, AI‑generated cartoon documentary.**
+**Idea → original anime episode, superhuman short or documentary — with character memory, episode continuation, English/Japanese voices and a full model-transparency report.**
 Every scene is produced by a text‑to‑video model running on free, open‑source weights — **no stock footage, no paid video APIs, no GPU required.**
 
 [Live site](https://my-ai-video-studio-rho.vercel.app) · [Sloth film](outputs/sloth-documentary-1080x1920.mp4) · [Cat cartoon](outputs/cat-knocks-things-over-1080x1920.mp4) · [Architecture](docs/ARCHITECTURE.md) · [Models](docs/MODELS.md) · [Deployment](docs/DEPLOYMENT.md)
 
-<img src="web/demo/sloth.jpg" width="240" alt="Frame from the generated documentary">
+<img src="web/demo/ep1.jpg" width="220" alt="Frame from The Boy Who Stole Time, Episode 1"> <img src="web/demo/ep2.jpg" width="220" alt="Frame from Episode 2 teaser">
 
 </div>
+
+## Latest: *The Boy Who Stole Time*
+* **Episode 1** (38 s, 9:16): [EN](outputs/boy-who-stole-time-ep1-en-1080x1920.mp4) · [日本語](outputs/boy-who-stole-time-ep1-ja-1080x1920.mp4) · [project .studio.zip](outputs/bundles/boy-who-stole-time-ep1.studio.zip) · [generation report](outputs/reports/btst-ep1-GENERATION_REPORT.md)
+* **Episode 2 teaser** — generated *from Episode 1's project file*, same characters/voices/style + a new villain: [video](outputs/boy-who-stole-time-ep2-teaser-1080x1920.mp4) · [project](outputs/bundles/boy-who-stole-time-ep2-teaser.studio.zip) · [report](outputs/reports/btst-ep2-GENERATION_REPORT.md)
+* v2 engine vs v1: **4.4× more motion, +47% contrast, native 384×672 (was 288×512), measurable character identity across episodes** — see [PROGRESS](docs/PROGRESS.md) and [QUALITY_EXPERIMENTS](docs/QUALITY_EXPERIMENTS.md).
+* Tools & model downloads: [docs/TOOLS_AND_MODELS.md](docs/TOOLS_AND_MODELS.md)
 
 ## What it does
 `topic → research → script → storyboard → AI video shots → neural narration → original music → edit → validated 1080×1920 MP4`

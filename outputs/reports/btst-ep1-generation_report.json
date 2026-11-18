@@ -1,0 +1,259 @@
+{
+  "title": "The Boy Who Stole Time — Ep. 1",
+  "mode": "anime_action",
+  "created": "2026-11-18T12:22:29Z",
+  "models": {
+    "video_motion": {
+      "id": "ByteDance/AnimateDiff-Lightning",
+      "variant": "4-step diffusers",
+      "licence": "Apache-2.0"
+    },
+    "image_base": {
+      "id": "gsdf/Counterfeit-V2.5 (fp16)",
+      "style": "2D anime",
+      "licence": "CreativeML OpenRAIL-M"
+    },
+    "vae": {
+      "id": "stabilityai/sd-vae-ft-mse"
+    },
+    "character_conditioning": {
+      "id": "h94/IP-Adapter ip-adapter-plus-face_sd15 (scale 0.5, keyframes)",
+      "licence": "Apache-2.0"
+    },
+    "camera_motion": {
+      "id": "guoyww/animatediff-motion-lora-*",
+      "used": [
+        "pan-left",
+        "pan-right",
+        "rolling-clockwise",
+        "tilt-up",
+        "zoom-in",
+        "zoom-out"
+      ]
+    },
+    "voice": {
+      "id": "Kokoro-82M v1.0 (ONNX int8)",
+      "voices": [
+        "am_puck",
+        "bf_emma",
+        "bm_george"
+      ],
+      "languages": [
+        "en"
+      ],
+      "licence": "Apache-2.0"
+    },
+    "script": {
+      "author": "Claude Code (interactive session), original story"
+    },
+    "music": {
+      "id": "studio.music procedural synth",
+      "licence": "original"
+    },
+    "sfx": {
+      "id": "studio.sfx procedural synth",
+      "licence": "original"
+    },
+    "interpolation": {
+      "id": "FFmpeg minterpolate (MCI)",
+      "note": "8 fps -> 24 fps"
+    },
+    "speech_check": {
+      "id": "openai/whisper-base",
+      "licence": "MIT"
+    }
+  },
+  "selection_reasons": [
+    "mode 'anime_action' prefers counterfeit (2D anime)",
+    "image-to-video: a full-quality keyframe (18-step DPM++) is animated by AnimateDiff-Lightning video-to-video; measured sharper/more on-prompt than 4-step text-to-video (QUALITY_EXPERIMENTS.md)",
+    "native 384x672 chosen for cpu/bfloat16 with 4 cores",
+    "GPU-tier models (Wan, LTX, CogVideoX) skipped: no CUDA device"
+  ],
+  "generation_method": {
+    "i2v": 20
+  },
+  "method_explained": {
+    "t2v": "text-to-video: AnimateDiff-Lightning, 4 denoising steps, 16 frames",
+    "i2v": "image-to-video: 18-step keyframe (optionally IP-Adapter-conditioned on the character reference) animated by AnimateDiff-Lightning video-to-video; camera move seeded programmatically, re-animated by the model"
+  },
+  "specs": {
+    "native_resolution": "384x672",
+    "export_resolution": "1080x1920",
+    "upscale_factor": 2.86,
+    "native_fps": 8,
+    "export_fps": 24,
+    "frames_per_clip": 16,
+    "shots": 20,
+    "inference_steps": {
+      "t2v": 4,
+      "keyframe": 18,
+      "i2v": "3 (6-step Lightning schedule x strength 0.65)"
+    },
+    "seconds_per_shot_mean": 110.7,
+    "hardware": {
+      "device": "cpu",
+      "dtype": "bfloat16",
+      "cpus": 4,
+      "gpu": null
+    },
+    "timings_s": {
+      "characters": 0.0,
+      "keyframes": 101.0,
+      "clips": 2088.2,
+      "edit": 171.2,
+      "total": 2361.3
+    }
+  },
+  "quality": {
+    "final_validation": {
+      "ok": true,
+      "checks": {
+        "has_video": true,
+        "has_audio": true,
+        "resolution_ok": true,
+        "duration_matches": true,
+        "audio_audible": true,
+        "codec_h264": true
+      },
+      "duration": 37.95,
+      "size": "1080x1920",
+      "mean_volume_db": -16.4,
+      "speech_intelligible_ratio": 0.88
+    },
+    "speech_intelligibility": [
+      {
+        "expected": "At seven forty-two on a rainy Tuesday, Kai Arata broke the universe.",
+        "heard": "At 742 on a rainy Tuesday, Kairata broke the universe.",
+        "error_rate": 0.385,
+        "intelligible": false,
+        "lang": "en",
+        "voice": "bf_emma"
+      },
+      {
+        "expected": "Just once... I wish everything would stop.",
+        "heard": "Just once, I wish everything would stop.",
+        "error_rate": 0.0,
+        "intelligible": true,
+        "lang": "en",
+        "voice": "am_puck"
+      },
+      {
+        "expected": "No way... the rain is just... floating.",
+        "heard": "No way the rain is just floating.",
+        "error_rate": 0.0,
+        "intelligible": true,
+        "lang": "en",
+        "voice": "am_puck"
+      },
+      {
+        "expected": "Every clock. Every heartbeat. Every person. Frozen.",
+        "heard": "Every clock, every heartbeat, every person frozen.",
+        "error_rate": 0.0,
+        "intelligible": true,
+        "lang": "en",
+        "voice": "bf_emma"
+      },
+      {
+        "expected": "You shouldn't be able to do that.",
+        "heard": "You shouldn't be able to do that.",
+        "error_rate": 0.0,
+        "intelligible": true,
+        "lang": "en",
+        "voice": "bm_george"
+      },
+      {
+        "expected": "Who are you? Why can you move?",
+        "heard": "Who are you? Why can't you move?",
+        "error_rate": 0.143,
+        "intelligible": true,
+        "lang": "en",
+        "voice": "am_puck"
+      },
+      {
+        "expected": "Because I hunt people who steal time. And you just rang the bell.",
+        "heard": "Because I hunt people who steal time and you just rang the bell.",
+        "error_rate": 0.0,
+        "intelligible": true,
+        "lang": "en",
+        "voice": "bm_george"
+      },
+      {
+        "expected": "Kai had stolen time. Now, time wanted it back.",
+        "heard": "Kai had stolen time, now time wanted it back.",
+        "error_rate": 0.0,
+        "intelligible": true,
+        "lang": "en",
+        "voice": "bf_emma"
+      }
+    ],
+    "sync_report": {
+      "median_abs_offset_s": 0.19,
+      "within_0_5s": 7,
+      "total_lines": 8
+    },
+    "dub_ja_report": {
+      "intelligible_ratio": 0.88
+    },
+    "speech_metric_note": "error rate compares Whisper text to the script; number formatting (e.g. 'seven forty-two' vs '7:42') and kana/kanji variants inflate it",
+    "clip_gate_retries": 0
+  },
+  "limitations": [
+    "Generated at 384x672 and upscaled 2.9x (Lanczos+unsharp) — export resolution is NOT native detail.",
+    "2-second clips (16 frames @ 8 fps) are motion-interpolated to 24 fps; fast action can smear.",
+    "4-step distilled motion model on CPU: fine details (hands, small accessories) can warp between frames.",
+    "Character identity is guided by a reference image (IP-Adapter/keyframes), not locked; faces can drift in action shots.",
+    "No GPU: higher-fidelity open models (Wan, LTX-Video, CogVideoX) were not run."
+  ],
+  "alternatives_considered": [
+    {
+      "model": "Wan 2.1/2.2 T2V/I2V (1.3B–14B)",
+      "licence": "Apache-2.0",
+      "why_not": "needs a CUDA GPU (8–24 GB+) and a ~22 GB UMT5-XXL text encoder; impractical on 4 vCPU/15 GB RAM",
+      "needs": "GPU runner (e.g. 24 GB) — plug into model_router via diffusers WanPipeline"
+    },
+    {
+      "model": "LTX-Video 2B/13B",
+      "licence": "LTXV Open Weights",
+      "why_not": "T5-XXL encoder + GPU memory; minutes per clip only on GPU",
+      "needs": "GPU with 12 GB+"
+    },
+    {
+      "model": "CogVideoX-2B/5B",
+      "licence": "Apache-2.0 / CogVideoX",
+      "why_not": "12–24 GB VRAM; very slow on CPU",
+      "needs": "GPU"
+    },
+    {
+      "model": "HunyuanVideo / Mochi-1",
+      "licence": "custom / Apache-2.0",
+      "why_not": "40 GB+ VRAM",
+      "needs": "datacenter GPU"
+    },
+    {
+      "model": "AnimateDiff SparseCtrl / AnimateLCM",
+      "licence": "Apache-2.0",
+      "why_not": "not yet benchmarked here; candidate for next CPU iteration",
+      "needs": "~1–2 GB extra weights"
+    }
+  ],
+  "cost": {
+    "usd": 0.0,
+    "paid_services": [],
+    "free_tier_apis": [],
+    "compute": "local CPU (this machine)"
+  },
+  "recommendations": [
+    "Run on a GPU runner and switch the router to Wan 2.x I2V for native 480p/720p motion.",
+    "Increase native resolution to 512x896 when time allows; add RIFE interpolation instead of minterpolate.",
+    "Use pose/ControlNet keyframes for complex action; train a small character LoRA for stronger identity."
+  ],
+  "reproducibility": {
+    "seeds_and_prompts": "story/storyboard.json (per shot: prompt, seed, camera, method)",
+    "settings": {
+      "guidance": 1.0,
+      "scheduler": "Euler trailing (Lightning)",
+      "keyframe_sampler": "DPM++ Karras"
+    },
+    "note": "bf16 vs fp32 and CPU vs GPU produce slightly different pixels for identical seeds."
+  }
+}

@@ -1,0 +1,66 @@
+[
+  {
+    "expected": "At seven forty-two on a rainy Tuesday, Kai Arata broke the universe.",
+    "heard": "At 742 on a rainy Tuesday, Kairata broke the universe.",
+    "error_rate": 0.385,
+    "intelligible": false,
+    "lang": "en",
+    "voice": "bf_emma"
+  },
+  {
+    "expected": "Just once... I wish everything would stop.",
+    "heard": "Just once, I wish everything would stop.",
+    "error_rate": 0.0,
+    "intelligible": true,
+    "lang": "en",
+    "voice": "am_puck"
+  },
+  {
+    "expected": "No way... the rain is just... floating.",
+    "heard": "No way the rain is just floating.",
+    "error_rate": 0.0,
+    "intelligible": true,
+    "lang": "en",
+    "voice": "am_puck"
+  },
+  {
+    "expected": "Every clock. Every heartbeat. Every person. Frozen.",
+    "heard": "Every clock, every heartbeat, every person frozen.",
+    "error_rate": 0.0,
+    "intelligible": true,
+    "lang": "en",
+    "voice": "bf_emma"
+  },
+  {
+    "expected": "You shouldn't be able to do that.",
+    "heard": "You shouldn't be able to do that.",
+    "error_rate": 0.0,
+    "intelligible": true,
+    "lang": "en",
+    "voice": "bm_george"
+  },
+  {
+    "expected": "Who are you? Why can you move?",
+    "heard": "Who are you? Why can't you move?",
+    "error_rate": 0.143,
+    "intelligible": true,
+    "lang": "en",
+    "voice": "am_puck"
+  },
+  {
+    "expected": "Because I hunt people who steal time. And you just rang the bell.",
+    "heard": "Because I hunt people who steal time and you just rang the bell.",
+    "error_rate": 0.0,
+    "intelligible": true,
+    "lang": "en",
+    "voice": "bm_george"
+  },
+  {
+    "expected": "Kai had stolen time. Now, time wanted it back.",
+    "heard": "Kai had stolen time, now time wanted it back.",
+    "error_rate": 0.0,
+    "intelligible": true,
+    "lang": "en",
+    "voice": "bf_emma"
+  }
+]

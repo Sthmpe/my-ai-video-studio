@@ -86,3 +86,34 @@ def speech_check(wav_path: str, expected: str, lang: str = "en") -> dict:
             prev = cur
     err = d[len(h)] / max(1, len(r))
     return {"expected": expected, "heard": hyp, "error_rate": round(err, 3), "intelligible": err < 0.35, "lang": lang}
+
+
+def sync_check(video_path: str, timeline: dict, lang: str = "en") -> dict:
+    """Transcribe the FINAL mix (music + SFX included) with timestamps and compare each scripted line's start
+    with when Whisper hears it. Measures audio/subtitle sync and intelligibility under the mix."""
+    import subprocess, tempfile, numpy as np
+    from transformers import pipeline as hf_pipeline
+    from .paths import MODELS
+    wav = tempfile.mktemp(suffix=".wav")
+    subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", video_path, "-ac", "1", "-ar", "16000", wav], check=True)
+    import soundfile as sf
+    audio, _ = sf.read(wav, dtype="float32")
+    asr = hf_pipeline("automatic-speech-recognition", model=str(MODELS / "whisper-base"), chunk_length_s=30)
+    out = asr({"raw": audio, "sampling_rate": 16000}, return_timestamps="word",
+              generate_kwargs={"language": lang, "task": "transcribe"})
+    words = [(c["timestamp"][0], _norm(c["text"], lang)) for c in out["chunks"] if c["timestamp"][0] is not None]
+    words = [(t, w[0]) for t, w in words if w]
+    lines = [ln for sc in timeline["scenes"] for ln in sc["lines"]]
+    res = []
+    for ln in lines:
+        target = _norm(ln["text"], lang)
+        first = [w for w in target if len(w) > 2][:3] or target[:1]
+        # earliest heard occurrence of one of the line's first content words, near the planned time
+        cand = [t for t, w in words if w in first and abs(t - ln["start"]) < 4.0]
+        heard = min(cand, key=lambda t: abs(t - ln["start"])) if cand else None
+        res.append({"line": ln["text"][:60], "planned_start": ln["start"], "heard_start": heard,
+                    "offset_s": None if heard is None else round(heard - ln["start"], 2)})
+    offs = [abs(r["offset_s"]) for r in res if r["offset_s"] is not None]
+    return {"transcript": out["text"].strip(), "lines": res,
+            "median_abs_offset_s": round(float(np.median(offs)), 2) if offs else None,
+            "within_0_5s": sum(o <= 0.5 for o in offs), "total_lines": len(res)}
