@@ -1,5 +1,18 @@
 # Model selection
 
+> **v2 (2026-11-18):** the router (`engine/studio/modes.py`) now picks per mode. Anime/superhuman/story → **Counterfeit-V2.5 keyframe (18-step) → AnimateDiff-Lightning image-to-video + camera LoRA + IP-Adapter identity**; documentary/explainer → ToonYou text-to-video (unchanged, regression-safe). Evidence: [QUALITY_EXPERIMENTS.md](QUALITY_EXPERIMENTS.md). Every video's choice is explained in its `GENERATION_REPORT.md`.
+
+| Component | Chosen | Tested? | Why over alternatives |
+|---|---|---|---|
+| Anime look | Counterfeit-V2.5 fp16 | ✅ exp 1–2 | sharper anime line-art than ToonYou; fp16 single file (2.1 GB) fits RAM/disk; MeinaMix/AAM need 3.4–4.2 GB fp32 |
+| Motion | AnimateDiff-Lightning 4-step | ✅ | only distilled SD1.5 motion model fast enough on CPU; AnimateLCM/SparseCtrl researched, not benchmarked yet |
+| Image→video | AnimateDiff v2v from keyframe (strength 0.65) | ✅ exp 2 | keeps keyframe detail + scene; t2v at 4 steps washes out (contrast 40) |
+| Identity | IP-Adapter-Plus SD1.5 (scale 0.4 on keyframes) | 🧪 | at 0.6 on t2v it copied the reference background (exp 1); 0.4 on keyframes is the working setting |
+| Camera | guoyww motion LoRAs | ✅ | real zoom/pan/tilt/roll; ~74 MB each |
+| JA voice | Kokoro jf_/jm_ voices + misaki JA G2P | ✅ CER 0.00 | same engine as EN, offline; espeak `ja` IPA does not match Kokoro's training phonemes |
+| Speech QA | Whisper-base | ✅ | local, MIT, EN+JA |
+
+
 Decision driver: **the hardware that actually exists** — a 4 vCPU Xeon (AVX-512, BF16/FP16), 15 GB RAM, **no GPU**, 30 GB free disk (see [ENVIRONMENT.md](ENVIRONMENT.md)).
 
 | Candidate | Licence | Quality | Needs | Verdict on this machine |

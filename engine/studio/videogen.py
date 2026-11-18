@@ -188,10 +188,15 @@ def generate_keyframe(prompt: str, seed: int, width: int = 512, height: int = 76
                       base: str = "counterfeit", negative: str = NEGATIVE, guidance: float = 7.0,
                       ip_image=None, ip_scale: float = 0.45):
     """Still image (character sheet / shot keyframe). With ip_image, IP-Adapter-Plus keeps the character identity."""
-    pipe = load_image_pipe(base, ip=ip_image is not None)
+    # If an IP-Adapter pipeline is already resident, reuse it at scale 0 for shots without a character
+    # instead of reloading (~20 s per switch).
+    keep_ip = _state["key"] == ("image", base, True)
+    pipe = load_image_pipe(base, ip=ip_image is not None or keep_ip)
     kw = {}
-    if ip_image is not None and _state["ip"]:
-        pipe.set_ip_adapter_scale(ip_scale); kw["ip_adapter_image"] = ip_image
+    if _state["ip"]:
+        from PIL import Image as _I
+        pipe.set_ip_adapter_scale(ip_scale if ip_image is not None else 0.0)
+        kw["ip_adapter_image"] = ip_image if ip_image is not None else _I.new("RGB", (224, 224))
     g = torch.Generator("cpu").manual_seed(seed)
     neg = negative + ", " + BASES[base]["extra_negative"]
     return pipe(prompt=prompt, negative_prompt=neg, width=width, height=height, num_inference_steps=steps,

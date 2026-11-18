@@ -1,0 +1,288 @@
+{
+ "title": "The Boy Who Stole Time — Ep. 1",
+ "project_id": "boy-who-stole-time",
+ "mode": "anime_action",
+ "aspect": "9:16",
+ "language": "en",
+ "subtitle_language": "en",
+ "seed": 7421,
+ "music_mood": "tense",
+ "series": {
+  "id": "boy-who-stole-time",
+  "episode": 1,
+  "title": "The Boy Who Stole Time"
+ },
+ "characters": [
+  {
+   "id": "kai",
+   "name": "Kai",
+   "prompt": "1boy, Kai, young man, messy black hair with one white streak, amber eyes, dark blue hoodie under a long grey coat, silver pocket watch on a chain",
+   "seed": 1107,
+   "ref_prompt": "1boy, Kai, young man, messy black hair with one white streak, amber eyes, dark blue hoodie under a long grey coat, silver pocket watch on a chain, upper body portrait, looking at viewer, simple grey background",
+   "voice": {
+    "en": "am_puck",
+    "ja": "jm_kumo"
+   },
+   "personality": "restless, kind, impulsive",
+   "powers": [
+    "stops time (unstable, tied to the pocket watch)"
+   ],
+   "relationships": {
+    "stranger": "pursuer"
+   },
+   "continuity": [
+    "pocket watch glows blue when power activates"
+   ]
+  },
+  {
+   "id": "stranger",
+   "name": "The Stranger",
+   "prompt": "mysterious tall man in a long black coat and wide-brim hat, face in shadow, glowing violet eyes",
+   "seed": 2209,
+   "ref_prompt": "mysterious tall man in a long black coat and wide-brim hat, face in shadow, glowing violet eyes, upper body portrait, simple dark background",
+   "voice": {
+    "en": "bm_george",
+    "ja": "jm_kumo"
+   },
+   "personality": "calm, ancient, menacing",
+   "powers": [
+    "moves inside stopped time",
+    "violet energy"
+   ],
+   "relationships": {
+    "kai": "target"
+   },
+   "continuity": [
+    "never shows his full face"
+   ]
+  }
+ ],
+ "narrator": {
+  "voice": {
+   "en": "bf_emma",
+   "ja": "jf_alpha"
+  }
+ },
+ "scenes": [
+  {
+   "lines": [
+    {
+     "speaker": "narrator",
+     "text": "At seven forty-two on a rainy Tuesday, Kai Arata broke the universe.",
+     "ja": "雨の火曜日、午前七時四十二分。アラタ・カイは、世界を壊した。"
+    }
+   ],
+   "ambience": "rain",
+   "shots": [
+    {
+     "prompt": "crowded rainy crosswalk in Tokyo at night, neon signs, umbrellas, wide shot, cinematic",
+     "camera": "pan-right",
+     "sfx": [
+      "clock"
+     ]
+    },
+    {
+     "prompt": "close up, looking down at a silver pocket watch in his hand, rain, neon reflections",
+     "characters": [
+      "kai"
+     ],
+     "camera": "zoom-in"
+    }
+   ]
+  },
+  {
+   "lines": [
+    {
+     "speaker": "kai",
+     "text": "Just once... I wish everything would stop.",
+     "ja": "一度でいい…全部、止まってくれ。"
+    }
+   ],
+   "ambience": "rain",
+   "shots": [
+    {
+     "prompt": "close up, eyes closed, the pocket watch glowing bright blue in his fist, rain",
+     "characters": [
+      "kai"
+     ],
+     "camera": "zoom-in",
+     "sfx": [
+      "riser"
+     ]
+    }
+   ]
+  },
+  {
+   "lines": [],
+   "hold": 2.2,
+   "ambience": null,
+   "shots": [
+    {
+     "prompt": "raindrops frozen in mid air, glowing blue light ripple spreading across a neon street, people frozen mid step, time stop",
+     "camera": "zoom-out",
+     "sfx": [
+      "time_freeze"
+     ]
+    }
+   ]
+  },
+  {
+   "lines": [
+    {
+     "speaker": "kai",
+     "text": "No way... the rain is just... floating.",
+     "ja": "うそだろ…雨が…浮いてる。"
+    }
+   ],
+   "ambience": "wind",
+   "shots": [
+    {
+     "prompt": "walking slowly between frozen raindrops, reaching out to touch a floating droplet, amazed",
+     "characters": [
+      "kai"
+     ],
+     "camera": "pan-left",
+     "sfx": [
+      "footsteps"
+     ]
+    }
+   ]
+  },
+  {
+   "lines": [
+    {
+     "speaker": "narrator",
+     "text": "Every clock. Every heartbeat. Every person. Frozen.",
+     "ja": "すべての時計も、鼓動も、人も。止まっていた。"
+    }
+   ],
+   "ambience": "wind",
+   "shots": [
+    {
+     "prompt": "wide shot of a frozen city intersection at night, cars stopped, people frozen, floating rain, blue tint",
+     "camera": "tilt-up"
+    },
+    {
+     "prompt": "a white pigeon frozen in mid flight above a neon street, raindrops suspended",
+     "camera": "zoom-in"
+    }
+   ]
+  },
+  {
+   "lines": [
+    {
+     "speaker": "stranger",
+     "text": "You shouldn't be able to do that.",
+     "ja": "…それは、お前にできるはずのないことだ。"
+    }
+   ],
+   "ambience": "wind",
+   "shots": [
+    {
+     "prompt": "walking calmly through the frozen crowd toward the camera, violet eyes glowing in the dark",
+     "characters": [
+      "stranger"
+     ],
+     "camera": "zoom-in",
+     "sfx": [
+      "footsteps",
+      "heartbeat"
+     ]
+    }
+   ]
+  },
+  {
+   "lines": [
+    {
+     "speaker": "kai",
+     "text": "Who are you? Why can you move?",
+     "ja": "誰だ…？なんで動けるんだ？"
+    }
+   ],
+   "ambience": "wind",
+   "shots": [
+    {
+     "prompt": "turning around in shock, wide eyes, frozen rain around him, dramatic lighting",
+     "characters": [
+      "kai"
+     ],
+     "camera": "zoom-in",
+     "sfx": [
+      "whoosh"
+     ]
+    }
+   ]
+  },
+  {
+   "lines": [
+    {
+     "speaker": "stranger",
+     "text": "Because I hunt people who steal time. And you just rang the bell.",
+     "ja": "時間を盗む者を狩るのが、私の役目だからだ。そしてお前は、鐘を鳴らした。"
+    }
+   ],
+   "ambience": "wind",
+   "shots": [
+    {
+     "prompt": "raising one hand, crackling violet lightning energy swirling around his arm, frozen rain lit violet",
+     "characters": [
+      "stranger"
+     ],
+     "camera": "zoom-in",
+     "sfx": [
+      "electricity"
+     ]
+    },
+    {
+     "prompt": "violet energy blast exploding across the frozen street toward the camera, dramatic, sparks",
+     "camera": "zoom-out",
+     "sfx": [
+      "impact"
+     ]
+    }
+   ]
+  },
+  {
+   "lines": [
+    {
+     "speaker": "narrator",
+     "text": "Kai had stolen time. Now, time wanted it back.",
+     "ja": "カイは時間を盗んだ。そして今、時間がそれを取り返しに来る。"
+    }
+   ],
+   "ambience": null,
+   "shots": [
+    {
+     "prompt": "extreme close up of a silver pocket watch cracking, clock hands spinning wildly, blue sparks",
+     "camera": "rolling-clockwise",
+     "sfx": [
+      "whoosh",
+      "impact"
+     ]
+    }
+   ]
+  }
+ ],
+ "end_card": "EPISODE 2 — COMING SOON",
+ "social": {
+  "titles": [
+   "He stopped time. Someone else didn't freeze.",
+   "The Boy Who Stole Time — Ep. 1"
+  ],
+  "description": "An original anime short. Kai discovers he can stop time — but one stranger keeps moving. AI-generated with My AI Video Studio.",
+  "hashtags": [
+   "#anime",
+   "#originalanime",
+   "#timestop",
+   "#animeshorts",
+   "#aianimation"
+  ],
+  "thumbnail": "Kai in frozen neon rain, glowing blue pocket watch, violet eyes in the background",
+  "hooks": [
+   "At 7:42 on a rainy Tuesday, Kai Arata broke the universe.",
+   "Everyone froze. Except him.",
+   "What if stopping time made you a target?"
+  ],
+  "rights_note": "Original characters and story."
+ }
+}

@@ -21,6 +21,20 @@ flowchart LR
 
 Engine and website are separate deployables: `web/` knows nothing about models; `engine/` knows nothing about HTTP frontends. They meet at one contract — *submit job → poll status → fetch MP4*.
 
+## Two production pipelines
+* `pipeline.Pipeline` — documentary (v1 script: narration + shots), ToonYou t2v. Kept for regression.
+* `story.StoryPipeline` — script v2 (characters, dialogue, EN/JA, SFX, camera). Stages:
+  `characters` (reference sheets, reused if present) → `voice` (per-speaker Kokoro, measured line timing) → `speech_check` (Whisper)
+  → `storyboard` (mode-aware pacing, per-shot seed/camera/prompt) → `keyframes` (18-step, IP-Adapter on the character ref)
+  → `clips` (keyframe → AnimateDiff-Lightning v2v, gate + re-seed) → `edit` (render, short xfades, ASS+SRT subtitles,
+  scene-timed SFX + ambience, ducked score, −16 LUFS) → `validate` → `report` (GENERATION_REPORT.md/.json) → `bundle` (.studio.zip).
+* `continuation.continue_episode` — verified import of a previous bundle → inherit characters/refs/voices/style → new episode
+  → byte-identity check of reused references (`continuity_report.json`).
+* `dub.dub` — re-voice a finished story job in another language at the original timestamps (time-fitted), JA subtitles.
+* `modes.select` — model router: mode × aspect × hardware → base model, method, native resolution, with written reasons.
+
+Memory rule (15 GB box): the image pipeline (keyframes) and the video pipeline (animation) are never resident together; see QUALITY_EXPERIMENTS.md.
+
 ## Stages (all resumable; artefacts cached in `data/jobs/<id>/`)
 
 | # | Stage | Module | Output | Gate |

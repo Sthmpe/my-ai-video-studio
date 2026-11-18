@@ -170,5 +170,15 @@ class Pipeline:
         rep = validate.final_report(str(out), tl["total"])
         rep.update(title=s["title"], shots=len(shots), wall_seconds=round(time.time() - t0, 1), log=self.log[-40:])
         _write(self.dir / "report.json", rep)
+        try:   # transparency report + project bundle for every documentary too
+            from . import modes, report, bundle
+            sel = modes.select("documentary", "9:16" if self.vertical else "16:9")
+            sel["native"] = self.dims; sel["base"] = "toonyou"
+            sh = [dict(x, method="t2v") for x in shots]
+            reps = json.loads((self.dir / "clip_reports.json").read_text()) if (self.dir / "clip_reports.json").exists() else {}
+            report.build(self.dir, s, sel, sh, reps, rep, [], {"total": rep["wall_seconds"]})
+            rep["bundle"] = str(bundle.export_bundle(self.dir))
+        except Exception as e:  # noqa: BLE001 - never fail a finished render over reporting
+            self.note(f"report/bundle failed: {e}")
         self.cb("done", 1, 1, "complete" if rep["ok"] else "finished with validation warnings")
         return rep

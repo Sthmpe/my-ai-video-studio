@@ -4,104 +4,164 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>My AI Video Studio</title>
-<meta name="description" content="An open-source engine that turns a topic into a narrated, subtitled, AI-generated cartoon documentary — running free models locally, no paid video APIs.">
-<meta property="og:title" content="My AI Video Studio"><meta property="og:image" content="/demo/sloth.jpg">
+<meta name="description" content="Free-first AI film engine: original anime, superhuman stories and documentaries generated with open video models, with character memory, episode continuation and full model transparency reports.">
+<meta property="og:title" content="My AI Video Studio"><meta property="og:image" content="/demo/ep1.jpg">
 <style>
-:root{--bg:#0b0d12;--panel:#141824;--line:#232a3b;--tx:#e9edf5;--mut:#8f9bb3;--acc:#ffd23f;--acc2:#7cf2b8}
-@media (prefers-color-scheme:light){:root{--bg:#f6f7fb;--panel:#fff;--line:#e1e5ef;--tx:#12151f;--mut:#5b667d;--acc:#d98e00;--acc2:#0a8f5b}}
+:root{--bg:#0a0c11;--panel:#131722;--line:#232a3b;--tx:#e9edf5;--mut:#8f9bb3;--acc:#ffd23f;--acc2:#7cf2b8;--vio:#a78bfa}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){--bg:#f6f7fb;--panel:#fff;--line:#e1e5ef;--tx:#12151f;--mut:#5b667d;--acc:#b97800;--acc2:#0a8f5b;--vio:#6d28d9}}
 *{box-sizing:border-box}html{scroll-behavior:smooth}
 body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.6 Inter,system-ui,-apple-system,Segoe UI,sans-serif}
-a{color:inherit}.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
-nav{display:flex;justify-content:space-between;align-items:center;padding:20px 0}
-nav b{letter-spacing:.02em}nav a{color:var(--mut);text-decoration:none;margin-left:18px;font-size:14px}
-.hero{display:grid;grid-template-columns:1.2fr .8fr;gap:48px;align-items:center;padding:36px 0 72px}
-h1{font-size:clamp(34px,5.4vw,60px);line-height:1.05;margin:0 0 18px;letter-spacing:-.03em}
+a{color:inherit}.wrap{max-width:1120px;margin:0 auto;padding:0 16px}
+nav{display:flex;justify-content:space-between;align-items:center;padding:18px 0;gap:12px;flex-wrap:wrap}
+nav b{letter-spacing:.02em}nav a{color:var(--mut);text-decoration:none;margin-left:16px;font-size:14px}
+.hero{display:grid;grid-template-columns:1.15fr .85fr;gap:44px;align-items:center;padding:28px 0 64px}
+h1{font-size:clamp(32px,5.2vw,58px);line-height:1.05;margin:0 0 16px;letter-spacing:-.03em}
 h1 em{font-style:normal;color:var(--acc)}
 .lead{color:var(--mut);font-size:18px;max-width:34em}
-.btns{display:flex;gap:12px;margin-top:26px;flex-wrap:wrap}
-.btn{padding:12px 20px;border-radius:12px;border:1px solid var(--line);text-decoration:none;font-weight:600;font-size:15px;background:var(--panel)}
-.btn.p{background:var(--acc);border-color:var(--acc);color:#111}
-.phone{justify-self:center;width:min(300px,78vw);aspect-ratio:9/16;border-radius:32px;background:#000;border:6px solid #1c2233;overflow:hidden;box-shadow:0 30px 80px #0007}
+.btns{display:flex;gap:10px;margin-top:22px;flex-wrap:wrap}
+.btn{padding:11px 18px;border-radius:12px;border:1px solid var(--line);text-decoration:none;font-weight:600;font-size:14px;background:var(--panel);color:var(--tx);cursor:pointer;font-family:inherit}
+.btn.p{background:var(--acc);border-color:var(--acc);color:#111}.btn.s{padding:7px 12px;font-size:13px;border-radius:10px}
+.phone{justify-self:center;width:min(300px,78vw);aspect-ratio:9/16;border-radius:30px;background:#000;border:6px solid #1c2233;overflow:hidden;box-shadow:0 30px 80px #0007}
 .phone video{width:100%;height:100%;object-fit:cover;display:block}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:0 0 72px}
-.stat{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px}
-.stat b{display:block;font-size:28px;color:var(--acc2);letter-spacing:-.02em}.stat span{color:var(--mut);font-size:13px}
-h2{font-size:30px;letter-spacing:-.02em;margin:0 0 8px}.sub{color:var(--mut);margin:0 0 28px}
-.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:72px}
-.step{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px}
-.step i{font-style:normal;color:var(--acc);font-weight:700;font-size:13px}.step h3{margin:6px 0;font-size:17px}.step p{margin:0;color:var(--mut);font-size:14px}
-.console{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:24px;margin-bottom:72px}
-label{display:block;font-size:13px;color:var(--mut);margin:14px 0 6px}
-input,select,textarea{width:100%;padding:12px 14px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--tx);font:inherit}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-#log{margin-top:16px;font:13px/1.5 ui-monospace,Menlo,monospace;color:var(--mut);white-space:pre-wrap}
-#out video{width:min(320px,100%);border-radius:16px;margin-top:14px}
-footer{border-top:1px solid var(--line);padding:28px 0 48px;color:var(--mut);font-size:14px}
-@media(max-width:820px){.hero{grid-template-columns:1fr}.stats,.steps{grid-template-columns:1fr 1fr}.row{grid-template-columns:1fr}}
+h2{font-size:28px;letter-spacing:-.02em;margin:0 0 6px}.sub{color:var(--mut);margin:0 0 24px}
+section{margin-bottom:72px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:18px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:18px;overflow:hidden;display:flex;flex-direction:column}
+.card video{width:100%;aspect-ratio:9/16;background:#000;display:block;object-fit:cover}
+.card .body{padding:14px;display:flex;flex-direction:column;gap:8px;flex:1}
+.card h3{margin:0;font-size:16px}.tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--vio)}
+.card .meta{color:var(--mut);font-size:13px}.dl{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.step{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px}
+.step i{font-style:normal;color:var(--acc);font-weight:700;font-size:13px}.step h3{margin:6px 0;font-size:16px}.step p{margin:0;color:var(--mut);font-size:14px}
+.console{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:22px}
+label{display:block;font-size:13px;color:var(--mut);margin:12px 0 6px}
+input,select,textarea{width:100%;padding:11px 13px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--tx);font:inherit}
+textarea{min-height:90px;font:13px/1.5 ui-monospace,Menlo,monospace}
+.row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+#log{margin-top:14px;font:13px/1.5 ui-monospace,Menlo,monospace;color:var(--mut);white-space:pre-wrap}
+#out video{width:min(320px,100%);border-radius:16px;margin-top:12px}
+.report{background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:14px;font-size:14px;margin-top:12px}
+.report dt{color:var(--mut);font-size:12px;text-transform:uppercase;letter-spacing:.05em;margin-top:8px}.report dd{margin:2px 0 0}
+details summary{cursor:pointer;color:var(--mut);font-size:14px}
+table{width:100%;border-collapse:collapse;font-size:14px}td,th{padding:8px;border-bottom:1px solid var(--line);text-align:left}
+footer{border-top:1px solid var(--line);padding:24px 0 44px;color:var(--mut);font-size:14px}
+@media(max-width:860px){.hero{grid-template-columns:1fr}.steps{grid-template-columns:1fr 1fr}.row{grid-template-columns:1fr 1fr}.row2{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <div class="wrap">
-<nav><b>▶ My AI Video Studio</b><span><a href="#how">How it works</a><a href="#try">Generate</a><a href="https://github.com/Sthmpe/my-ai-video-studio">GitHub</a></span></nav>
+<nav><b>▶ My AI Video Studio</b><span><a href="#films">Films</a><a href="#how">How it works</a><a href="#try">Generate</a><a href="#history">History</a><a href="https://github.com/Sthmpe/my-ai-video-studio/tree/ccr-931534f5-lqm602">GitHub</a></span></nav>
 
 <section class="hero">
   <div>
-    <h1>Type a topic.<br>Get a <em>cartoon documentary</em>.</h1>
-    <p class="lead">An open-source engine that researches, writes, storyboards, <b>generates every scene with a text-to-video model</b>, narrates, scores and subtitles a short film — on free models, no paid video APIs.</p>
-    <div class="btns"><a class="btn p" href="#try">Generate a video</a><a class="btn" href="https://github.com/Sthmpe/my-ai-video-studio">View source</a></div>
+    <h1>Idea in.<br><em>Anime episode</em> out.</h1>
+    <p class="lead">A free-first film engine that writes, designs characters, <b>generates every shot with open video models</b>, voices dialogue in English or Japanese, adds sound design and remembers your characters for the next episode.</p>
+    <div class="btns"><a class="btn p" href="#try">Generate</a><a class="btn" href="#films">Watch the films</a></div>
   </div>
-  <div class="phone"><video src="/demo/sloth.mp4" poster="/demo/sloth.jpg" controls playsinline preload="metadata"></video></div>
+  <div class="phone"><video id="heroVid" src="/demo/ep1.mp4" poster="/demo/ep1.jpg" controls playsinline preload="metadata"></video></div>
 </section>
 
-<section id="films" style="margin-bottom:72px">
-  <h2>Films made by the engine</h2><p class="sub">Both are 100% AI-generated: scenes, narration and score.</p>
-  <div style="display:flex;gap:20px;flex-wrap:wrap">
-    <figure style="margin:0;width:min(260px,100%)"><video src="/demo/sloth.mp4" poster="/demo/sloth.jpg" controls playsinline preload="none" style="width:100%;border-radius:18px;aspect-ratio:9/16;background:#000"></video><figcaption class="sub" style="margin:8px 0 0">The Sloth: Master of Nothing · 2:06</figcaption></figure>
-    <figure style="margin:0;width:min(260px,100%)"><video src="/demo/cat.mp4" poster="/demo/cat.jpg" controls playsinline preload="none" style="width:100%;border-radius:18px;aspect-ratio:9/16;background:#000"></video><figcaption class="sub" style="margin:8px 0 0">Why Cats Knock Things Over · 1:08</figcaption></figure>
-  </div>
-</section>
-
-<section class="stats">
-  <div class="stat"><b>0</b><span>paid generation APIs</span></div>
-  <div class="stat"><b>100%</b><span>AI-generated scenes, voice &amp; music</span></div>
-  <div class="stat"><b>CPU</b><span>runs with no GPU</span></div>
-  <div class="stat"><b>9:16</b><span>TikTok-ready 1080×1920</span></div>
+<section id="films">
+  <h2>Films made by the engine</h2>
+  <p class="sub">Each ships with the MP4, a portable <code>.studio.zip</code> project (characters, prompts, seeds, clips, audio) and a model-transparency report.</p>
+  <div class="grid" id="filmGrid"></div>
+  <div id="reportBox"></div>
 </section>
 
 <section id="how">
-  <h2>The pipeline</h2><p class="sub">Resumable stages, quality gates and automatic retry of bad scenes.</p>
+  <h2>How a film is made</h2><p class="sub">Every stage is resumable and quality-gated.</p>
   <div class="steps">
-    <div class="step"><i>01</i><h3>Research &amp; script</h3><p>Wikipedia + rotating free LLM APIs (or Claude Code) write a fact-checked, funny script.</p></div>
-    <div class="step"><i>02</i><h3>Storyboard</h3><p>Narration timing decides how many shots each scene needs.</p></div>
-    <div class="step"><i>03</i><h3>AI video</h3><p>AnimateDiff-Lightning on a cartoon checkpoint generates each shot; failures are re-seeded.</p></div>
-    <div class="step"><i>04</i><h3>Voice, music, edit</h3><p>Kokoro-82M narration, original synthesized score, xfade transitions, burned-in subtitles.</p></div>
+    <div class="step"><i>01</i><h3>Story &amp; cast</h3><p>Hook-first script, dialogue, original characters with reference sheets and fixed voices.</p></div>
+    <div class="step"><i>02</i><h3>Keyframes</h3><p>Each shot gets a full-quality anime keyframe, guided by the character's reference via IP-Adapter.</p></div>
+    <div class="step"><i>03</i><h3>Animation</h3><p>AnimateDiff-Lightning animates the keyframe (image-to-video) with camera-motion LoRAs; bad clips are re-seeded.</p></div>
+    <div class="step"><i>04</i><h3>Sound &amp; edit</h3><p>Kokoro EN/JA voices, scene-timed SFX and ambience, original score, subtitles, Whisper-checked speech.</p></div>
   </div>
 </section>
 
 <section id="try" class="console">
-  <h2>Generate</h2><p class="sub">Jobs run on the engine worker and the finished MP4 appears below. Submitting needs the owner passcode.</p>
-  <label>Topic</label><input id="topic" placeholder="e.g. The secret life of the octopus">
-  <div class="row"><div><label>Format</label><select id="ori"><option value="vertical">Vertical 9:16 (TikTok)</option><option value="landscape">Landscape 16:9</option></select></div>
-  <div><label>Owner passcode</label><input id="pass" type="password" autocomplete="off"></div></div>
-  <div class="btns"><button class="btn p" id="go">Generate documentary</button></div>
-  <div id="log"></div><div id="out"></div>
+  <h2>Generate</h2><p class="sub">Jobs run on the engine worker (GitHub Actions by default). Generation is compute-heavy, so submitting needs the owner passcode.</p>
+  <label for="topic">Idea or topic</label><input id="topic" placeholder="A girl who can hear what machines are thinking">
+  <div class="row">
+    <div><label for="mode">Mode</label><select id="mode">
+      <option value="anime_action">Anime action</option><option value="superhuman">Superhuman</option><option value="anime_edit">Anime edit</option>
+      <option value="story">Story (mystery, sci-fi, fantasy…)</option><option value="documentary">Documentary</option>
+      <option value="cinematic">Cinematic</option><option value="explainer">Explainer / promo</option></select></div>
+    <div><label for="secs">Duration</label><select id="secs"><option>15</option><option selected>30</option><option>60</option><option>90</option><option>180</option></select></div>
+    <div><label for="aspect">Aspect</label><select id="aspect"><option>9:16</option><option>16:9</option><option>1:1</option></select></div>
+    <div><label for="lang">Language</label><select id="lang"><option value="en">English</option><option value="ja">日本語</option></select></div>
+  </div>
+  <div class="row2">
+    <div><label for="cont">Continue episode from job id (optional)</label><input id="cont" placeholder="e.g. btst-ep1"></div>
+    <div><label for="pass">Owner passcode</label><input id="pass" type="password" autocomplete="off"></div>
+  </div>
+  <details style="margin-top:12px"><summary>Advanced: paste a full script JSON (see examples/ in the repo)</summary><textarea id="script" placeholder='{"title": "...", "characters": [...], "scenes": [...]}'></textarea></details>
+  <div class="btns"><button class="btn p" id="go">Generate</button><button class="btn" id="retry" hidden>Retry</button></div>
+  <div id="log" role="status"></div><div id="out"></div>
 </section>
-<footer><div class="wrap" style="padding:0">Built with AnimateDiff-Lightning · ToonYou · Kokoro-82M · FFmpeg. Engine and website are deployed separately.</div></footer>
+
+<section id="history">
+  <h2>Generation history</h2><p class="sub">Recent jobs from the worker.</p>
+  <table><thead><tr><th>Job</th><th>Finished</th><th>Downloads</th></tr></thead><tbody id="hist"><tr><td colspan="3" class="sub">Loading…</td></tr></tbody></table>
+</section>
+
+<footer>Open models: AnimateDiff-Lightning · Counterfeit-V2.5 · ToonYou β6 · IP-Adapter · Kokoro-82M · Whisper · FFmpeg. No paid APIs. Engine and website are deployed separately.</footer>
 </div>
 <script>
-const $=id=>document.getElementById(id),log=m=>$('log').textContent=m;
-$('go').onclick=async()=>{
-  log('Submitting…');
-  const r=await fetch('/api/jobs',{method:'POST',headers:{'content-type':'application/json','x-passcode':$('pass').value},body:JSON.stringify({topic:$('topic').value,orientation:$('ori').value})});
-  const j=await r.json(); if(!r.ok) return log('✖ '+(j.error||r.status));
-  const id=j.id; log('Queued job '+id);
+const $=id=>document.getElementById(id), log=m=>$('log').textContent=m;
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+async function loadFilms(){
+  try{
+    const films=await (await fetch('/films.json')).json();
+    $('filmGrid').innerHTML=films.map((f,i)=>`<div class="card"><video src="${esc(f.video)}" poster="${esc(f.poster)}" controls playsinline preload="none"></video>
+      <div class="body"><span class="tag">${esc(f.mode)}</span><h3>${esc(f.title)}</h3><div class="meta">${esc(f.meta)}</div>
+      <div class="dl"><a class="btn s" href="${esc(f.video)}" download>MP4</a>${f.bundle?`<a class="btn s" href="${esc(f.bundle)}">Project .studio.zip</a>`:''}
+      ${f.reportMd?`<a class="btn s" href="${esc(f.reportMd)}">Report</a>`:''}${f.report?`<button class="btn s" data-r="${i}">Summary</button>`:''}${f.ja?`<a class="btn s" href="${esc(f.ja)}">日本語版</a>`:''}</div></div></div>`).join('');
+    document.querySelectorAll('[data-r]').forEach(b=>b.onclick=async()=>showReport(await (await fetch(films[b.dataset.r].report)).json()));
+  }catch(e){$('filmGrid').textContent='Could not load films.'}
+}
+function showReport(r){
+  const m=r.models||{}, sp=r.specs||{};
+  $('reportBox').innerHTML=`<div class="report"><b>${esc(r.title)}</b><dl>
+   <dt>Models</dt><dd>${esc(m.video_motion?.id)} · ${esc(m.image_base?.id)} · ${esc(m.voice?.id)}${m.character_conditioning?' · '+esc(m.character_conditioning.id):''}</dd>
+   <dt>Method</dt><dd>${esc(JSON.stringify(r.generation_method))}</dd>
+   <dt>Resolution</dt><dd>native ${esc(sp.native_resolution)} → export ${esc(sp.export_resolution)} (upscaled ×${esc(sp.upscale_factor)}, not native detail)</dd>
+   <dt>Speed</dt><dd>${esc(sp.shots)} shots · ${esc(sp.seconds_per_shot_mean)} s/shot on ${esc(sp.hardware?.cpus)} CPU cores (${esc(sp.hardware?.dtype)})</dd>
+   <dt>Cost</dt><dd>$${esc((r.cost?.usd??0).toFixed?.(2)??r.cost?.usd)} — no paid services</dd>
+   <dt>Why these models</dt><dd>${(r.selection_reasons||[]).map(esc).join('<br>')}</dd>
+   <dt>Limitations</dt><dd>${(r.limitations||[]).map(esc).join('<br>')}</dd></dl></div>`;
+  $('reportBox').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+async function loadHistory(){
+  try{const h=await (await fetch('/api/history')).json();
+    $('hist').innerHTML=h.length?h.map(j=>`<tr><td>${esc(j.id)}</td><td>${esc((j.created||'').slice(0,16).replace('T',' '))}</td><td>
+      ${j.video?`<a href="${esc(j.video)}">MP4</a>`:''} ${j.bundle?`· <a href="${esc(j.bundle)}">project</a>`:''} ${j.report?`· <a href="${esc(j.report)}">report</a>`:''}</td></tr>`).join('')
+      :'<tr><td colspan="3" class="sub">No worker jobs yet (the worker needs the owner\'s GitHub token configured).</td></tr>';
+  }catch(e){$('hist').innerHTML='<tr><td colspan="3" class="sub">History unavailable.</td></tr>'}
+}
+let lastBody=null;
+async function submit(body){
+  lastBody=body; $('retry').hidden=true; $('out').innerHTML=''; log('Submitting…');
+  const r=await fetch('/api/jobs',{method:'POST',headers:{'content-type':'application/json','x-passcode':$('pass').value},body:JSON.stringify(body)});
+  const j=await r.json().catch(()=>({})); if(!r.ok){$('retry').hidden=false; return log('✖ '+(j.error||r.status));}
+  const id=j.id; log('Queued job '+id+' on '+j.backend);
   const t=setInterval(async()=>{
-    const s=await (await fetch('/api/jobs/'+id)).json();
-    log(`Job ${id}\nstatus: ${s.status}${s.stage?' · '+s.stage+' '+s.done+'/'+s.total:''}\n${s.message||''}`);
-    if(s.status==='done'){clearInterval(t);$('out').innerHTML=`<video controls playsinline src="${s.videoUrl}"></video>`}
-    if(s.status==='failed'){clearInterval(t)}
-  },5000);
-};
+    const s=await (await fetch('/api/jobs/'+encodeURIComponent(id))).json().catch(()=>({status:'unknown'}));
+    log(`Job ${id}\nstatus: ${s.status}${s.stage?' · '+s.stage+' '+s.done+'/'+s.total:''}\n${s.message||''}${s.runUrl?'\nlogs: '+s.runUrl:''}`);
+    if(s.status==='done'){clearInterval(t);
+      $('out').innerHTML=`<video controls playsinline src="${esc(s.videoUrl)}"></video><div class="dl btns">
+        <a class="btn s" href="${esc(s.videoUrl)}">Download video</a>${s.bundleUrl?`<a class="btn s" href="${esc(s.bundleUrl)}">Download project</a>`:''}
+        ${s.metadataUrl?`<a class="btn s" href="${esc(s.metadataUrl)}">Download metadata</a>`:''}${s.reportUrl?`<a class="btn s" href="${esc(s.reportUrl)}">Generation report</a>`:''}</div>`;
+      fetch('/api/report/'+encodeURIComponent(id)).then(r=>r.ok?r.json():null).then(x=>{if(x)$('out').insertAdjacentHTML('beforeend',`<div class="report"><b>Report</b><dl><dt>Models</dt><dd>${esc(x.models.video)} · ${esc(x.models.image)} · ${esc(x.models.voice)}</dd><dt>Resolution</dt><dd>${esc(x.native)} → ${esc(x.export)}</dd><dt>Cost</dt><dd>$${esc(x.cost)}</dd><dt>Limitations</dt><dd>${(x.limitations||[]).map(esc).join('<br>')}</dd></dl></div>`)});
+      loadHistory();}
+    if(s.status==='failed'){clearInterval(t);$('retry').hidden=false}
+  },6000);
+}
+$('go').onclick=()=>{let script=null; const raw=$('script').value.trim();
+  if(raw){try{script=JSON.parse(raw)}catch(e){return log('✖ Script JSON is invalid: '+e.message)}}
+  submit({topic:$('topic').value,mode:$('mode').value,seconds:+$('secs').value,aspect:$('aspect').value,language:$('lang').value,continueFrom:$('cont').value.trim(),script});};
+$('retry').onclick=()=>lastBody&&submit(lastBody);
+loadFilms(); loadHistory();
 </script>
 </body>
 </html>

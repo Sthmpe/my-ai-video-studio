@@ -65,3 +65,45 @@ def finalize(s: dict, topic: str = "") -> dict:
             if ch and ch.lower() not in sh["prompt"].lower():
                 sh["prompt"] = f"{ch}, {sh['prompt']}"
     return s
+
+
+STORY_SYSTEM = """You are an anime/short-film writer for TikTok and YouTube Shorts. Write an ORIGINAL story (no existing
+characters or franchises). Respond with ONLY JSON in this schema:
+{"title": str, "characters": [{"id": "lowercase-id", "name": str, "prompt": "visual description: gender, age, hair, eyes, outfit, signature item",
+   "voice": {"en": "am_puck|am_michael|bm_george|af_bella|af_heart|bf_emma"}, "personality": str, "powers": [str]}],
+ "scenes": [{"lines": [{"speaker": "character id or narrator", "text": "spoken line, max 18 words"}],
+             "ambience": "rain|wind|city|forest|null",
+             "shots": [{"prompt": "ONE moving shot: action, setting, camera framing", "characters": ["ids in shot"],
+                        "camera": "zoom-in|zoom-out|pan-left|pan-right|tilt-up", "sfx": ["whoosh|impact|electricity|time_freeze|clock|footsteps|riser|heartbeat"]}]}],
+ "end_card": "short line", "social": {"titles": [str, str], "description": str, "hashtags": [str], "hooks": [str, str, str]}}
+Rules: the FIRST line is a strong hook; build conflict and a visible reveal; end with a cliffhanger or satisfying ending;
+about {n} scenes for {secs} seconds; 1-2 shots per scene; sound effects only where the action shows them."""
+
+
+def write_story(idea: str, mode: str = "anime_action", seconds: int = 45, language: str = "en") -> dict:
+    n = max(4, seconds // 5)
+    msgs = [{"role": "system", "content": STORY_SYSTEM.replace("{n}", str(n)).replace("{secs}", str(seconds))},
+            {"role": "user", "content": f"Idea: {idea}\nStyle/mode: {mode}"}]
+    try:
+        txt, who = providers.chat(msgs, json_mode=True); s = _extract_json(txt)
+    except Exception as e:  # noqa: BLE001
+        providers.LOG.append(f"llm apis unavailable ({str(e)[:80]}); using local model")
+        from . import llm_local
+        who, s = "local:" + llm_local.MODEL, None
+        for _ in range(3):
+            try:
+                s = _extract_json(llm_local.chat(msgs, max_new_tokens=1800))
+                assert s["scenes"] and all(sc.get("shots") for sc in s["scenes"]); break
+            except Exception:  # noqa: BLE001
+                s = None
+        if s is None:
+            raise RuntimeError("could not write a valid story script")
+    s.update(author=who, mode=mode, language=language, subtitle_language=language)
+    s.setdefault("characters", []); s.setdefault("narrator", {"voice": {"en": "bf_emma", "ja": "jf_alpha"}})
+    for c in s["characters"]:
+        c.setdefault("voice", {}).setdefault("ja", "jm_kumo"); c.setdefault("seed", abs(hash(c["id"])) % 10000)
+    for sc in s["scenes"]:
+        sc.setdefault("lines", [])
+        for ln in sc["lines"]:
+            ln.setdefault("speaker", "narrator")
+    return s

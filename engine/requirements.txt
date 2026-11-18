@@ -17,3 +17,7 @@ fastapi
 uvicorn
 requests
 pytest
+misaki[ja]
+unidic-lite
+scipy
+psutil

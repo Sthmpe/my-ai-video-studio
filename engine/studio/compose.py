@@ -38,7 +38,8 @@ def render_shot(raw: Path, out: Path, length: float, width: int = W, height: int
     mid.unlink(missing_ok=True)
 
 
-def join_with_transitions(clips: list[Path], lengths: list[float], out: Path, seed: int = 3):
+def join_with_transitions(clips: list[Path], lengths: list[float], out: Path, seed: int = 3,
+                          xf: float = XF, transitions: list[str] | None = None):
     """Chain xfade. Each clip file is (slot + XF) long except the last, so slots stay on the narration clock."""
     rnd = random.Random(seed)
     if len(clips) == 1:
@@ -49,11 +50,11 @@ def join_with_transitions(clips: list[Path], lengths: list[float], out: Path, se
         inputs += ["-i", str(c)]
     fg, prev, acc = [], "[0:v]", lengths[0]
     for i in range(1, len(clips)):
-        tr = rnd.choice(TRANSITIONS)
-        off = acc - XF
+        tr = rnd.choice(transitions or TRANSITIONS)
+        off = acc - xf
         lab = f"[x{i}]"
-        fg.append(f"{prev}[{i}:v]xfade=transition={tr}:duration={XF}:offset={off:.3f}{lab}")
-        prev, acc = lab, acc + lengths[i] - XF
+        fg.append(f"{prev}[{i}:v]xfade=transition={tr}:duration={xf}:offset={off:.3f}{lab}")
+        prev, acc = lab, acc + lengths[i] - xf
     run(["ffmpeg", "-y", "-loglevel", "error", *inputs, "-filter_complex", ";".join(fg), "-map", prev,
          "-c:v", "libx264", "-preset", "veryfast", "-crf", "18", "-pix_fmt", "yuv420p", str(out)])
 
@@ -97,12 +98,18 @@ def _chunk_sentence(text: str, n: int = 4) -> list[str]:
     return out
 
 
-def write_ass(cues: list[tuple[float, float, str]], title: str, total: float, out: Path, vertical=True):
-    fs = 88 if vertical else 60
+def write_ass(cues: list[tuple[float, float, str]], title: str, total: float, out: Path, vertical=True,
+              size: tuple[int, int] | None = None, end_card: str | None = None, credit: str | None = None):
+    if size:
+        globals_W, globals_H = size
+    else:
+        globals_W, globals_H = (W, H) if vertical else (H, W)
+    vertical = globals_H > globals_W
+    fs = 88 if vertical else (60 if globals_W > globals_H else 76)
     hdr = f"""[Script Info]
 ScriptType: v4.00+
-PlayResX: {W if vertical else H}
-PlayResY: {H if vertical else W}
+PlayResX: {globals_W}
+PlayResY: {globals_H}
 [V4+ Styles]
 Format: Name,Fontname,Fontsize,PrimaryColour,SecondaryColour,OutlineColour,BackColour,Bold,Italic,Underline,StrikeOut,ScaleX,ScaleY,Spacing,Angle,BorderStyle,Outline,Shadow,Alignment,MarginL,MarginR,MarginV,Encoding
 Style: Sub,Inter,{fs},&H00FFFFFF,&H000000FF,&H00000000,&H80000000,-1,0,0,0,100,100,0,0,1,7,2,2,60,60,{330 if vertical else 90},1
@@ -114,18 +121,31 @@ Format: Layer,Start,End,Style,Name,MarginL,MarginR,MarginV,Effect,Text
     lines = [f"Dialogue: 0,{_ts(0.4)},{_ts(3.6)},Title,,0,0,0,,{{\\fad(400,500)}}{title}"]
     for a, b, t in cues:
         lines.append(f"Dialogue: 1,{_ts(a)},{_ts(b)},Sub,,0,0,0,,{{\\fad(60,60)}}{t.upper()}")
+    if end_card:
+        lines.append(f"Dialogue: 2,{_ts(total-2.6)},{_ts(total-0.2)},Title,,0,0,0,,{{\\fad(300,200)}}{end_card}")
     lines.append(f"Dialogue: 0,{_ts(total-3.2)},{_ts(total-0.3)},Credit,,0,0,0,,{{\\fad(300,300)}}"
-                 "Made with My AI Video Studio · 100% AI-generated visuals, voice & music")
+                 + (credit or "Made with My AI Video Studio · 100% AI-generated visuals, voice & music"))
     out.write_text(hdr + "\n".join(lines) + "\n")
+    # SRT sidecar for platforms that accept caption files
+    def srt_ts(t):
+        h, r = divmod(t, 3600); m, sec = divmod(r, 60)
+        return f"{int(h):02d}:{int(m):02d}:{int(sec):02d},{int(round((sec % 1) * 1000)):03d}"
+    out.with_suffix(".srt").write_text("".join(f"{i}\n{srt_ts(a)} --> {srt_ts(b)}\n{t}\n\n" for i, (a, b, t) in enumerate(cues, 1)))
 
 
-def mix_audio(narr: Path, music: Path, out: Path, total: float):
-    """Duck music under narration (sidechain), normalise loudness."""
-    fc = ("[1:a]volume=0.55[m];[0:a]asplit[n1][n2];[m][n1]sidechaincompress=threshold=0.03:ratio=8:"
-          "attack=15:release=400[ducked];[ducked][n2]amix=inputs=2:duration=first:normalize=0,"
-          f"loudnorm=I=-16:TP=-1.5:LRA=11,apad,atrim=0:{total:.2f}[a]")
-    run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(narr), "-i", str(music), "-filter_complex", fc,
-         "-map", "[a]", "-ar", "44100", str(out)])
+def mix_audio(narr: Path, music: Path, out: Path, total: float, sfx: Path | None = None, music_gain: float = 0.55):
+    """Duck music under voice (sidechain), add the SFX/ambience layer, normalise loudness to -16 LUFS."""
+    if sfx:
+        fc = (f"[1:a]volume={music_gain}[m];[0:a]asplit[n1][n2];[m][n1]sidechaincompress=threshold=0.03:ratio=8:"
+              "attack=15:release=400[ducked];[2:a]volume=1.0[fx];[ducked][n2][fx]amix=inputs=3:duration=first:normalize=0,"
+              f"loudnorm=I=-16:TP=-1.5:LRA=11,apad,atrim=0:{total:.2f}[a]")
+        inputs = ["-i", str(narr), "-i", str(music), "-i", str(sfx)]
+    else:
+        fc = (f"[1:a]volume={music_gain}[m];[0:a]asplit[n1][n2];[m][n1]sidechaincompress=threshold=0.03:ratio=8:"
+              "attack=15:release=400[ducked];[ducked][n2]amix=inputs=2:duration=first:normalize=0,"
+              f"loudnorm=I=-16:TP=-1.5:LRA=11,apad,atrim=0:{total:.2f}[a]")
+        inputs = ["-i", str(narr), "-i", str(music)]
+    run(["ffmpeg", "-y", "-loglevel", "error", *inputs, "-filter_complex", fc, "-map", "[a]", "-ar", "44100", str(out)])
 
 
 def final_render(video: Path, audio: Path, ass: Path, out: Path):
@@ -133,3 +153,11 @@ def final_render(video: Path, audio: Path, ass: Path, out: Path):
     run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(video), "-i", str(audio), "-vf", vf,
          "-c:v", "libx264", "-preset", "medium", "-crf", "19", "-pix_fmt", "yuv420p", "-c:a", "aac",
          "-b:a", "192k", "-shortest", "-movflags", "+faststart", str(out)])
+
+
+def probe_size(path) -> tuple[int, int]:
+    import json as _j
+    o = subprocess.check_output(["ffprobe", "-v", "error", "-select_streams", "v:0", "-show_entries",
+                                 "stream=width,height", "-of", "json", str(path)])
+    st = _j.loads(o)["streams"][0]
+    return st["width"], st["height"]

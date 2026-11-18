@@ -1,0 +1,141 @@
+{
+ "title": "The Boy Who Stole Time — Ep. 2 (Teaser)",
+ "seed": 8822,
+ "characters": [
+  {
+   "id": "kai",
+   "from_previous": true
+  },
+  {
+   "id": "stranger",
+   "from_previous": true
+  },
+  {
+   "id": "seren",
+   "name": "Warden Seren",
+   "prompt": "1girl, Seren, woman in a white armored coat with gold clockwork gears, short silver bob hair, cold red eyes, holding a glowing hourglass",
+   "seed": 3301,
+   "ref_prompt": "1girl, Seren, woman in a white armored coat with gold clockwork gears, short silver bob hair, cold red eyes, holding a glowing hourglass, upper body portrait, simple white background",
+   "voice": {
+    "en": "af_bella",
+    "ja": "jf_nezumi"
+   },
+   "personality": "precise, ruthless",
+   "powers": [
+    "rewinds anything she touches"
+   ],
+   "relationships": {
+    "stranger": "superior",
+    "kai": "enemy"
+   }
+  }
+ ],
+ "scenes": [
+  {
+   "lines": [
+    {
+     "speaker": "narrator",
+     "text": "Previously: Kai stopped time, and something stopped him back.",
+     "ja": "前回：カイは時間を止めた。そして何かが、彼を止めに来た。"
+    }
+   ],
+   "ambience": "wind",
+   "shots": [
+    {
+     "prompt": "holding the cracked glowing pocket watch, frozen rain around him, neon night street",
+     "characters": [
+      "kai"
+     ],
+     "camera": "zoom-in",
+     "sfx": [
+      "clock"
+     ]
+    }
+   ]
+  },
+  {
+   "lines": [
+    {
+     "speaker": "stranger",
+     "text": "You ran. They always run.",
+     "ja": "逃げたな。皆、逃げる。"
+    }
+   ],
+   "ambience": "wind",
+   "shots": [
+    {
+     "prompt": "standing on a rooftop at night above a frozen city, violet eyes glowing, coat blowing",
+     "characters": [
+      "stranger"
+     ],
+     "camera": "tilt-up",
+     "sfx": [
+      "whoosh"
+     ]
+    }
+   ]
+  },
+  {
+   "lines": [
+    {
+     "speaker": "seren",
+     "text": "Then let me rewind his escape.",
+     "ja": "なら、その逃走を巻き戻してあげる。"
+    }
+   ],
+   "ambience": "city",
+   "shots": [
+    {
+     "prompt": "raising a glowing golden hourglass, clockwork gears spinning around her, dramatic",
+     "characters": [
+      "seren"
+     ],
+     "camera": "zoom-in",
+     "sfx": [
+      "riser",
+      "electricity"
+     ]
+    }
+   ]
+  },
+  {
+   "lines": [
+    {
+     "speaker": "kai",
+     "text": "Not this time.",
+     "ja": "今度は、止まらない。"
+    }
+   ],
+   "ambience": null,
+   "shots": [
+    {
+     "prompt": "determined face, pocket watch blazing blue light, rain swirling around him, power up",
+     "characters": [
+      "kai"
+     ],
+     "camera": "zoom-in",
+     "sfx": [
+      "time_freeze",
+      "impact"
+     ]
+    }
+   ]
+  }
+ ],
+ "end_card": "EPISODE 2 — THE WARDEN",
+ "social": {
+  "titles": [
+   "Episode 2: the Warden can rewind anything."
+  ],
+  "hashtags": [
+   "#anime",
+   "#originalanime",
+   "#timestop"
+  ],
+  "hooks": [
+   "Previously: Kai stopped time.",
+   "She can rewind anything she touches."
+  ],
+  "rights_note": "Original characters and story."
+ }
+}
