@@ -30,7 +30,7 @@ Legend: ✅ done & verified · 🧪 works, limited testing · ⛔ blocked (owner
 | `.studio.zip` export / verified import | ✅ | 18 unit tests incl. tamper + zip-slip |
 | Episode continuation | ✅ | Demo B |
 | Re-edit / regenerate specific shots | ✅ | delete a shot's keyframe/clip → re-run (OPERATIONS.md) |
-| Import a previous *video* (not bundle) as reference | ⏳ | planned: extract keyframes → IP-Adapter refs |
+| Import a previous *video* or images as character reference | 🧪 | `studio refs --video x.mp4 [--at 13] --image y.png --rights ...`; auto-pick crops title/subtitle bands; picks sharp frames, not guaranteed to be the character — use `--at` |
 | Idea → story script (LLM APIs or local Qwen) | 🧪 | code path written; local Qwen tested for v1 scripts, v2 story prompt not yet run end-to-end |
 | EN + JA TTS (Kokoro), per-character voices | ✅ | Whisper CER 0.00 on JA test line |
 | Scene-timed SFX + ambience, SFX ducked under dialogue | ✅ | fix verified: masked line now recognised |
@@ -38,7 +38,7 @@ Legend: ✅ done & verified · 🧪 works, limited testing · ⛔ blocked (owner
 | Generation report MD + JSON in every job & bundle | ✅ | also for documentaries |
 | Website v2 (modes, duration, aspect, language, continuation, downloads, history, report) | ✅ deployed · ⛔ submit | needs `GITHUB_TOKEN` + `SUBMIT_PASSCODE` in Vercel (DEPLOYMENT.md) |
 | Reference image / video upload from the website | ⏳ | needs a storage target (Vercel Blob) — owner decision |
-| GitHub Actions worker with modes + continuation | 🧪 | workflow updated & YAML-validated; v1 path verified live (run 44186663971); v2 path not yet run on Actions |
+| GitHub Actions worker with modes + continuation | ✅ anime path · 🧪 continuation | v2 anime job verified live: release `claude-video-claude-gha-anime-1` (MP4 + .studio.zip + reports). fp32 runner: 50 min for 6 s / 2 shots (~10× slower than bf16 sandbox) — fine for teasers, too slow for 60 s+ episodes; continuation on Actions untested |
 | Agent namespacing | ✅ | `claude-generate.yml`, `claude-video-*`, `claude-studio <id>` |
 | GPU tier (Wan/LTX/CogVideoX) | ⏳ | researched only (no GPU) |
 

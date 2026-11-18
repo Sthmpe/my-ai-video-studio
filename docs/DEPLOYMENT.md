@@ -37,3 +37,10 @@ What happens next: `POST /api/jobs` → `workflow_dispatch` of `claude-generate.
 ## Vercel
 Project `my-ai-video-studio` (team `sthmpe's projects`), root directory `web/`, Git-connected: every push redeploys. Public (Vercel Authentication disabled) so it can be a portfolio piece. Live: https://my-ai-video-studio-rho.vercel.app
 `/api/health` reports the configured backend; `/api/jobs` refuses submissions without the passcode so strangers cannot burn compute.
+
+## Worker throughput (measured)
+| Worker | dtype | Anime i2v shot (16 frames) | Notes |
+|---|---|---|---|
+| Claude cloud sandbox (Xeon, AVX512-BF16, 4 vCPU) | bf16 | ~110 s @ 384×672 + 45 s keyframe | not persistent, no inbound |
+| GitHub Actions `ubuntu-latest` (4 vCPU, no bf16) | fp32 | ~18 min @ 288×512 (run of `claude-gha-anime-1`: 3033 s total for 2 shots incl. character design) | free for public repos, 6 h job cap |
+Practical guidance: use Actions for teasers/short shots or documentaries; for 30–60 s anime episodes use a bf16-capable or GPU self-hosted runner (same workflow with `runs-on: self-hosted`).

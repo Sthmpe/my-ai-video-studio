@@ -28,9 +28,19 @@ def main():
     co.add_argument("--idea", default="")
     du = sub.add_parser("dub", help="re-voice a finished story job in another language (reuses all visuals)")
     du.add_argument("--job", required=True); du.add_argument("--lang", default="ja")
+    rf = sub.add_parser("refs", help="add character references from a previous video and/or images to a job")
+    rf.add_argument("--job", required=True); rf.add_argument("--id", required=True); rf.add_argument("--name", default="")
+    rf.add_argument("--prompt", default=""); rf.add_argument("--video"); rf.add_argument("--image", action="append", default=[])
+    rf.add_argument("--rights", default=""); rf.add_argument("--at", type=float, action="append", help="exact timestamps (s)")
     rp = sub.add_parser("report", help="rebuild GENERATION_REPORT + bundle for a finished story job")
     rp.add_argument("--job", required=True)
     a = ap.parse_args()
+    if a.cmd == "refs":
+        from PIL import Image
+        from .references import frames_from_video, add_reference
+        imgs = [Image.open(p).convert("RGB") for p in a.image] + (frames_from_video(Path(a.video), at=a.at) if a.video else [])
+        rec = add_reference(JOBS / a.job, {"id": a.id, "name": a.name or a.id, "prompt": a.prompt}, imgs, a.rights)
+        print(json.dumps(rec, indent=2, ensure_ascii=False)); return
     if a.cmd == "report":
         from .story import StoryPipeline
         print(StoryPipeline(JOBS / a.job, json.loads((JOBS / a.job / "script.json").read_text())).rebuild_report()); return
