@@ -40,10 +40,33 @@ def _phonemize(text: str, lang: str) -> str:
     return _be[lang].phonemize([text])[0].strip()
 
 
-def synth(text: str, out: Path, voice: str = "af_heart", speed: float = 1.0, lang: str = "en-us") -> float:
-    """Writes a wav, returns duration in seconds."""
+_ja = {}
+
+
+def _phonemize_ja(text: str) -> str:
+    # misaki's Japanese G2P (pyopenjtalk + fugashi/unidic-lite): the phoneme set Kokoro's JA voices were trained on.
+    if "g" not in _ja:
+        from misaki import ja
+        _ja["g"] = ja.JAG2P()
+    return _ja["g"](text)[0]
+
+
+LANG_VOICES = {"en": ["af_heart", "af_bella", "bf_emma", "am_michael", "am_puck", "bm_george"],
+               "ja": ["jf_alpha", "jf_nezumi", "jm_kumo"]}
+
+
+def lang_of_voice(voice: str) -> str:
+    return "ja" if voice.startswith("j") else "en"
+
+
+def synth(text: str, out: Path, voice: str = "af_heart", speed: float = 1.0, lang: str | None = None) -> float:
+    """Writes a wav, returns duration in seconds. Language follows the voice (j* voices => Japanese)."""
     sess, vocab = _load()
-    ph = _phonemize(text, lang)
+    lang = lang or lang_of_voice(voice)
+    if lang.startswith("ja"):
+        ph = _phonemize_ja(text)
+    else:
+        ph = _phonemize(text, "en-gb" if voice.startswith("b") else "en-us")
     ids = [vocab[c] for c in ph if c in vocab][:500]
     voices = np.fromfile(MODELS / f"kokoro/voices/{voice}.bin", dtype=np.float32).reshape(-1, 1, 256)
     style = voices[min(len(ids), len(voices) - 1)]

@@ -39,3 +39,50 @@ def final_report(path: str, expect_seconds: float, min_w=720) -> dict:
     }
     return {"ok": all(checks.values()), "checks": checks, "duration": round(dur, 2),
             "size": f'{v["width"]}x{v["height"]}', "mean_volume_db": mean_db}
+
+
+# ---- speech intelligibility (automatic "listening") ------------------------------------------------
+_asr = {}
+
+
+def transcribe(wav_path: str, lang: str = "en") -> str:
+    """Local Whisper-base transcription (MIT weights). Used as an objective intelligibility check."""
+    import soundfile as sf, numpy as np
+    from .paths import MODELS
+    if "m" not in _asr:
+        from transformers import WhisperProcessor, WhisperForConditionalGeneration
+        _asr["p"] = WhisperProcessor.from_pretrained(str(MODELS / "whisper-base"))
+        _asr["m"] = WhisperForConditionalGeneration.from_pretrained(str(MODELS / "whisper-base")).eval()
+    a, sr = sf.read(wav_path, dtype="float32")
+    if a.ndim > 1:
+        a = a.mean(1)
+    if sr != 16000:
+        idx = np.linspace(0, len(a) - 1, int(len(a) * 16000 / sr)); a = np.interp(idx, np.arange(len(a)), a)
+    import torch
+    feats = _asr["p"](a, sampling_rate=16000, return_tensors="pt").input_features
+    with torch.no_grad():
+        ids = _asr["m"].generate(feats, language=lang, task="transcribe", max_new_tokens=200)
+    return _asr["p"].batch_decode(ids, skip_special_tokens=True)[0].strip()
+
+
+def _norm(s: str, lang: str) -> list[str]:
+    import re
+    s = s.lower()
+    if lang == "ja":   # character-level for Japanese
+        return [c for c in re.sub(r"[\s、。！？!?.,…「」]", "", s)]
+    return re.findall(r"[a-z0-9']+", s)
+
+
+def speech_check(wav_path: str, expected: str, lang: str = "en") -> dict:
+    """Word (EN) / character (JA) error rate between Whisper's transcript and the script line."""
+    hyp = transcribe(wav_path, lang)
+    r, h = _norm(expected, lang), _norm(hyp, lang)
+    d = list(range(len(h) + 1))
+    for i in range(1, len(r) + 1):
+        prev, d[0] = d[0], i
+        for j in range(1, len(h) + 1):
+            cur = d[j]
+            d[j] = min(d[j] + 1, d[j - 1] + 1, prev + (r[i - 1] != h[j - 1]))
+            prev = cur
+    err = d[len(h)] / max(1, len(r))
+    return {"expected": expected, "heard": hyp, "error_rate": round(err, 3), "intelligible": err < 0.35, "lang": lang}

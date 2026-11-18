@@ -38,3 +38,7 @@ if [ "${QUALITY_PACK:-1}" = "1" ]; then
   done
   g ai-forever/Real-ESRGAN realesrgan RealESRGAN_x2.pth                           # optional upscaler (BSD-3)
 fi
+# Speech-intelligibility checker (Whisper base, MIT) used by validate.speech_check
+if [ "${QUALITY_PACK:-1}" = "1" ]; then
+  for f in config.json generation_config.json model.safetensors preprocessor_config.json tokenizer.json tokenizer_config.json vocab.json merges.txt normalizer.json added_tokens.json special_tokens_map.json; do g openai/whisper-base whisper-base "$f"; done
+fi

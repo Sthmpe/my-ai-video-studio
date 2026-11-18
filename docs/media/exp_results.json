@@ -1,0 +1,21 @@
+{
+  "keyframe_secs": 174.7,
+  "A_baseline_toonyou_288x512": {
+    "secs": 258.8,
+    "motion": 3.38,
+    "id_sim_to_ref": 0.614,
+    "native": "288x512"
+  },
+  "B_counterfeit_384x672_zoom": {
+    "secs": 154.2,
+    "motion": 24.18,
+    "id_sim_to_ref": 0.779,
+    "native": "384x672"
+  },
+  "C_B_plus_ipadapter": {
+    "secs": 190.6,
+    "motion": 12.21,
+    "id_sim_to_ref": 0.777,
+    "native": "384x672"
+  }
+}
