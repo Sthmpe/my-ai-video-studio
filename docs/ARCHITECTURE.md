@@ -7,7 +7,7 @@ flowchart LR
     CC[Claude Code<br/>/generate-documentary]
   end
   subgraph Workers - interchangeable
-    GA[GitHub Actions runner<br/>.github/workflows/generate.yml]
+    GA[GitHub Actions runner<br/>.github/workflows/claude-generate.yml]
     VM[Always-on VM<br/>supervisor + FastAPI + worker]
   end
   subgraph Engine - engine/studio

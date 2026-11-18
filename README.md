@@ -43,7 +43,7 @@ In Claude Code just say: *"Generate a documentary about the octopus"* — see [`
 ```
 engine/studio/   pipeline, videogen, tts, music, compose, validate, queue, server, supervisor
 web/             Vercel front end + serverless API (submit / status / video)
-.github/         ci.yml (tests) · generate.yml (on-demand GPU-less worker)
+.github/         ci.yml (tests) · claude-generate.yml (on-demand GPU-less worker)
 .claude/         slash commands for Claude Code
 docs/            ARCHITECTURE · MODELS · PROVIDERS · ENVIRONMENT · INSTALL · DEPLOYMENT · OPERATIONS
 examples/        script.json files (sloth.json)

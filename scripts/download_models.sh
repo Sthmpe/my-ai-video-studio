@@ -24,3 +24,17 @@ echo "base models ready in $d"
 if [ "${WITH_LLM:-0}" = "1" ]; then
   for f in config.json generation_config.json model.safetensors.index.json model-00001-of-00002.safetensors model-00002-of-00002.safetensors tokenizer.json tokenizer_config.json vocab.json merges.txt; do g Qwen/Qwen2.5-3B-Instruct qwen "$f"; done
 fi
+
+# --- Quality pack (anime/action, character consistency, camera motion). Disable with QUALITY_PACK=0
+if [ "${QUALITY_PACK:-1}" = "1" ]; then
+  g gsdf/Counterfeit-V2.5 counterfeit Counterfeit-V2.5_fp16.safetensors          # anime base (CreativeML OpenRAIL-M)
+  g stabilityai/sd-vae-ft-mse vae-ft-mse config.json
+  g stabilityai/sd-vae-ft-mse vae-ft-mse diffusion_pytorch_model.safetensors     # sharper decoder (MIT)
+  g h94/IP-Adapter ip-adapter models/ip-adapter-plus_sd15.safetensors            # character reference conditioning (Apache-2.0)
+  g h94/IP-Adapter ip-adapter models/image_encoder/config.json
+  g h94/IP-Adapter ip-adapter models/image_encoder/model.safetensors
+  for m in zoom-in zoom-out pan-left pan-right tilt-up tilt-down rolling-clockwise; do
+    g guoyww/animatediff-motion-lora-$m motion-lora/$m diffusion_pytorch_model.safetensors   # camera motion (Apache-2.0)
+  done
+  g ai-forever/Real-ESRGAN realesrgan RealESRGAN_x2.pth                           # optional upscaler (BSD-3)
+fi

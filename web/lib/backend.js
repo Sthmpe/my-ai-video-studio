@@ -1,6 +1,6 @@
 // Backend adapter. Two interchangeable engines, chosen by env vars:
 //  1) ENGINE_URL + STUDIO_API_KEY  -> an always-on engine (engine/studio/server.py) reachable over HTTPS
-//  2) GITHUB_TOKEN (+ GH_REPO)     -> GitHub Actions as a free on-demand worker (.github/workflows/generate.yml)
+//  2) GITHUB_TOKEN (+ GH_REPO)     -> GitHub Actions as a free on-demand worker (.github/workflows/claude-generate.yml)
 const GH = process.env.GH_REPO || 'Sthmpe/my-ai-video-studio';
 const gh = (path, init = {}) => fetch(`https://api.github.com${path}`, {
   ...init, headers: { Accept: 'application/vnd.github+json', 'User-Agent': 'my-ai-video-studio-web',
@@ -16,8 +16,8 @@ exports.submit = async ({ topic, script, orientation }) => {
     if (!r.ok) throw new Error(`engine ${r.status}`);
     return (await r.json()).id;
   }
-  const id = `web-${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`;
-  const r = await gh(`/repos/${GH}/actions/workflows/generate.yml/dispatches`, { method: 'POST',
+  const id = `claude-web-${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`;
+  const r = await gh(`/repos/${GH}/actions/workflows/claude-generate.yml/dispatches`, { method: 'POST',
     body: JSON.stringify({ ref: process.env.GH_REF || (await (await gh(`/repos/${GH}`)).json()).default_branch, inputs: { job_id: id, topic: topic || '',
       script_json: script ? JSON.stringify(script) : '', orientation: orientation || 'vertical' } }) });
   if (r.status !== 204) throw new Error(`github dispatch ${r.status}: ${(await r.text()).slice(0, 200)}`);
@@ -32,10 +32,10 @@ exports.status = async (id) => {
     return { status: j.status, stage: j.stage, done: j.done, total: j.total, message: j.message,
       videoUrl: j.video_ready ? `/api/jobs/video/${id}` : null, error: j.error };
   }
-  const runs = await (await gh(`/repos/${GH}/actions/workflows/generate.yml/runs?event=workflow_dispatch&per_page=30`)).json();
-  const run = (runs.workflow_runs || []).find((x) => x.display_title === `studio ${id}`);
+  const runs = await (await gh(`/repos/${GH}/actions/workflows/claude-generate.yml/runs?event=workflow_dispatch&per_page=30`)).json();
+  const run = (runs.workflow_runs || []).find((x) => x.display_title === `claude-studio ${id}`);
   if (!run) return { status: 'queued', message: 'waiting for a runner' };
-  const rel = await gh(`/repos/${GH}/releases/tags/video-${encodeURIComponent(id)}`);
+  const rel = await gh(`/repos/${GH}/releases/tags/claude-video-${encodeURIComponent(id)}`);
   if (rel.ok) {
     const a = (await rel.json()).assets.find((x) => x.name === 'output.mp4');
     if (a) return { status: 'done', videoUrl: a.browser_download_url, runUrl: run.html_url };
