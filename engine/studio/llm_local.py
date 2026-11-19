@@ -9,6 +9,18 @@ _lock, _m = threading.Lock(), None
 
 def chat(messages: list[dict], max_new_tokens: int = 2200) -> str:
     global _m
+    server = os.environ.get("STUDIO_LLAMA_SERVER")
+    if server:
+        import requests
+        response = requests.post(server.rstrip("/") + "/v1/chat/completions", json={
+            "model": MODEL, "messages": messages, "max_tokens": max_new_tokens,
+            "temperature": 0.7, "response_format": {"type": "json_object"},
+        }, timeout=(5, 1800))
+        response.raise_for_status()
+        choice = response.json()["choices"][0]
+        if choice["finish_reason"] == "length":
+            raise ValueError("The local model reached its token budget before completing the script")
+        return choice["message"]["content"]
     with _lock:
         if _m is None:
             from transformers import AutoModelForCausalLM, AutoTokenizer
