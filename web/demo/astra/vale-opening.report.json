@@ -1,0 +1,186 @@
+{
+  "title": "Vale and the Storm Engine — opening cut",
+  "mode": "anime_edit",
+  "created": "2026-11-19T12:06:04Z",
+  "models": {
+    "video_motion": {
+      "id": "ByteDance/AnimateDiff-Lightning",
+      "variant": "4-step diffusers",
+      "licence": "Apache-2.0"
+    },
+    "image_base": {
+      "id": "gsdf/Counterfeit-V2.5 (fp16)",
+      "style": "2D anime",
+      "licence": "CreativeML OpenRAIL-M"
+    },
+    "vae": {
+      "id": "stabilityai/sd-vae-ft-mse"
+    },
+    "character_conditioning": {
+      "id": "h94/IP-Adapter ip-adapter-plus-face_sd15 (scale 0.5, keyframes)",
+      "licence": "Apache-2.0"
+    },
+    "camera_motion": {
+      "id": "guoyww/animatediff-motion-lora-*",
+      "used": [
+        "pan-right",
+        "zoom-in"
+      ]
+    },
+    "voice": {
+      "id": "None (instrumental edit)"
+    },
+    "script": {
+      "author": "Astra"
+    },
+    "music": {
+      "id": "studio.music procedural synth",
+      "licence": "original",
+      "bpm": 120
+    },
+    "sfx": {
+      "id": "studio.sfx procedural synth",
+      "licence": "original"
+    },
+    "interpolation": {
+      "id": "FFmpeg minterpolate (MCI)",
+      "note": "8 fps to 48 fps before retiming and 24 fps export"
+    },
+    "speech_check": null,
+    "keyframe_adapter": {
+      "id": "latent-consistency/lcm-lora-sdv1-5"
+    }
+  },
+  "selection_reasons": [
+    "mode 'anime_edit' prefers counterfeit (2D anime)",
+    "native 288x512 chosen for cpu/bfloat16 with 5 cores (fast tier: no native bf16 or quality=fast)",
+    "GPU-tier models (Wan, LTX, CogVideoX) skipped: no CUDA device",
+    "Six-step latent consistency keyframes reduce CPU denoising work."
+  ],
+  "generation_method": {
+    "i2v": 2
+  },
+  "method_explained": {
+    "t2v": "text-to-video: AnimateDiff-Lightning, 4 denoising steps, 16 frames",
+    "i2v": "Six-step LCM keyframe, reference conditioning where available, followed by AnimateDiff-Lightning video-to-video."
+  },
+  "specs": {
+    "native_resolution": "288x512",
+    "export_resolution": "1080x1920",
+    "upscale_factor": 3.75,
+    "native_fps": 8,
+    "export_fps": 24,
+    "frames_per_clip": 16,
+    "shots": 2,
+    "inference_steps": {
+      "t2v": 4,
+      "keyframe": 6,
+      "i2v": "3 (6-step Lightning schedule x strength 0.65)"
+    },
+    "seconds_per_shot_mean": 222.9,
+    "hardware": {
+      "device": "cpu",
+      "dtype": "bfloat16",
+      "cpus": 5,
+      "gpu": null
+    },
+    "timings_s": {
+      "characters": 0.0,
+      "keyframes": 0.0,
+      "clips": 447.1,
+      "edit": 21.6,
+      "total": 469.7
+    },
+    "edit": "hard cuts on the generated music beat grid",
+    "target_seconds": 3
+  },
+  "quality": {
+    "final_validation": {
+      "ok": true,
+      "checks": {
+        "has_video": true,
+        "has_audio": true,
+        "resolution_ok": true,
+        "duration_matches": true,
+        "audio_audible": true,
+        "codec_h264": true
+      },
+      "duration": 3.0,
+      "size": "1080x1920",
+      "mean_volume_db": -17.1,
+      "speech_intelligible_ratio": null
+    },
+    "speech_intelligibility": [],
+    "visual_review": {
+      "method": "Inspected reference, storyboard keyframes and twelve evenly spaced decoded output frames.",
+      "observations": [
+        "Vale's pale hair, dark collar and silhouette are recognizable across the two shots.",
+        "The first shot changes eye highlights and the surrounding light. The second changes framing and rain highlights while the running pose stays similar.",
+        "Face detail is soft at full export size, the eye color drifts, and the rooftop shot does not show a complete running stride."
+      ],
+      "runtime_note": "469.7 seconds for the resumed animation, edit and export pass. This excludes reference and keyframe generation on the earlier machine and the interrupted attempt.",
+      "audio_check": "AAC output measured -17.1 dB mean volume. Audio playback was unavailable in this review client."
+    },
+    "speech_metric_note": "error rate compares Whisper text to the script; number formatting (e.g. 'seven forty-two' vs '7:42') and kana/kanji variants inflate it",
+    "clip_gate_retries": 0
+  },
+  "limitations": [
+    "Generated at 288x512 and upscaled 3.8x (Lanczos+unsharp) — export resolution is NOT native detail.",
+    "2-second clips (16 frames @ 8 fps) are motion-interpolated to 24 fps; fast action can smear.",
+    "4-step distilled motion model on CPU: fine details (hands, small accessories) can warp between frames.",
+    "Character identity is guided by a reference image (IP-Adapter/keyframes), not locked; faces can drift in action shots.",
+    "No GPU: higher-fidelity open models (Wan, LTX-Video, CogVideoX) were not run."
+  ],
+  "alternatives_considered": [
+    {
+      "model": "Wan 2.1/2.2 T2V/I2V (1.3B–14B)",
+      "licence": "Apache-2.0",
+      "why_not": "needs a CUDA GPU (8–24 GB+) and a ~22 GB UMT5-XXL text encoder; impractical on 4 vCPU/15 GB RAM",
+      "needs": "GPU runner (e.g. 24 GB) — plug into model_router via diffusers WanPipeline"
+    },
+    {
+      "model": "LTX-Video 2B/13B",
+      "licence": "LTXV Open Weights",
+      "why_not": "T5-XXL encoder + GPU memory; minutes per clip only on GPU",
+      "needs": "GPU with 12 GB+"
+    },
+    {
+      "model": "CogVideoX-2B/5B",
+      "licence": "Apache-2.0 / CogVideoX",
+      "why_not": "12–24 GB VRAM; very slow on CPU",
+      "needs": "GPU"
+    },
+    {
+      "model": "HunyuanVideo / Mochi-1",
+      "licence": "custom / Apache-2.0",
+      "why_not": "40 GB+ VRAM",
+      "needs": "datacenter GPU"
+    },
+    {
+      "model": "AnimateDiff SparseCtrl / AnimateLCM",
+      "licence": "Apache-2.0",
+      "why_not": "not yet benchmarked here; candidate for next CPU iteration",
+      "needs": "~1–2 GB extra weights"
+    }
+  ],
+  "cost": {
+    "usd": 0.0,
+    "paid_services": [],
+    "free_tier_apis": [],
+    "compute": "local CPU (this machine)"
+  },
+  "recommendations": [
+    "Run on a GPU runner and switch the router to Wan 2.x I2V for native 480p/720p motion.",
+    "Increase native resolution to 512x896 when time allows; add RIFE interpolation instead of minterpolate.",
+    "Use pose/ControlNet keyframes for complex action; train a small character LoRA for stronger identity."
+  ],
+  "reproducibility": {
+    "seeds_and_prompts": "story/storyboard.json (per shot: prompt, seed, camera, method)",
+    "settings": {
+      "guidance": 1.0,
+      "scheduler": "Euler trailing (Lightning)",
+      "keyframe_sampler": "LCMScheduler, guidance 1.0"
+    },
+    "note": "bf16 vs fp32 and CPU vs GPU produce slightly different pixels for identical seeds."
+  }
+}

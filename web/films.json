@@ -1,7 +1,54 @@
 [
- {"title":"The Boy Who Stole Time — Episode 1","mode":"anime action · EN","meta":"0:38 · 20 AI shots · keyframe→i2v, IP-Adapter identity, EN dialogue, SFX","video":"/demo/ep1.mp4","poster":"/demo/ep1.jpg","bundle":"https://github.com/Sthmpe/my-ai-video-studio/raw/ccr-931534f5-lqm602/outputs/bundles/boy-who-stole-time-ep1.studio.zip","reportMd":"https://github.com/Sthmpe/my-ai-video-studio/blob/ccr-931534f5-lqm602/outputs/reports/btst-ep1-GENERATION_REPORT.md","report":"/demo/ep1.report.json","ja":"/demo/ep1_ja.mp4"},
- {"title":"The Boy Who Stole Time — Episode 1 (日本語)","mode":"anime action · JA dub","meta":"Same visuals, Japanese voices + subtitles (Kokoro JA, misaki G2P)","video":"/demo/ep1_ja.mp4","poster":"/demo/ep1_ja.jpg"},
- {"title":"The Boy Who Stole Time — Episode 2 (Teaser)","mode":"continuation","meta":"0:16 · generated from Ep. 1's .studio.zip — same characters, voices, style + new villain","video":"/demo/ep2.mp4","poster":"/demo/ep2.jpg","bundle":"https://github.com/Sthmpe/my-ai-video-studio/raw/ccr-931534f5-lqm602/outputs/bundles/boy-who-stole-time-ep2-teaser.studio.zip","reportMd":"https://github.com/Sthmpe/my-ai-video-studio/blob/ccr-931534f5-lqm602/outputs/reports/btst-ep2-GENERATION_REPORT.md","report":"/demo/ep2.report.json"},
- {"title":"The Sloth: Master of Nothing","mode":"documentary","meta":"2:06 · 30 AI shots · ToonYou t2v (v1 engine)","video":"/demo/sloth.mp4","poster":"/demo/sloth.jpg"},
- {"title":"Why Cats Knock Things Over","mode":"documentary","meta":"1:08 · 17 AI shots · funny cartoon (v1 engine)","video":"/demo/cat.mp4","poster":"/demo/cat.jpg"}
+  {
+    "title": "Vale and the Storm Engine — opening cut",
+    "mode": "Astra · instrumental anime edit",
+    "meta": "0:03 · 2 original AI shots · 120 BPM · 288×512 native motion",
+    "video": "/demo/astra/vale-opening.mp4",
+    "poster": "/demo/astra/vale-opening.jpg",
+    "bundle": "/demo/astra/vale-opening.studio.zip",
+    "reportMd": "/demo/astra/vale-opening.report.md",
+    "report": "/demo/astra/vale-opening.report.json"
+  },
+  {
+    "title": "The Boy Who Stole Time — Episode 1",
+    "mode": "anime action · EN",
+    "meta": "0:38 · 20 AI shots · keyframe→i2v, IP-Adapter identity, EN dialogue, SFX",
+    "video": "/demo/ep1.mp4",
+    "poster": "/demo/ep1.jpg",
+    "bundle": "https://github.com/Sthmpe/my-ai-video-studio/raw/ccr-931534f5-lqm602/outputs/bundles/boy-who-stole-time-ep1.studio.zip",
+    "reportMd": "https://github.com/Sthmpe/my-ai-video-studio/blob/ccr-931534f5-lqm602/outputs/reports/btst-ep1-GENERATION_REPORT.md",
+    "report": "/demo/ep1.report.json",
+    "ja": "/demo/ep1_ja.mp4"
+  },
+  {
+    "title": "The Boy Who Stole Time — Episode 1 (日本語)",
+    "mode": "anime action · JA dub",
+    "meta": "Same visuals, Japanese voices + subtitles (Kokoro JA, misaki G2P)",
+    "video": "/demo/ep1_ja.mp4",
+    "poster": "/demo/ep1_ja.jpg"
+  },
+  {
+    "title": "The Boy Who Stole Time — Episode 2 (Teaser)",
+    "mode": "continuation",
+    "meta": "0:16 · generated from Ep. 1's .studio.zip — same characters, voices, style + new villain",
+    "video": "/demo/ep2.mp4",
+    "poster": "/demo/ep2.jpg",
+    "bundle": "https://github.com/Sthmpe/my-ai-video-studio/raw/ccr-931534f5-lqm602/outputs/bundles/boy-who-stole-time-ep2-teaser.studio.zip",
+    "reportMd": "https://github.com/Sthmpe/my-ai-video-studio/blob/ccr-931534f5-lqm602/outputs/reports/btst-ep2-GENERATION_REPORT.md",
+    "report": "/demo/ep2.report.json"
+  },
+  {
+    "title": "The Sloth: Master of Nothing",
+    "mode": "documentary",
+    "meta": "2:06 · 30 AI shots · ToonYou t2v (v1 engine)",
+    "video": "/demo/sloth.mp4",
+    "poster": "/demo/sloth.jpg"
+  },
+  {
+    "title": "Why Cats Knock Things Over",
+    "mode": "documentary",
+    "meta": "1:08 · 17 AI shots · funny cartoon (v1 engine)",
+    "video": "/demo/cat.mp4",
+    "poster": "/demo/cat.jpg"
+  }
 ]
